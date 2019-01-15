@@ -1,0 +1,523 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>o3o3o</title>
+  
+  <subtitle>点滴记录</subtitle>
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="https://o3o3o.github.io/"/>
+  <updated>2019-01-10T11:19:29.487Z</updated>
+  <id>https://o3o3o.github.io/</id>
+  
+  <author>
+    <name>michael</name>
+    
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>GraphQL 使用笔记</title>
+    <link href="https://o3o3o.github.io/2018/12/29/graphql_notes/"/>
+    <id>https://o3o3o.github.io/2018/12/29/graphql_notes/</id>
+    <published>2018-12-29T05:25:04.000Z</published>
+    <updated>2019-01-10T11:19:29.487Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="简述"><a href="#简述" class="headerlink" title="简述"></a>简述</h3><p>简单粗暴的来说:  GraphQL是API界的SQL查询语言。(好吧，真的是简述…:p)</p><h3 id="Restful-API的痛点"><a href="#Restful-API的痛点" class="headerlink" title="Restful API的痛点"></a>Restful API的痛点</h3><p>在工作中后端与前端同学协作中必不可少要打交道的东西。 在API的设计时，无论后端还是前端人员主导API设计，由于其本身受到思维定式(仅限于非全栈同学), 很难设计出一个双方都比较满意的API。</p><p>这是个常见的现象:<br>在一个页面的操作，包含多个功能, 而且UI界面与功能在频繁的修改。<br><figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">后端<span class="string">UB:</span>  API应该是根据模块划分的，一个功能一个API</span><br><span class="line">前端<span class="string">UC:</span>  一个页面应该一个请求, 不然请求效率太低...</span><br></pre></td></tr></table></figure></p><p>这时，有的人要说了，可以弄一个API gateway, 聚合的所有的API，可做这些可是苦力活。</p><p>在经历了这个过程后，后期我们引入了GrapqhQL, 终于解决沟通API而出现的问题。</p><p><strong>GraphQL的特点</strong>:</p><ul><li>UI 变化频繁，server API 改动变少, Client根据自己的需求，组织语句去查询</li><li>自带文档，代码就是文档</li><li>强类型，不再需要或者 需要更少的 参数检查逻辑代码</li><li>Server 与 Client 解藕 <ul><li>server端开发，面向object数据，而不是页面。</li><li>Client 一个页面的请求，取回所有需要的数据，减少网络开销</li></ul></li></ul><h3 id="基础知识"><a href="#基础知识" class="headerlink" title="基础知识:"></a>基础知识:</h3><ul><li>推荐先看 <a href="https://www.howtographql.com" target="_blank" rel="noopener">how to graphql</a></li><li><a href="https://graphql.org/learn/" target="_blank" rel="noopener">英文资料</a> or <a href="http://graphql.cn/learn/" target="_blank" rel="noopener">graphql入门中文</a></li><li><a href="http://docs.graphene-python.org/projects/django/en/latest/tutorial-plain/" target="_blank" rel="noopener">django graphql</a></li></ul><p>e.g:<br><img src="/images/graphql/graphql_demo.png" alt="demo"><br>用GraphiQL访问: <a href="https://api.graph.cool/simple/v1/cixos23120m0n0173veiiwrjr" target="_blank" rel="noopener">https://api.graph.cool/simple/v1/cixos23120m0n0173veiiwrjr</a><br><figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">query queryTest&#123;</span><br><span class="line">  allUsers(orderBy:id_DESC, <span class="keyword">first</span>:<span class="number">2</span> )&#123;</span><br><span class="line">    <span class="comment">## Fragment example</span></span><br><span class="line">    ...UserField</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment"># alias example</span></span><br><span class="line">  Movies: allMovies(<span class="keyword">first</span>:<span class="number">1</span>)&#123;</span><br><span class="line">    actors(<span class="keyword">first</span>:<span class="number">2</span>)&#123;</span><br><span class="line">      <span class="built_in">name</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"><span class="comment"># node usage</span></span><br><span class="line">  node(<span class="built_in">id</span>:<span class="string">"cj21vcky017ot0112ohc1bid8"</span>)&#123;</span><br><span class="line">    <span class="built_in">id</span></span><br><span class="line">    ... <span class="keyword">on</span> User&#123;</span><br><span class="line">      <span class="built_in">name</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">#Fragment: UserField with spefied field</span></span><br><span class="line">fragment UserField <span class="keyword">on</span> User&#123;</span><br><span class="line"> <span class="built_in">id</span></span><br><span class="line">  <span class="built_in">name</span></span><br><span class="line">  createdAt</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">mutation createUser&#123;</span><br><span class="line">  createUser(<span class="built_in">name</span>:<span class="string">"testUser"</span>) &#123;</span><br><span class="line">    <span class="built_in">id</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p><h3 id="GraphQL-Proxy"><a href="#GraphQL-Proxy" class="headerlink" title="GraphQL Proxy"></a>GraphQL Proxy</h3><p>GraphQL代理， 对于client端，只暴露一个接口, 后端多个结点，结点间可以互相访问。<a href="https://labs.getninjas.com.br/sharing-data-in-a-microservices-architecture-using-graphql-97db59357602" target="_blank" rel="noopener">例子</a></p><ul><li>把remote endpoints merge在一起<a href="https://www.apollographql.com/docs/graphql-tools/schema-stitching.html#mergeSchemas" target="_blank" rel="noopener">Graphql merge the subschema</a></li><li><a href="https://www.apollographql.com/docs/graphql-tools/schema-delegation.html" target="_blank" rel="noopener">多个subschema之间嵌套查询</a></li><li><a href="https://blog.graph.cool/how-do-graphql-remote-schemas-work-7118237c89d7" target="_blank" rel="noopener">How do grapnel remote schemes work</a></li></ul><h3 id="安全、性能"><a href="#安全、性能" class="headerlink" title="安全、性能:"></a>安全、性能:</h3><p> 数据的安全问题:  使用GraphQL需要注意, 上线系统，关闭 <code>__schema</code>的查询,避免被脱库</p><p><strong>性能</strong>: </p><ul><li>一次请求里面，调用多次同一对象的情况(N+1问题)，可以使用<a href="https://docs.graphene-python.org/en/latest/execution/dataloader/" target="_blank" rel="noopener">DataLoader</a>来缓存</li><li>因为python中使用graphQL, 运行时需要处理性能问题。python构造字典时所性能会拖慢，可以在类里面考虑添加<code>__slots__</code></li></ul><h3 id="Tips"><a href="#Tips" class="headerlink" title="Tips:"></a>Tips:</h3><h4 id="IDE工具"><a href="#IDE工具" class="headerlink" title="IDE工具:"></a>IDE工具:</h4><p>目前几个工具用的最多的还是GraphiQL</p><ul><li><a href="https://insomnia.rest/blog/introducing-graphql/" target="_blank" rel="noopener">insomnia</a> 没有postman好用, 可惜postman目前<a href="https://github.com/postmanlabs/postman-app-support/issues/1669" target="_blank" rel="noopener">还支持不了..</a></li><li><a href="https://electronjs.org/apps/graphiql" target="_blank" rel="noopener">GraphiQL</a></li><li><a href="https://github.com/graphcool/graphql-playground" target="_blank" rel="noopener">graphql-playground</a><br>mac可以直接执行安装: <code>brew cask install graphql-playground</code></li></ul><h4 id="用scheme生成图的工具"><a href="#用scheme生成图的工具" class="headerlink" title="用scheme生成图的工具:"></a>用scheme生成图的工具:</h4><ul><li><a href="https://github.com/APIs-guru/graphql-voyager" target="_blank" rel="noopener">graphql-voyage</a></li><li><a href="http://nathanrandal.com/graphql-visualizer/" target="_blank" rel="noopener">graphql-visualizer</a></li></ul><h3 id="Other-Links"><a href="#Other-Links" class="headerlink" title="Other Links:"></a>Other Links:</h3><ul><li><a href="https://github.com/chentsulin/awesome-graphql" target="_blank" rel="noopener">awesome graphql</a></li><li><a href="http://graphql.cn/" target="_blank" rel="noopener">graphql.cn</a></li><li><a href="https://www.graphqlhub.com/" target="_blank" rel="noopener">graphqhub</a></li></ul><h3 id="TODO"><a href="#TODO" class="headerlink" title="TODO:"></a>TODO:</h3><ul><li>GraphQL relationships node  connection</li><li>django-graphql中如何在多层resolve 缓存?</li></ul>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h3 id=&quot;简述&quot;&gt;&lt;a href=&quot;#简述&quot; class=&quot;headerlink&quot; title=&quot;简述&quot;&gt;&lt;/a&gt;简述&lt;/h3&gt;&lt;p&gt;简单粗暴的来说:  GraphQL是API界的SQL查询语言。(好吧，真的是简述…:p)&lt;/p&gt;
+&lt;h3 id=&quot;Restful-API的痛
+      
+    
+    </summary>
+    
+      <category term="Tech" scheme="https://o3o3o.github.io/categories/Tech/"/>
+    
+    
+      <category term="graphql" scheme="https://o3o3o.github.io/tags/graphql/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>旅行记</title>
+    <link href="https://o3o3o.github.io/2016/03/01/travel/"/>
+    <id>https://o3o3o.github.io/2016/03/01/travel/</id>
+    <published>2016-03-01T13:38:39.000Z</published>
+    <updated>2019-01-10T11:19:29.490Z</updated>
+    
+    <content type="html"><![CDATA[<p>这是一次旅行之前的心理路程，当时的原版记录是在我的纸制日记上面，最近在做一些决定时，让我再次想起这件事，因此储存在电子版，便于搜索。</p><h2 id="前情提要"><a href="#前情提要" class="headerlink" title="前情提要"></a>前情提要</h2><p>2015.5.1, 是我在沈阳工作的第二个年头，正值五一假期，朋友与同事们离家近的都回家了。<br>在前一礼拜，在一次随意聊天中，杨海波建议我去千山，然后当时我确定要去。</p><h2 id="出发前"><a href="#出发前" class="headerlink" title="出发前"></a>出发前</h2><p>等到5.1号的前一天晚上，在需要买票时，开始犹豫是否要去。<br>如果去还得做火车，不去的话，我可以安静的呆几天，看看书，听音乐等；但之前给好多人都说过了呀，如果回来时，别人问我去千山什么感觉时，我说我没去，对于别人的感觉可能不好。如果与别人一起时，约定的的时间去一个地方，那我肯定就去了，因为这是一种约定；可到自己一个人确定一件事时，没有约定的束缚，这时候就开始犹豫起来了。持续了好几个小时；决定先买去鞍山的火车票，然后明天早上再定是否去，不去的话再退唄。</p><p>当时想起了那个预言：一头驴站饿了，站在2堆草堆之间，在犹豫是去吃哪个，最终饿死了。<br>当时对于自己的这种想法与行为，非常厌恶；直到晚上睡觉时，还在犹豫，然后对自己特别的生气，对自己说，一定要找个办法去解决一下这个问题，不然以后遇到同样的问题，可咋整？</p><p>然后，就在日记本上把这些想法记录下来了，在最后补充了一句话，明天要去，回来时候，要补上:</p><p>同时，深夜发以下内容给好友，帮忙:</p><p>明天本来打算去千山玩去，票都买好了 面临自己的选择时，可做可不做。（可以退票，而且没有代价） 要做的缘由是自己之前想做，自己能获得一些东西。不做的想法源于要花费一些代价比如时间未知，而人倾向于保持现状。就像类似于你当初决定骑行去福建的时候的感觉。</p><p>现在我想的是有两种方式，1.任其自然要么保持现状，要么因为外界限制不得不做。2.要么自己主动给自己断退路。<br>虽是小事但对自己来说是大事，自己也知道明天的决定会自然见晓，过后肯定又不会深思此厉害关系，以后每次都会遇到类似的事，有些不甘心啊，不甘心每次受限制于这样。 又或是人本应是这样不定，反而是世俗的思维，要让自己有抉择，说到做到，自寻烦恼？</p><p>元芳，你怎么看?</p><h2 id="去千山"><a href="#去千山" class="headerlink" title="去千山"></a>去千山</h2><p>很早就去做去鞍山的火车，到鞍山火车站时11点了，然后找了个饭馆吃了碗面。准备打车去鞍山时，问了下只能打车，公交特别慢时间来不及。然后再犹豫，要是找一个人一起拼车就好了，不一会儿在路边有个女孩，就问你是一个人吗？去千山可以搭个伴呀。这个女孩比较开朗，然后就直接说，我有对象了哈，没有别的意思。 然后司机又拉了一个人，共三位乘客，车开始走了。</p><p>因为我是在去哪儿APP上买的电子票。当时那位司机问你买票了没？好位女孩说，他还没有买票，司机说他有便宜的票，便宜50呢； –&gt; 总之，最后把我们带到后山，从非正常的渠道，上了千山，路可难走了，不过最终还是上去了。<br>一路上，一起聊天，到下山的时候，遇到她的朋友，然后我们就一起做伴，走了千山全程。</p><h2 id="回来"><a href="#回来" class="headerlink" title="回来"></a>回来</h2><p>  回来很累，休息小会儿后，从床上爬起来，翻开日记本在最后面一篇，用红色的彩笔，补充了一句：”对于维持现状，还是选择未来，应该努力去选择未知的东西！”</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;这是一次旅行之前的心理路程，当时的原版记录是在我的纸制日记上面，最近在做一些决定时，让我再次想起这件事，因此储存在电子版，便于搜索。&lt;/p&gt;
+&lt;h2 id=&quot;前情提要&quot;&gt;&lt;a href=&quot;#前情提要&quot; class=&quot;headerlink&quot; title=&quot;前情提要&quot;&gt;&lt;/a&gt;
+      
+    
+    </summary>
+    
+      <category term="杂感" scheme="https://o3o3o.github.io/categories/%E6%9D%82%E6%84%9F/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>我的rss订阅源</title>
+    <link href="https://o3o3o.github.io/2016/02/29/rss/"/>
+    <id>https://o3o3o.github.io/2016/02/29/rss/</id>
+    <published>2016-02-29T13:04:31.000Z</published>
+    <updated>2019-01-10T11:19:29.489Z</updated>
+    
+    <content type="html"><![CDATA[<p>TODO:  export automatically with feedly.opml<br>订阅客户端使用feedly</p><h2 id="技术类"><a href="#技术类" class="headerlink" title="技术类"></a>技术类</h2><ul><li><a href="https://news.ycombinator.com/rss" target="_blank" rel="noopener">Hacker News</a></li><li><a href="http://news.dbanotes.net/rss" target="_blank" rel="noopener">Startup News</a><br> HackerNews 与 StartupNews类似，分别是国内外互联网行业的新动态。</li><li><a href="http://coolshell.cn/feed" target="_blank" rel="noopener">酷壳</a></li><li><a href="http://antirez.com/rss" target="_blank" rel="noopener">redis大神antirez</a><h2 id="blog"><a href="#blog" class="headerlink" title="blog"></a>blog</h2></li><li><a href="http://www.yinwang.org" target="_blank" rel="noopener">王垠</a></li><li><a href="http://yinwang0.wordpress.com/" target="_blank" rel="noopener">王垠english</a></li><li><a href="http://feeds.danielmiessler.com/danielmiessler" target="_blank" rel="noopener">danielmiessler</a></li></ul>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;TODO:  export automatically with feedly.opml&lt;br&gt;订阅客户端使用feedly&lt;/p&gt;
+&lt;h2 id=&quot;技术类&quot;&gt;&lt;a href=&quot;#技术类&quot; class=&quot;headerlink&quot; title=&quot;技术类&quot;&gt;&lt;/a&gt;技术类&lt;/h2&gt;
+      
+    
+    </summary>
+    
+    
+      <category term="rss" scheme="https://o3o3o.github.io/tags/rss/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>使用gitlab实现可持续集成</title>
+    <link href="https://o3o3o.github.io/2016/02/24/gitlabci/"/>
+    <id>https://o3o3o.github.io/2016/02/24/gitlabci/</id>
+    <published>2016-02-24T13:09:30.000Z</published>
+    <updated>2019-01-10T11:19:29.487Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h1><p>提交代码后，根据以有的配置，自动触发，进行代码测试程序或者程序的部署。</p><h1 id="需求："><a href="#需求：" class="headerlink" title="需求："></a>需求：</h1><p>目前项目中，需要管理多个版本（32位，64位）的补丁包。每次修改完代码，提交后，都需要人手动在安装或者测试机器上，编译，安装，运行。<br>为将这个流程自动化，可采用gitlab 与gitlab CI (continous intergration)来实现其自动化。<br>针对于目前客户端侧不同企业，需要生成特定的客户端版本，也可以让其自动化。</p><h1 id="结构："><a href="#结构：" class="headerlink" title="结构："></a>结构：</h1><p><img src="/images/gitlabci/gitlab.png" alt="struct">   </p><h3 id="主要结构分为4部分："><a href="#主要结构分为4部分：" class="headerlink" title="主要结构分为4部分："></a>主要结构分为4部分：</h3><ul><li>目标机器<br>  包含：1.测试机器；2.部署机器；</li><li>git与gitlab-ci(可持续集成服务）<br>   用于保存代码，与解析<code>.gitlab-ciyml</code>文件，触发 持续集成动作</li><li>git 客户端<br>  使用git 客户端提交代码的最终用户<h1 id="工作流程"><a href="#工作流程" class="headerlink" title="工作流程"></a>工作流程</h1></li></ul><ol><li>用户U1，使用git 客户端，建立一个项目 repo1；</li><li>repos1项目中包含文件:</li></ol><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;(repos1)$ ls -a</span><br><span class="line">.  ..  .git  .gitlab-ci.yml  readme</span><br></pre></td></tr></table></figure><ol start="3"><li>修改readme文件</li></ol><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git add readme</span><br><span class="line">git commit readme -m <span class="string">"add readme"</span>;</span><br><span class="line">git push</span><br></pre></td></tr></table></figure><ol start="4"><li>git push 执行后，提交到gitlab服务器后，gitlab服务，解析.gitlab-ci.yml,, 触发gitlab-ci-runner去处理， .gitlab-ci.yml中定义的流程；<br>（前提是： gitlabci-runner要配置，并注册成功，<a href="https://gitlab.com/gitlab-org/gitlab-ci-multi-runner/blob/master/docs/configuration/advanced-configuration.md" target="_blank" rel="noopener">具体配置操作说明见</a></li></ol><h1 id="工程文件内容："><a href="#工程文件内容：" class="headerlink" title="工程文件内容："></a>工程文件内容：</h1><ul><li>git 工程</li><li>.gitlab-ci.yml 文件：<br>每个工程下面使用<code>.gitlab-ci.yml</code>文件，来控制提交代码后，gitlab ci 解析yml文件，来获取如何去部署程序。<br>如<code>gitlab-ci.yml</code>：</li></ul><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">162deploy: <span class="comment"># 162</span></span><br><span class="line">    stage: deploy</span><br><span class="line">    tags:</span><br><span class="line">        - deploy162</span><br><span class="line">    script:</span><br><span class="line">        - <span class="string">"make &amp;&amp; make install"</span></span><br><span class="line">    only:</span><br><span class="line">         - master</span><br><span class="line">250deploy: <span class="comment"># 250</span></span><br><span class="line">    stage: deploy</span><br><span class="line">    tags:</span><br><span class="line">        - deploy250</span><br><span class="line">    script:</span><br><span class="line">        - <span class="string">"make &amp;&amp; make install"</span></span><br><span class="line">    only:</span><br><span class="line">         - master</span><br></pre></td></tr></table></figure><p>注: yml文件格式必须有tab或空格</p><ul><li>tags<br>  <code>deploy162</code>, <code>deploy250</code> 分别指在192.168.1.162、192.168.1.250上运行的gitlab-ci-runner的名称，gitlab-ci是根据<code>.gitlab-ci.yml</code>中的tags来匹配具体任务由哪个runner来处理。<br>上面的script是指编译安装程序。</li><li>script<br>  <code>make &amp;&amp; make install</code>是指要部署到相应的服务器上时，需要执行的脚本命令.对于需要编译的程序而言，就是编译安装，而对于php等web程序而言，就是把代码复制到相应的安装目录。</li></ul><h2 id="流程举例："><a href="#流程举例：" class="headerlink" title="流程举例："></a>流程举例：</h2><p>流程如下：<br><img src="/images/gitlabci/demo.gif" alt="demo"></p><h2 id="gitlab-runner-配置举例-目前192-168-1-184地址配置了gitlab-runner"><a href="#gitlab-runner-配置举例-目前192-168-1-184地址配置了gitlab-runner" class="headerlink" title="gitlab-runner: 配置举例 (目前192.168.1.184地址配置了gitlab-runner)"></a>gitlab-runner: 配置举例 (目前192.168.1.184地址配置了gitlab-runner)</h2><p>可登录gitlab网页版，查看当前注册的git-runner</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">michael@Sict ~ $ cat /etc/gitlab-runner/config.toml</span><br><span class="line">concurrent = 1</span><br><span class="line">[[runners]]</span><br><span class="line">  url = <span class="string">"http://192.168.1.240/ci"</span></span><br><span class="line">  token = <span class="string">"fb8b064e53e21159e268853af6f8ea"</span></span><br><span class="line">  name = <span class="string">"Sict162"</span></span><br><span class="line">  <span class="built_in">limit</span> = 1</span><br><span class="line">  executor = <span class="string">"ssh"</span></span><br><span class="line">  builds_dir = <span class="string">"/Data/git_build"</span></span><br><span class="line">  [runners.ssh]</span><br><span class="line">    user = <span class="string">"root"</span></span><br><span class="line">    host = <span class="string">"192.168.1.162"</span></span><br><span class="line">    port = <span class="string">"2222"</span></span><br><span class="line">    identity_file = <span class="string">"/home/michael/.ssh/id_rsa"</span></span><br><span class="line">[[runners]]</span><br><span class="line">  url = <span class="string">"http://192.168.1.240/ci"</span></span><br><span class="line">  token = <span class="string">"18795ba96cfe74478ee63ff7decedd"</span></span><br><span class="line">  name = <span class="string">"Sict250"</span></span><br><span class="line">  <span class="built_in">limit</span> = 1</span><br><span class="line">  executor = <span class="string">"ssh"</span></span><br><span class="line">  builds_dir = <span class="string">"/Data/git_build"</span></span><br><span class="line">  [runners.ssh]</span><br><span class="line">    user = <span class="string">"root"</span></span><br><span class="line">    host = <span class="string">"192.168.1.250"</span></span><br><span class="line">    port = <span class="string">"2222"</span></span><br><span class="line">    identity_file = <span class="string">"/home/michael/.ssh/id_rsa"</span></span><br><span class="line">[[runners]]</span><br><span class="line">  url = <span class="string">"http://192.168.1.240/ci"</span></span><br><span class="line">  token = <span class="string">"87aa2b2c0f5779d5e01f9d731fb6e4"</span></span><br><span class="line">  name = <span class="string">"Sict236"</span></span><br><span class="line">  executor = <span class="string">"ssh"</span></span><br><span class="line">  builds_dir = <span class="string">"/Data/git_build"</span></span><br><span class="line">  [runners.ssh]</span><br><span class="line">    user = <span class="string">"root"</span></span><br><span class="line">    host = <span class="string">"192.168.1.236"</span></span><br><span class="line">    port = <span class="string">"2222"</span></span><br><span class="line">    identity_file = <span class="string">"/home/michael/.ssh/id_rsa"</span></span><br></pre></td></tr></table></figure><h1 id="相关链接："><a href="#相关链接：" class="headerlink" title="相关链接："></a>相关链接：</h1><ul><li><a href="https://about.gitlab.com/gitlab-ci/" target="_blank" rel="noopener">gitlabci介绍</a></li><li><a href="https://gitlab.com/gitlab-org/gitlab-ci-multi-runner/blob/master/docs/configuration/advanced-configuration.md" target="_blank" rel="noopener">gitlabci runner</a></li><li><a href="http://doc.gitlab.com/ce/ci/yaml/README.html" target="_blank" rel="noopener">yaml 文件配置</a></li><li><a href="http://www.greysonparrelli.com/setting-up-android-builds-in-gitlab-ci/" target="_blank" rel="noopener">android自动化部署</a></li><li><a href="http://git-scm.com/book/zh/" target="_blank" rel="noopener">git 使用说明</a></li><li><a href="https://github.com/o3o3o/cmd#linux下面录制动画gif" target="_blank" rel="noopener">linux动画录制</a></li></ul><h1 id="TIPS"><a href="#TIPS" class="headerlink" title="TIPS:"></a>TIPS:</h1><pre><code>在提交时添加[ci skip]可以，跳过gitlab-ci检测。</code></pre>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;目标&quot;&gt;&lt;a href=&quot;#目标&quot; class=&quot;headerlink&quot; title=&quot;目标&quot;&gt;&lt;/a&gt;目标&lt;/h1&gt;&lt;p&gt;提交代码后，根据以有的配置，自动触发，进行代码测试程序或者程序的部署。&lt;/p&gt;
+&lt;h1 id=&quot;需求：&quot;&gt;&lt;a href=&quot;#需求：&quot; cl
+      
+    
+    </summary>
+    
+    
+      <category term="gitlab" scheme="https://o3o3o.github.io/tags/gitlab/"/>
+    
+      <category term="ci" scheme="https://o3o3o.github.io/tags/ci/"/>
+    
+      <category term="git" scheme="https://o3o3o.github.io/tags/git/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>我的工具箱</title>
+    <link href="https://o3o3o.github.io/2016/02/22/toollist/"/>
+    <id>https://o3o3o.github.io/2016/02/22/toollist/</id>
+    <published>2016-02-22T13:03:54.000Z</published>
+    <updated>2019-01-10T11:19:29.490Z</updated>
+    
+    <content type="html"><![CDATA[<p>自认为是个工具控, 还记得小的时候，看动画片<a href="http://v.youku.com/v_show/id_XNTg3MTI1MTI4.html" target="_blank" rel="noopener">水果城</a>中的香蕉总是能在非常时刻从他的背包中找到需要的工具，从此心灵深处埋了颗种子, 上大学时总喜欢把自己所需要的东西背在书包里面，现在工作了， 今天终于可以把这2年使用的应用做个汇总啦.</p><h2 id="系统"><a href="#系统" class="headerlink" title="系统"></a>系统</h2><p>开发服务器使用centos, 个人最开始是2010年使用ubuntu, 之后由于ubuntu系统升级后桌面环境由gnome变为了unity，之后我的电脑变慢了，于是搜索了大牛linus torvalds使用的是轻量级的xfce桌面环境，于是我也进来了。去年发现linux mint 发行系列内置就是xfce，使用感觉很棒。最终推荐linux用户使用 </p><ul><li><a href="http://www.linuxmint.com/" target="_blank" rel="noopener">Linux Mint</a></li></ul><h2 id="编辑器"><a href="#编辑器" class="headerlink" title="编辑器"></a>编辑器</h2><ul><li>vim,emacs<br>编辑神器自不用说，不过自己主力用vim. emacs之前由于org的功能，使用过一段时间，由于中文操作与美感不太满意，<br>就没有坚持使用的意义，而且由于自从2年前vim与<a href="http://github.com/o3o3o/dots" target="_blank" rel="noopener">插件</a>做为我的唯一IDE开发环境后，<br>已习惯的jkl.<ul><li><a href="http://blog.csdn.net/wooin/article/details/1858917" target="_blank" rel="noopener">vim IDE 配置</a>，记得2年前我也是通过这个入门的。<h3 id="vim-推荐插件"><a href="#vim-推荐插件" class="headerlink" title="vim 推荐插件:"></a>vim 推荐插件:</h3><ul><li>bundle来管理插件</li><li>cscope tag跳转插件</li></ul></li></ul></li></ul><h2 id="笔记类"><a href="#笔记类" class="headerlink" title="笔记类"></a>笔记类</h2><ul><li><a href="http://www.yinxiang.com/" target="_blank" rel="noopener">evernote</a><ul><li>微信,浏览器插件保存</li><li>chrome浏览器中搜索，可以搜索笔记内容</li><li>类似的插件很多如: <ul><li>[clearly] 去广告阅读时使用</li><li>[evernote web clipper] 保存网页到evernote</li></ul></li></ul></li><li><p><a href="http://www.wiz.cn/" target="_blank" rel="noopener">wiznote</a>是国内做的也很不错的一个我们团队文件共享使用这个。</p></li><li><p><a href="http://www.giuspen.com/cherrytree/" target="_blank" rel="noopener">cherrytree</a><br>最开始了解渠道来自<a href="http://www.cnblogs.com/bamanzi/archive/2012/06/24/note-taking-tool-cherrytree.html" target="_blank" rel="noopener">巴蛮子</a><br>喜欢的特点:</p><ul><li>树状笔记列表 </li><li><code>F8</code>生成当天结点记笔记</li><li>可内嵌图片与代码<br>同时与<a href="#云盘">坚果云</a>结合使用来弥补cherrytree不能网络同步备份文件的不足</li></ul></li></ul><h2 id="浏览器与插件"><a href="#浏览器与插件" class="headerlink" title="浏览器与插件"></a>浏览器与插件</h2><ul><li>书签管理<br>使用chrome 或者firefox 账号来同步书签，如果你像我一样同时使用chrome与firefox时，可以使用<a href="http://xmarks.com" target="_blank" rel="noopener">xmarks</a>插件来同步书签。</li><li>密码管理<br>firefox与chrome都可以保存一些不太重要的密码，但firefox可能更安全一些:可以设置master密码, 每次查看或者启动时需要输入master 密码.<br>当然也试用过<a href="http://lastpass.com" target="_blank" rel="noopener">lastpass</a>但感觉使用体验并不怎么舒服，就停了下来，到是很期待<a href="http://www.ruanyifeng.com/blog/2015/08/password-fatigue.html" target="_blank" rel="noopener">无密码的时代</a>.</li><li>阅读同步类<ul><li>pocket</li><li>evernote</li><li>send2kindle</li></ul></li></ul><h2 id="阅读类"><a href="#阅读类" class="headerlink" title="阅读类"></a>阅读类</h2><ul><li><a href="http://getpocket.com" target="_blank" rel="noopener">pocket</a><br>  支持手机与浏览器插件，把你来不及看的网页放入pocket里面，回头再看。</li><li><a href="http://calibre-ebook.com/" target="_blank" rel="noopener">calibe</a> 管理电子书的开源软件<br>用于管理kindle资源真心很棒，也能转换电子书格式</li><li>RSS 阅读器<br>目前使用<a href="http://feedly.com/" target="_blank" rel="noopener">feedly</a>, 关于订阅内容下次需要单独抽出来记录一下。</li></ul><h2 id="搜索引擎"><a href="#搜索引擎" class="headerlink" title="搜索引擎"></a>搜索引擎</h2><ul><li>google</li><li><a href="http://www.shodan.io/" target="_blank" rel="noopener">shodan</a><br>国内也有个类似的<a href="http://www.zoomeye.org/" target="_blank" rel="noopener">zoomeye</a></li><li>图标搜索<ul><li><a href="http://www.iconpng.com/" target="_blank" rel="noopener">iconpng</a></li><li><a href="http://findicons.com/" target="_blank" rel="noopener">findicons</a></li><li><a href="http://www.iconfinder.com/" target="_blank" rel="noopener">iconfinder</a></li></ul></li></ul><p>扫描端口使用，上次<a href="http://antirez.com/news/96" target="_blank" rel="noopener">redis安全漏洞</a>, 使用这个扫描redis端口，进了好些服务器:)</p><h2 id="云盘"><a href="#云盘" class="headerlink" title="云盘"></a>云盘</h2><ul><li><a href="http://jianguoyun.com" target="_blank" rel="noopener">坚果云</a><br>之前使用的是dropbox，自从被墙后，找了好多linux平台的同步工具都不理想，直到遇到她(坚果云)<br>支持文件版本回滚, 而且同步速度真的很快，和dropbox使用体验几乎没有差别。</li><li>百度云<br>主要用于离线下载电影或者大型文件，用于加速:)</li></ul><h2 id="输入法"><a href="#输入法" class="headerlink" title="输入法"></a>输入法</h2><ul><li><a href="http://rime.im/" target="_blank" rel="noopener">rime</a><br>感觉五笔输入法这是感觉最舒服的一款。</li></ul><h2 id="GFW"><a href="#GFW" class="headerlink" title="GFW"></a>GFW</h2><p>之前使用了红杏的插件，goagent等现在都不行了，目前使用公司的亚马逊云+chrome插件SwitchyOmega+ 本地ssh代理来科学上网.<br>SwitchyOmega中配置映射端口与国内的<a href="http://www.ikay.me/list/gfwlist.txt" target="_blank" rel="noopener">GFWlist列表</a>, 然后就可以了。如果在windows下面, 也可以使用putty.exe 监听本地端口做代理. windows下请参考(<a href="http://www.extremetech.com/computing/93106-escaping-the-firewall-with-an-ssh-tunnel-socks-proxy-and-putty" target="_blank" rel="noopener">http://www.extremetech.com/computing/93106-escaping-the-firewall-with-an-ssh-tunnel-socks-proxy-and-putty</a>)</p><ul><li><p>开启本地代理</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh -ND  7070  root@vpn_ip  <span class="comment"># -N do not execute remote command</span></span><br></pre></td></tr></table></figure></li><li><p>其它软件使用代理</p><figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tsocks <span class="keyword">app</span> <span class="keyword">args</span></span><br></pre></td></tr></table></figure></li></ul><p><a href="http://github.com/zyxar/tsocks" target="_blank" rel="noopener">github tsocks</a> or <a href="http://tsocks.sourceforge.net/" target="_blank" rel="noopener">tsocks.sourceforge</a></p><h2 id="画图"><a href="#画图" class="headerlink" title="画图"></a>画图</h2><ul><li><a href="http://www.xmind.net/" target="_blank" rel="noopener">xmind</a><br>  上大学时，看了<a href="http://book.douban.com/subject/3691437/" target="_blank" rel="noopener">思维导图</a>这本书，之前好奇使用过一段时间，不过这种思维导图的思路已经在头脑中形成了，不再局限于形式，目前更喜欢用彩笔在纸上画。</li><li>js 序列图或流程图<br>目前好多markdown编辑器中已经支持这画图(为知笔记已经支持)，对于写程序设计类文档来太方便了，感谢开源。<ul><li><a href="http://www.websequencediagrams.com/" target="_blank" rel="noopener">websequencediagrams</a></li><li><a href="http://stackedit.io/editor" target="_blank" rel="noopener">stackedit</a></li><li><a href="http://zybuluo.com" target="_blank" rel="noopener">作业部落</a></li></ul></li></ul><h2 id="linux命令工具"><a href="#linux命令工具" class="headerlink" title="linux命令工具"></a>linux命令工具</h2><ul><li><p>tmux<br>终端分屏，使用说明<a href="https://danielmiessler.com/study/tmux/" target="_blank" rel="noopener">建议看</a><br>对于命令建议使用<a href="https://github.com/robbyrussell/oh-my-zsh" target="_blank" rel="noopener">oh-my-zsh</a>中的tmux插件，可以简化命令:</p><figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">michael@Sict ~ $ alias|grep tmux</span><br><span class="line">ta='tmux attach -t'</span><br><span class="line">tkss='tmux kill-session -t'</span><br><span class="line">tksv='tmux kill-server'</span><br><span class="line">tl='tmux list-sessions'</span><br><span class="line">tmux=_zsh_tmux_plugin_run</span><br><span class="line">ts='tmux new-session -s'</span><br></pre></td></tr></table></figure></li><li><p>git<br><a href="http://www.ruanyifeng.com/blog/2015/12/git-workflow.html" target="_blank" rel="noopener">请移步到阮一峰博客</a></p></li></ul><h3 id="linux不常命令"><a href="#linux不常命令" class="headerlink" title="linux不常命令"></a><a href="https://github.com/o3o3o/cmd" target="_blank" rel="noopener">linux不常命令</a></h3><p>不常用, 使用时又容易忘记的命令</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;自认为是个工具控, 还记得小的时候，看动画片&lt;a href=&quot;http://v.youku.com/v_show/id_XNTg3MTI1MTI4.html&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;水果城&lt;/a&gt;中的香蕉总是能在非常时刻从他的背包中找
+      
+    
+    </summary>
+    
+      <category term="工具" scheme="https://o3o3o.github.io/categories/%E5%B7%A5%E5%85%B7/"/>
+    
+    
+      <category term="tool" scheme="https://o3o3o.github.io/tags/tool/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>“忙碌”?</title>
+    <link href="https://o3o3o.github.io/2014/06/23/busy/"/>
+    <id>https://o3o3o.github.io/2014/06/23/busy/</id>
+    <published>2014-06-23T12:30:25.000Z</published>
+    <updated>2019-01-10T11:19:29.486Z</updated>
+    
+    <content type="html"><![CDATA[<div class="para" style="text-align: center;"><br><img src="/images/2014/06/IMG_20140618_165132-300x225.jpg" alt=""><br></div><p>话说，昨天，也就是周末，看了下couresa 中的machine learing公开课，对于线性规划，superviser learning式，好棒的说！！！</p><p>现在的我，….</p><p>海阔凭鱼越…</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;div class=&quot;para&quot; style=&quot;text-align: center;&quot;&gt;&lt;br&gt;&lt;img src=&quot;/images/2014/06/IMG_20140618_165132-300x225.jpg&quot; alt=&quot;&quot;&gt;&lt;br&gt;&lt;/div&gt;
+
+&lt;p&gt;话说，昨天，也就是
+      
+    
+    </summary>
+    
+      <category term="杂感" scheme="https://o3o3o.github.io/categories/%E6%9D%82%E6%84%9F/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>雨后</title>
+    <link href="https://o3o3o.github.io/2014/06/12/rained/"/>
+    <id>https://o3o3o.github.io/2014/06/12/rained/</id>
+    <published>2014-06-12T12:44:29.000Z</published>
+    <updated>2019-01-10T11:19:29.488Z</updated>
+    
+    <content type="html"><![CDATA[<div class="para" style="text-align: center;"><br><img src="/images/2014/06/IMG_20140612_185900-300x225.jpg" alt="IMG_20140612_185900"><br><img src="/images/2014/06/IMG_20140612_184057-300x225.jpg" alt="IMG_20140612_184057"><br><img src="/images/2014/06/IMG_20140612_184115-300x225.jpg" alt="IMG_20140612_184115"><br><img src="/images/2014/06/IMG_20140612_183757-300x225.jpg" alt="IMG_20140612_183757"><br></div>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;div class=&quot;para&quot; style=&quot;text-align: center;&quot;&gt;&lt;br&gt;&lt;img src=&quot;/images/2014/06/IMG_20140612_185900-300x225.jpg&quot; alt=&quot;IMG_20140612_185900&quot;&gt;&lt;br&gt;&lt;
+      
+    
+    </summary>
+    
+      <category term="滋味生活" scheme="https://o3o3o.github.io/categories/%E6%BB%8B%E5%91%B3%E7%94%9F%E6%B4%BB/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>眼下的生活</title>
+    <link href="https://o3o3o.github.io/2014/06/10/190/"/>
+    <id>https://o3o3o.github.io/2014/06/10/190/</id>
+    <published>2014-06-10T13:24:37.000Z</published>
+    <updated>2019-01-10T11:19:29.486Z</updated>
+    
+    <content type="html"><![CDATA[<p>虽然现在在外面住了，每天上班的生活，感觉依然有些累。尤其这几天。</p><p>两个项目穿插进行（或许不是因为这个原因吧）。得想想什么办法！！</p><p>每天的日报、每周的周报，正如自己的初衷：本应是在团队共享的，不应该仅仅是报告给主管、领导的。每天，的生活交流也是工作的一部分。===》应该有这样的生活吧，以后我的生活方式，应该会是这样吧。</p><p>昨天，网上买来的毛笔+縇纸到了，门口买了瓶墨汁，写了下，感觉不错。</p><p><img src="/images/2014/06/IMG_20140610_212754-e1402407408925-225x300.jpg" alt=""></p><p>如今的我，现在的生活，是周围强加于我的。或许，，</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;虽然现在在外面住了，每天上班的生活，感觉依然有些累。尤其这几天。&lt;/p&gt;
+&lt;p&gt;两个项目穿插进行（或许不是因为这个原因吧）。得想想什么办法！！&lt;/p&gt;
+&lt;p&gt;每天的日报、每周的周报，正如自己的初衷：本应是在团队共享的，不应该仅仅是报告给主管、领导的。每天，的生活交流也是工作
+      
+    
+    </summary>
+    
+      <category term="滋味生活" scheme="https://o3o3o.github.io/categories/%E6%BB%8B%E5%91%B3%E7%94%9F%E6%B4%BB/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>诗+电影+占星</title>
+    <link href="https://o3o3o.github.io/2014/04/27/poem-moive-astrologer/"/>
+    <id>https://o3o3o.github.io/2014/04/27/poem-moive-astrologer/</id>
+    <published>2014-04-27T13:00:04.000Z</published>
+    <updated>2019-01-10T11:19:29.488Z</updated>
+    
+    <content type="html"><![CDATA[<div class="para" style="text-align: center;"><br><br><span style="color: #333399;"><strong>《对白云的赞美》</strong></span><br><br><span style="color: #333399;"> 乌青</span><br><br></div><br><div class="para" style="text-align: center;"><br><br><span style="color: #333399;">天上的白云真白啊</span><br><br></div><br><div class="para" style="text-align: center;"><br><br><span style="color: #333399;">真的，很白很白</span><br><br></div><br><div class="para" style="text-align: center;"><br><br><span style="color: #333399;">非常白</span><br><br></div><br><div class="para" style="text-align: center;"><br><br><span style="color: #333399;">非常非常十分白</span><br><br></div><br><div class="para" style="text-align: center;"><br><br><span style="color: #333399;">极其白</span><br><br></div><br><div class="para" style="text-align: center;"><br><br><span style="color: #333399;">贼白</span><br><br><span style="color: #333399;">简直白死了</span><br><br><span style="color: #333399;">啊—-</span><br><br><img src="/images/2014/04/IMG_20140427_135736-e1398598498447-225x300.jpg" alt="IMG_20140427_135736"><br></div><div class="para" style="text-align: left;"><br>好吧，那我也来一首:<br></div><div class="para" style="text-align: center;"><br><strong> 小时候</strong><br><br><span style="color: #333399;">的我</span><br><span style="color: #333399;"> 的追寻?</span><br><br><strong>诗</strong><br><br><span style="color: #333399;">语言敏感度</span><br><span style="color: #333399;"> <span style="color: #333399;">的</span>规矩</span>?<br><span style="color: #333399;"> 无规矩时,</span><br><span style="color: #333399;"> 的发挥.</span><br><br><span style="color: #333399;"> </span><br></div><div class="para" style="text-align: center;"><br><br><strong>电影</strong><br>商业 V 艺术<br>镜头<br>没有语言<br><br><strong>算命</strong><br><br>占星，算卦<br>推测事件，对自己周遭环境的一种解释<br>自悟?<br></div><p><a href="http://www.douban.com/group/128828/" target="_blank" rel="noopener">http://www.douban.com/group/128828/</a><br>时间 地点 年月日<br>罗盘，十二宫<br>占星-&gt;人士管理</p><p>P.S: 反想下，我现在的工作生活方式，还真是快餐文化？遇到问题，首先，想想自己没有有经历过，然后就去baidu/googlge</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;div class=&quot;para&quot; style=&quot;text-align: center;&quot;&gt;&lt;br&gt;&lt;br&gt;&lt;span style=&quot;color: #333399;&quot;&gt;&lt;strong&gt;《对白云的赞美》&lt;/strong&gt;&lt;/span&gt;&lt;br&gt;&lt;br&gt;&lt;span style=&quot;col
+      
+    
+    </summary>
+    
+    
+      <category term="活动" scheme="https://o3o3o.github.io/tags/%E6%B4%BB%E5%8A%A8/"/>
+    
+      <category term="星座" scheme="https://o3o3o.github.io/tags/%E6%98%9F%E5%BA%A7/"/>
+    
+      <category term="诗" scheme="https://o3o3o.github.io/tags/%E8%AF%97/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>新的生活环境-&gt;往事回忆</title>
+    <link href="https://o3o3o.github.io/2014/04/19/156/"/>
+    <id>https://o3o3o.github.io/2014/04/19/156/</id>
+    <published>2014-04-19T14:41:29.000Z</published>
+    <updated>2019-01-10T11:19:29.486Z</updated>
+    
+    <content type="html"><![CDATA[<p>今天，晚上出去练了会儿双截棍。似乎，是在意别人的眼光。（难道对于陌生的环境，陌生的人，我的感觉都是这样吗？）</p><p>回想起以前，和师傅他们在一起的感觉，放着这个音乐：[云水禅心]<a href="http://pan.baidu.com/s/1b7GHS" target="_blank" rel="noopener">http://pan.baidu.com/s/1b7GHS</a></p><p><img src="/images/2014/04/SAM_0577.jpg" alt=""><br><img src="/images/2014/04/SAM_0575.jpg" alt=""><br><img src="/images/2014/04/SAM_0572.jpg" alt=""><br><img src="/images/2014/04/SAM_1359.jpg" alt=""><br><img src="/images/2014/04/SAM_1191.jpg" alt=""><br><img src="/images/2014/04/SAM_1188.jpg" alt=""><br><img src="/images/2014/04/SAM_1183.jpg" alt=""><br><img src="/images/2014/04/SAM_1175.jpg" alt=""><br><img src="/images/2014/04/SAM_1172.jpg" alt=""><br><img src="/images/2014/04/SAM_1155.jpg" alt=""><br><img src="/images/2014/04/SAM_1145.jpg" alt=""><br><img src="/images/2014/04/IMG_20130525_193341.jpg" alt=""><br><img src="/images/2014/04/IMG_20130525_185323.jpg" alt=""><br><img src="/images/2014/04/IMG_20130525_181613-e1397918640362-1024x768.jpg" alt=""></p><p>p.s:美女，帅哥们！</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;今天，晚上出去练了会儿双截棍。似乎，是在意别人的眼光。（难道对于陌生的环境，陌生的人，我的感觉都是这样吗？）&lt;/p&gt;
+&lt;p&gt;回想起以前，和师傅他们在一起的感觉，放着这个音乐：[云水禅心]&lt;a href=&quot;http://pan.baidu.com/s/1b7GHS&quot; targ
+      
+    
+    </summary>
+    
+      <category term="杂感" scheme="https://o3o3o.github.io/categories/%E6%9D%82%E6%84%9F/"/>
+    
+    
+      <category term="太极拳" scheme="https://o3o3o.github.io/tags/%E5%A4%AA%E6%9E%81%E6%8B%B3/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>外面租房的生活</title>
+    <link href="https://o3o3o.github.io/2014/04/13/life-rent/"/>
+    <id>https://o3o3o.github.io/2014/04/13/life-rent/</id>
+    <published>2014-04-13T00:42:43.000Z</published>
+    <updated>2019-01-10T11:19:29.487Z</updated>
+    
+    <content type="html"><![CDATA[<p>早上起来，是个周末，空气并不好，但仍然出去，去浑河那边晨练。</p><p><img src="/images/2014/03/IMG_20140413_072940.jpg" alt=""></p><p>终于开始了，我心盼以久的生活；经过了无数次的决心，勇气的较量。</p><p>就在租房，签完合同后，都想着，”算了吧，要不在宿舍住，这儿环境多好“，，</p><p>希望，以后的我多试着去改变，最起码要尝试下。:) 就像现在这样</p><p>P.S:<br>    晚上，看看书，写写blog…</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;早上起来，是个周末，空气并不好，但仍然出去，去浑河那边晨练。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/2014/03/IMG_20140413_072940.jpg&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;终于开始了，我心盼以久的生活；经过了无数次的决心，勇气的较量。&lt;/
+      
+    
+    </summary>
+    
+      <category term="滋味生活" scheme="https://o3o3o.github.io/categories/%E6%BB%8B%E5%91%B3%E7%94%9F%E6%B4%BB/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>小知 与 大知（智）</title>
+    <link href="https://o3o3o.github.io/2014/04/13/wisdom/"/>
+    <id>https://o3o3o.github.io/2014/04/13/wisdom/</id>
+    <published>2014-04-13T00:35:07.000Z</published>
+    <updated>2019-01-10T11:19:29.491Z</updated>
+    
+    <content type="html"><![CDATA[<p><img src="/images/2014/03/IMG_20140325_205219-624x467.jpg" alt="IMG_20140325_205219"></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;&lt;img src=&quot;/images/2014/03/IMG_20140325_205219-624x467.jpg&quot; alt=&quot;IMG_20140325_205219&quot;&gt;&lt;/p&gt;
+
+      
+    
+    </summary>
+    
+      <category term="滋味生活" scheme="https://o3o3o.github.io/categories/%E6%BB%8B%E5%91%B3%E7%94%9F%E6%B4%BB/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Jing.fm and lino er’si cafe的灵魂人物</title>
+    <link href="https://o3o3o.github.io/2014/03/16/linoer/"/>
+    <id>https://o3o3o.github.io/2014/03/16/linoer/</id>
+    <published>2014-03-16T09:35:10.000Z</published>
+    <updated>2019-01-10T11:19:29.488Z</updated>
+    
+    <content type="html"><![CDATA[<p>Jing.fm -&gt; lino er’si cafe的灵魂人?</p><p>他们都是有了经历，才有了这种感觉的。<br>对于音乐，对于生活的品味。脑海中,内心中所追求的.. 在现实中的映射。</p><p>对于jing.fm带给我的舒适，了解，咖啡让的老板，真心的去和别人交流，去精心的去感受用户，感受自己在用的时候的感觉；这是真的用心去做一件事哦</p><p>^.O</p><p>再附张，前两天自己的小练习。</p><p><img src="/images/2014/03/IMG_20140312_202421-624x467.jpg" alt="my first-hand"></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;Jing.fm -&amp;gt; lino er’si cafe的灵魂人?&lt;/p&gt;
+&lt;p&gt;他们都是有了经历，才有了这种感觉的。&lt;br&gt;对于音乐，对于生活的品味。脑海中,内心中所追求的.. 在现实中的映射。&lt;/p&gt;
+&lt;p&gt;对于jing.fm带给我的舒适，了解，咖啡让的老板，真心的去
+      
+    
+    </summary>
+    
+      <category term="杂感" scheme="https://o3o3o.github.io/categories/%E6%9D%82%E6%84%9F/"/>
+    
+    
+      <category term="cafe" scheme="https://o3o3o.github.io/tags/cafe/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>咖啡是什么？</title>
+    <link href="https://o3o3o.github.io/2014/03/09/what-is-cafe/"/>
+    <id>https://o3o3o.github.io/2014/03/09/what-is-cafe/</id>
+    <published>2014-03-09T11:13:10.000Z</published>
+    <updated>2019-01-10T11:19:29.491Z</updated>
+    
+    <content type="html"><![CDATA[<p>今天，去参加了一个lino er’si cafe的活动后,</p><p><img src="/images/2014/03/att.jpeg" alt=""><br><img src="/images/2014/03/att_cafe.jpeg" alt=""></p><p>那位灵魂人物， michael ,王乐（驴友），摄影女孩 ，砖哥….聚在一起…</p><p>理想的cafe： 像猫，狗家里的宠物 ，来店里，闻闻熟悉的味道 …</p><p>还有michael那，搞笑的笑声, 哈哈 T.^</p><p>哦，似乎懂了…..</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;今天，去参加了一个lino er’si cafe的活动后,&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/2014/03/att.jpeg&quot; alt=&quot;&quot;&gt;&lt;br&gt;&lt;img src=&quot;/images/2014/03/att_cafe.jpeg&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+
+      
+    
+    </summary>
+    
+      <category term="滋味生活" scheme="https://o3o3o.github.io/categories/%E6%BB%8B%E5%91%B3%E7%94%9F%E6%B4%BB/"/>
+    
+    
+      <category term="cafe" scheme="https://o3o3o.github.io/tags/cafe/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>又一个第一次 ;)</title>
+    <link href="https://o3o3o.github.io/2014/03/04/paint/"/>
+    <id>https://o3o3o.github.io/2014/03/04/paint/</id>
+    <published>2014-03-04T03:17:17.000Z</published>
+    <updated>2019-01-10T11:19:29.488Z</updated>
+    
+    <content type="html"><![CDATA[<p>豆瓣的活动，一位和我一样刚毕业的学美术的女生（大文）；</p><p>自己的还未完成 的作品；《crane on the banks of the seine》<br>;)<br><img src="/images/2014/03/IMG_20140301_173422-1024x768.jpg" alt=""><br><img src="/images/2014/03/IMG_20140301_163232-1024x768.jpg" alt=""><br><img src="/images/2014/03/IMG_20140301_163217-e1393902971238-768x1024.jpg" alt=""></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;豆瓣的活动，一位和我一样刚毕业的学美术的女生（大文）；&lt;/p&gt;
+&lt;p&gt;自己的还未完成 的作品；《crane on the banks of the seine》&lt;br&gt;;)&lt;br&gt;&lt;img src=&quot;/images/2014/03/IMG_20140301_173422-1
+      
+    
+    </summary>
+    
+      <category term="滋味生活" scheme="https://o3o3o.github.io/categories/%E6%BB%8B%E5%91%B3%E7%94%9F%E6%B4%BB/"/>
+    
+    
+      <category term="油画" scheme="https://o3o3o.github.io/tags/%E6%B2%B9%E7%94%BB/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>周末散心</title>
+    <link href="https://o3o3o.github.io/2014/02/16/walk-in-weekend/"/>
+    <id>https://o3o3o.github.io/2014/02/16/walk-in-weekend/</id>
+    <published>2014-02-16T14:36:37.000Z</published>
+    <updated>2019-01-10T11:19:29.490Z</updated>
+    
+    <content type="html"><![CDATA[<p><img src="/images/2014/02/IMG_20140216_162948-1024x768.jpg" alt=""><br><img src="/images/2014/02/IMG_20140216_105134-1024x768.jpg" alt=""></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;&lt;img src=&quot;/images/2014/02/IMG_20140216_162948-1024x768.jpg&quot; alt=&quot;&quot;&gt;&lt;br&gt;&lt;img src=&quot;/images/2014/02/IMG_20140216_105134-1024x768.jpg&quot; alt=&quot;&quot;
+      
+    
+    </summary>
+    
+      <category term="滋味生活" scheme="https://o3o3o.github.io/categories/%E6%BB%8B%E5%91%B3%E7%94%9F%E6%B4%BB/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>痛与无奈 </title>
+    <link href="https://o3o3o.github.io/2014/02/11/98/"/>
+    <id>https://o3o3o.github.io/2014/02/11/98/</id>
+    <published>2014-02-11T13:08:50.000Z</published>
+    <updated>2019-01-10T11:19:29.486Z</updated>
+    
+    <content type="html"><![CDATA[<p><img src="/images/2014/02/1391785675037-300x225.jpg" alt="某天"></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;&lt;img src=&quot;/images/2014/02/1391785675037-300x225.jpg&quot; alt=&quot;某天&quot;&gt;&lt;/p&gt;
+
+      
+    
+    </summary>
+    
+      <category term="Uncategorized" scheme="https://o3o3o.github.io/categories/Uncategorized/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>忆</title>
+    <link href="https://o3o3o.github.io/2014/01/20/recall/"/>
+    <id>https://o3o3o.github.io/2014/01/20/recall/</id>
+    <published>2014-01-20T15:00:04.000Z</published>
+    <updated>2019-01-10T11:19:29.489Z</updated>
+    
+    <content type="html"><![CDATA[<p>过年了。今天，GF打电话过来，说她姐姐，姐夫的生活…,小城市是不错呀。我也希望能在一个小城市中呆着。</p><h3 id="想像下未来我的生活"><a href="#想像下未来我的生活" class="headerlink" title="想像下未来我的生活"></a>想像下未来我的生活</h3><p>有一个家庭，平淡…，住在一个小村庄。没有污染，每天练练太极，也不是完全像和尚那样坐坐禅，只有能慢慢的心静下来，慢慢的了解自己，了解这个大自然，了解生命。当然这是终极生活。<br>为了生存，我还得有个工作：网络是无线，供电也是无线，做一些自己喜欢的开源 项目，每隔点时间，和团队的人交流下，每天工作的时间并不多，工作效率也很高，其它的时间，是来静下来，陪陪家人，或是看看天空，练练拳…悠然自在。<br>话说到这儿，就像起了在脑海中徘徊了好长时间…的….,现在的家人。想想，自己活到现在，也就是今年开始经济上开始了独立，才能不靠家人养活。刚刚和才哥通电话，虽然，好长时间没有和他通话（平时也不怎么说话），那种感觉，还是家的感觉…</p><p>爸，妈，爷爷，奶奶，…小妹子…，他们的生活，对于现在的我来说，好像感觉不到，因为我好长时间没有和他们在一起了。从小学开始上学，高三之前， 似乎每个周末都会在奶奶家呆下，看看尕爸、爷爷、奶奶，在干吗，到了高三，每天早出晚归，老妈每天准备好早餐与晚餐，自己也是shasha地，每天看着课 本，做着作业，做着习题，很多时候心有愧疚的过着日子。….高考第一年，shasha地考了个，别人认为还不错的成绩，自己却什么也不知道，也不知道 干啥，想了想去好学校补习下,不信自己不能上个好学校。</p><p>在东方红中学补习了一年，变化不算大，还是腼腆，每天尽力的去专心去，埋着头看课本，做习题，照样是早出晚归…经过了一年，算是半运气的有个还可以的成绩，糊li糊涂的，就报了个延边大学（还是个211，好像还可以）</p><p>就这样,大学生活，随着周围亲戚的，欢送中要开始了。依旧，还是心目中强大的老哥，带着我这个没出过门的“书呆子”，去了边远的延吉。定西到北京，北京没票，坐了个黑大巴，到吉林，又坐火车，终于折腾到了学校，哇塞，红色的跑道，绿色的草坪，好棒呀！！！</p><p>那天 ，想和老哥一起进我们学校看看,他表面上说不想去，大热天的，有啥看头。哥哥，心里可能有些许，别扭吧,但还不错的是，之后，他去了姐姐家，青岛玩去啦，或许也就好了许多吧。</p><h3 id="2009-9-1-gt-大学生活开始了"><a href="#2009-9-1-gt-大学生活开始了" class="headerlink" title="2009.9.1 -&gt;大学生活开始了"></a>2009.9.1 -&gt;大学生活开始了</h3><p>好多都记录在纸上啦，可以的话，再翻翻那些笔记吧。<br>现在来想想，大学4年的时间，所接触的人，所看的书，所处的环境…等等，一切的一切，对我有了很大的影响。虽然自己感觉还行，变化也还蛮算大的。</p><h3 id="2013-8-10-gt-大学毕业"><a href="#2013-8-10-gt-大学毕业" class="headerlink" title="2013.8.10-&gt;大学毕业"></a>2013.8.10-&gt;大学毕业</h3><p>在学校，学了点linux，vim，对未来，还是不清楚。</p><p>现在已经工作了5个多月了,想想：刚开始，3月份在这儿实习，对于电话通信的好奇，等到初入门径，5月份回学校答bian,有过了两个月悠然自得的生活（练太极，的朋友们一起生活）,8月 份入职上班，还有些不适应。对于asterisk没有之前的感觉啦，也感觉没有啥意思，在想，贾正峰工作为了啥？挣钱？生活？ 问了他之后，他说，“我不做，那就没人做了”慢慢地，慢慢地, 我也有人任务，也慢慢地忙了起来，想“生活的意义”的时间也就少了，那种感觉也就少了。每交的任务，慢慢地增加了难度，每次做任务时，都在怀疑自己能不能 完成。一个个，下来，最终也还是完成了。redis-api, xml, call limit .每次任务，都 是一次挑战，似乎不不错，也有点意思。</p><p>偶尔，觉得工作氛围，太死板了。。。。想想结果型驱动，没必要每天都坐在办公室中，应该去外面出去，看看太阳，呼吸下空气。想想远程工作，再坚持段时间，我也会有这样的生活….</p><p>看到别人的blog，看到外面的世界，似乎要更有意思….在想现在的我，现在的我？和之前的我有了什么区别？ 除了工作经验多了点…?<br>偶尔，能停下来，想想。但大多时间，似乎还是在盲目的忙着，我不希望我的生活是这样的，我想改变…, 改变有好几种方式:换工作环境，改变现在的工作环境。</p><p>C LISP，现在的自己，以现有的能力，能做的事，能做的东西，还是很少。不是信手拈来啊。由于忙碌的工作，脑子中的想法,也不再厚实。周围的人，也慢慢的 开始了解了啦，我的生活习惯，也慢慢的能自如啦。感觉别人对我还是比较认同的。但因为这个认同，把真实的自己，自己想要的东西“挡住”，那就得不尝失 了！！！<br>宁愿别人用异样的眼光，宁愿别人不能理解我，仍然能朝着自己的想法去努力！！！<br>加油，为自己加油！！！，新的一年，希望自己能有更大的变化。</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;过年了。今天，GF打电话过来，说她姐姐，姐夫的生活…,小城市是不错呀。我也希望能在一个小城市中呆着。&lt;/p&gt;
+&lt;h3 id=&quot;想像下未来我的生活&quot;&gt;&lt;a href=&quot;#想像下未来我的生活&quot; class=&quot;headerlink&quot; title=&quot;想像下未来我的生活&quot;&gt;&lt;/a&gt;想
+      
+    
+    </summary>
+    
+      <category term="杂感" scheme="https://o3o3o.github.io/categories/%E6%9D%82%E6%84%9F/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>杂记 </title>
+    <link href="https://o3o3o.github.io/2014/01/18/79/"/>
+    <id>https://o3o3o.github.io/2014/01/18/79/</id>
+    <published>2014-01-18T15:01:00.000Z</published>
+    <updated>2019-01-10T11:19:29.486Z</updated>
+    
+    <content type="html"><![CDATA[<pre><code>1.18，又是个周六，又是个加班的日子。最近在查找，项目中的bug，分析sip消息。有些被动，，，好久没有停下了想想啦......在看了，《你是一名努力工作的程序员，还是懒惰的程序员？》后，终于，又一次唤醒了那个心中的想法。那种生活是我想要的，</code></pre><p>自己也知道，对我来说这只是时间问题。现在，希望自己不要被现在的生活弄麻木了，尽可能的把真实的自己…<br>    还有，宿舍好不容易的安静。渴望自己大多时候能独自生活在一个安静的家里，过着随性的生活，偶尔和朋友在一起能知道些他们<br>的想法、生活。</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;pre&gt;&lt;code&gt;1.18，又是个周六，又是个加班的日子。最近在查找，项目中的bug，分析sip消息。有些被动，，，好久没有停下了想想啦......
+在看了，《你是一名努力工作的程序员，还是懒惰的程序员？》后，终于，又一次唤醒了那个心中的想法。那种生活是我想要的，
+&lt;/cod
+      
+    
+    </summary>
+    
+      <category term="杂感" scheme="https://o3o3o.github.io/categories/%E6%9D%82%E6%84%9F/"/>
+    
+    
+      <category term="小记" scheme="https://o3o3o.github.io/tags/%E5%B0%8F%E8%AE%B0/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>^o^</title>
+    <link href="https://o3o3o.github.io/2014/01/05/smell/"/>
+    <id>https://o3o3o.github.io/2014/01/05/smell/</id>
+    <published>2014-01-04T16:35:42.000Z</published>
+    <updated>2019-01-10T11:19:29.489Z</updated>
+    
+    <content type="html"><![CDATA[<p><img src="/images/2014/01/IMG_20131229_223403-e1388853315952-225x300.jpg" alt="IMG_20131229_223403"></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;&lt;img src=&quot;/images/2014/01/IMG_20131229_223403-e1388853315952-225x300.jpg&quot; alt=&quot;IMG_20131229_223403&quot;&gt;&lt;/p&gt;
+
+      
+    
+    </summary>
+    
+      <category term="Uncategorized" scheme="https://o3o3o.github.io/categories/Uncategorized/"/>
+    
+    
+  </entry>
+  
+</feed>
