@@ -37,9 +37,9 @@
       <category term="Tech" scheme="https://o3o3o.me/categories/Tech/"/>
     
     
-      <category term="graphql" scheme="https://o3o3o.me/tags/graphql/"/>
-    
       <category term="django" scheme="https://o3o3o.me/tags/django/"/>
+    
+      <category term="graphql" scheme="https://o3o3o.me/tags/graphql/"/>
     
   </entry>
   
