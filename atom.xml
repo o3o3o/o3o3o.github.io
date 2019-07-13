@@ -5,21 +5,48 @@
   <subtitle>点滴记录</subtitle>
   <link href="/atom.xml" rel="self"/>
   
-  <link href="https://o3o3o.github.io/"/>
-  <updated>2019-01-10T11:19:29.487Z</updated>
-  <id>https://o3o3o.github.io/</id>
+  <link href="https://o3o3o.me/"/>
+  <updated>2019-07-13T07:14:23.241Z</updated>
+  <id>https://o3o3o.me/</id>
   
   <author>
-    <name>michael</name>
+    <name>o3o3o</name>
     
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>Django ratelimit for Graphql</title>
+    <link href="https://o3o3o.me/2019/07/13/django-ratelimit-for-graphql/"/>
+    <id>https://o3o3o.me/2019/07/13/django-ratelimit-for-graphql/</id>
+    <published>2019-07-13T01:27:45.000Z</published>
+    <updated>2019-07-13T07:14:23.241Z</updated>
+    
+    <content type="html"><![CDATA[<p>We cannot use <a href="https://github.com/jsocol/django-ratelimit/" target="_blank" rel="noopener">django-ratelimit</a> directly for graphql resolve method.<br>So I modified <code>rateilmit decorator</code> based on the <a href="https://github.com/jsocol/django-ratelimit/blob/master/ratelimit/decorators.py#L13" target="_blank" rel="noopener">original code</a>, to support the key format like: <code>gql:xxxx</code></p><figure class="highlight py"><figcaption><span>ratelimit_example</span><a href="/downloads/code//ratelimit.py">view raw</a></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> functools <span class="keyword">import</span> wraps</span><br><span class="line"><span class="keyword">from</span> ratelimit.exceptions <span class="keyword">import</span> Ratelimited</span><br><span class="line"><span class="keyword">from</span> ratelimit.utils <span class="keyword">import</span> is_ratelimited</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">GQLRatelimitKey</span><span class="params">(group, request)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> request.gql_rl_field</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">ratelimit</span><span class="params">(group=None, key=None, rate=None, method=ALL, block=False)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">decorator</span><span class="params">(fn)</span>:</span></span><br><span class="line"><span class="meta">        @wraps(fn)</span></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">_wrapped</span><span class="params">(root, info, **kw)</span>:</span></span><br><span class="line">            request = info.context</span><br><span class="line">            request.limited = getattr(request, <span class="string">"limited"</span>, <span class="keyword">False</span>)</span><br><span class="line"></span><br><span class="line">            new_key = key</span><br><span class="line">            <span class="keyword">if</span> key <span class="keyword">and</span> key.startswith(<span class="string">"gql:"</span>):</span><br><span class="line">                _key = key.split(<span class="string">"gql:"</span>)[<span class="number">1</span>]</span><br><span class="line">                value = kw.get(_key, <span class="keyword">None</span>)</span><br><span class="line">                <span class="keyword">if</span> <span class="keyword">not</span> value:</span><br><span class="line">                    <span class="keyword">raise</span> ValueError(<span class="string">f"Cannot get key: <span class="subst">{key}</span>"</span>)</span><br><span class="line">                request.gql_rl_field = value</span><br><span class="line"></span><br><span class="line">                new_key = GQLRatelimitKey</span><br><span class="line"></span><br><span class="line">            ratelimited = is_ratelimited(</span><br><span class="line">                request=request,</span><br><span class="line">                group=group,</span><br><span class="line">                fn=fn,</span><br><span class="line">                key=new_key,</span><br><span class="line">                rate=rate,</span><br><span class="line">                method=method,</span><br><span class="line">                increment=<span class="keyword">True</span>,</span><br><span class="line">            )</span><br><span class="line">            <span class="keyword">if</span> ratelimited <span class="keyword">and</span> block:</span><br><span class="line">                <span class="keyword">raise</span> Ratelimited</span><br><span class="line">            <span class="keyword">return</span> fn(root, info, **kw)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> _wrapped</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> decorator</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Test</span><span class="params">(graphene.Mutation)</span>:</span></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Arguments</span>:</span></span><br><span class="line">        phone = graphene.String(required=<span class="keyword">True</span>)</span><br><span class="line"></span><br><span class="line">    ok = graphene.Boolean()</span><br><span class="line"></span><br><span class="line"><span class="meta">    @ratelimit(key="ip", rate="10/m", block=True)</span></span><br><span class="line"><span class="meta">    @ratelimit(key="gql:phone", rate="5/m", block=True)</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">mutate</span><span class="params">(self, info, phone)</span>:</span></span><br><span class="line">        request = info.context</span><br><span class="line">        <span class="comment"># Do sth</span></span><br><span class="line">        <span class="keyword">return</span> Test(ok=<span class="keyword">True</span>)</span><br></pre></td></tr></table></figure>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;We cannot use &lt;a href=&quot;https://github.com/jsocol/django-ratelimit/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;django-ratelimit&lt;/a&gt; directly for grap
+      
+    
+    </summary>
+    
+      <category term="Tech" scheme="https://o3o3o.me/categories/Tech/"/>
+    
+    
+      <category term="graphql" scheme="https://o3o3o.me/tags/graphql/"/>
+    
+      <category term="django" scheme="https://o3o3o.me/tags/django/"/>
+    
+  </entry>
+  
+  <entry>
     <title>GraphQL 使用笔记</title>
-    <link href="https://o3o3o.github.io/2018/12/29/graphql_notes/"/>
-    <id>https://o3o3o.github.io/2018/12/29/graphql_notes/</id>
+    <link href="https://o3o3o.me/2018/12/29/graphql_notes/"/>
+    <id>https://o3o3o.me/2018/12/29/graphql_notes/</id>
     <published>2018-12-29T05:25:04.000Z</published>
     <updated>2019-01-10T11:19:29.487Z</updated>
     
@@ -35,17 +62,17 @@
     
     </summary>
     
-      <category term="Tech" scheme="https://o3o3o.github.io/categories/Tech/"/>
+      <category term="Tech" scheme="https://o3o3o.me/categories/Tech/"/>
     
     
-      <category term="graphql" scheme="https://o3o3o.github.io/tags/graphql/"/>
+      <category term="graphql" scheme="https://o3o3o.me/tags/graphql/"/>
     
   </entry>
   
   <entry>
     <title>旅行记</title>
-    <link href="https://o3o3o.github.io/2016/03/01/travel/"/>
-    <id>https://o3o3o.github.io/2016/03/01/travel/</id>
+    <link href="https://o3o3o.me/2016/03/01/travel/"/>
+    <id>https://o3o3o.me/2016/03/01/travel/</id>
     <published>2016-03-01T13:38:39.000Z</published>
     <updated>2019-01-10T11:19:29.490Z</updated>
     
@@ -61,15 +88,15 @@
     
     </summary>
     
-      <category term="杂感" scheme="https://o3o3o.github.io/categories/%E6%9D%82%E6%84%9F/"/>
+      <category term="杂感" scheme="https://o3o3o.me/categories/%E6%9D%82%E6%84%9F/"/>
     
     
   </entry>
   
   <entry>
     <title>我的rss订阅源</title>
-    <link href="https://o3o3o.github.io/2016/02/29/rss/"/>
-    <id>https://o3o3o.github.io/2016/02/29/rss/</id>
+    <link href="https://o3o3o.me/2016/02/29/rss/"/>
+    <id>https://o3o3o.me/2016/02/29/rss/</id>
     <published>2016-02-29T13:04:31.000Z</published>
     <updated>2019-01-10T11:19:29.489Z</updated>
     
@@ -86,14 +113,14 @@
     </summary>
     
     
-      <category term="rss" scheme="https://o3o3o.github.io/tags/rss/"/>
+      <category term="rss" scheme="https://o3o3o.me/tags/rss/"/>
     
   </entry>
   
   <entry>
     <title>使用gitlab实现可持续集成</title>
-    <link href="https://o3o3o.github.io/2016/02/24/gitlabci/"/>
-    <id>https://o3o3o.github.io/2016/02/24/gitlabci/</id>
+    <link href="https://o3o3o.me/2016/02/24/gitlabci/"/>
+    <id>https://o3o3o.me/2016/02/24/gitlabci/</id>
     <published>2016-02-24T13:09:30.000Z</published>
     <updated>2019-01-10T11:19:29.487Z</updated>
     
@@ -110,18 +137,18 @@
     </summary>
     
     
-      <category term="gitlab" scheme="https://o3o3o.github.io/tags/gitlab/"/>
+      <category term="gitlab" scheme="https://o3o3o.me/tags/gitlab/"/>
     
-      <category term="ci" scheme="https://o3o3o.github.io/tags/ci/"/>
+      <category term="ci" scheme="https://o3o3o.me/tags/ci/"/>
     
-      <category term="git" scheme="https://o3o3o.github.io/tags/git/"/>
+      <category term="git" scheme="https://o3o3o.me/tags/git/"/>
     
   </entry>
   
   <entry>
     <title>我的工具箱</title>
-    <link href="https://o3o3o.github.io/2016/02/22/toollist/"/>
-    <id>https://o3o3o.github.io/2016/02/22/toollist/</id>
+    <link href="https://o3o3o.me/2016/02/22/toollist/"/>
+    <id>https://o3o3o.me/2016/02/22/toollist/</id>
     <published>2016-02-22T13:03:54.000Z</published>
     <updated>2019-01-10T11:19:29.490Z</updated>
     
@@ -136,42 +163,42 @@
     
     </summary>
     
-      <category term="工具" scheme="https://o3o3o.github.io/categories/%E5%B7%A5%E5%85%B7/"/>
+      <category term="工具" scheme="https://o3o3o.me/categories/%E5%B7%A5%E5%85%B7/"/>
     
     
-      <category term="tool" scheme="https://o3o3o.github.io/tags/tool/"/>
+      <category term="tool" scheme="https://o3o3o.me/tags/tool/"/>
     
   </entry>
   
   <entry>
     <title>“忙碌”?</title>
-    <link href="https://o3o3o.github.io/2014/06/23/busy/"/>
-    <id>https://o3o3o.github.io/2014/06/23/busy/</id>
+    <link href="https://o3o3o.me/2014/06/23/busy/"/>
+    <id>https://o3o3o.me/2014/06/23/busy/</id>
     <published>2014-06-23T12:30:25.000Z</published>
     <updated>2019-01-10T11:19:29.486Z</updated>
     
-    <content type="html"><![CDATA[<div class="para" style="text-align: center;"><br><img src="/images/2014/06/IMG_20140618_165132-300x225.jpg" alt=""><br></div><p>话说，昨天，也就是周末，看了下couresa 中的machine learing公开课，对于线性规划，superviser learning式，好棒的说！！！</p><p>现在的我，….</p><p>海阔凭鱼越…</p>]]></content>
+    <content type="html"><![CDATA[<div class="para" style="text-align: center;"><br><img src="/images/2014/06/IMG_20140618_165132-300x225.jpg" alt><br></div><p>话说，昨天，也就是周末，看了下couresa 中的machine learing公开课，对于线性规划，superviser learning式，好棒的说！！！</p><p>现在的我，….</p><p>海阔凭鱼越…</p>]]></content>
     
     <summary type="html">
     
       
       
-        &lt;div class=&quot;para&quot; style=&quot;text-align: center;&quot;&gt;&lt;br&gt;&lt;img src=&quot;/images/2014/06/IMG_20140618_165132-300x225.jpg&quot; alt=&quot;&quot;&gt;&lt;br&gt;&lt;/div&gt;
+        &lt;div class=&quot;para&quot; style=&quot;text-align: center;&quot;&gt;&lt;br&gt;&lt;img src=&quot;/images/2014/06/IMG_20140618_165132-300x225.jpg&quot; alt&gt;&lt;br&gt;&lt;/div&gt;
 
-&lt;p&gt;话说，昨天，也就是
+&lt;p&gt;话说，昨天，也就是周末，
       
     
     </summary>
     
-      <category term="杂感" scheme="https://o3o3o.github.io/categories/%E6%9D%82%E6%84%9F/"/>
+      <category term="杂感" scheme="https://o3o3o.me/categories/%E6%9D%82%E6%84%9F/"/>
     
     
   </entry>
   
   <entry>
     <title>雨后</title>
-    <link href="https://o3o3o.github.io/2014/06/12/rained/"/>
-    <id>https://o3o3o.github.io/2014/06/12/rained/</id>
+    <link href="https://o3o3o.me/2014/06/12/rained/"/>
+    <id>https://o3o3o.me/2014/06/12/rained/</id>
     <published>2014-06-12T12:44:29.000Z</published>
     <updated>2019-01-10T11:19:29.488Z</updated>
     
@@ -186,19 +213,19 @@
     
     </summary>
     
-      <category term="滋味生活" scheme="https://o3o3o.github.io/categories/%E6%BB%8B%E5%91%B3%E7%94%9F%E6%B4%BB/"/>
+      <category term="滋味生活" scheme="https://o3o3o.me/categories/%E6%BB%8B%E5%91%B3%E7%94%9F%E6%B4%BB/"/>
     
     
   </entry>
   
   <entry>
     <title>眼下的生活</title>
-    <link href="https://o3o3o.github.io/2014/06/10/190/"/>
-    <id>https://o3o3o.github.io/2014/06/10/190/</id>
+    <link href="https://o3o3o.me/2014/06/10/190/"/>
+    <id>https://o3o3o.me/2014/06/10/190/</id>
     <published>2014-06-10T13:24:37.000Z</published>
     <updated>2019-01-10T11:19:29.486Z</updated>
     
-    <content type="html"><![CDATA[<p>虽然现在在外面住了，每天上班的生活，感觉依然有些累。尤其这几天。</p><p>两个项目穿插进行（或许不是因为这个原因吧）。得想想什么办法！！</p><p>每天的日报、每周的周报，正如自己的初衷：本应是在团队共享的，不应该仅仅是报告给主管、领导的。每天，的生活交流也是工作的一部分。===》应该有这样的生活吧，以后我的生活方式，应该会是这样吧。</p><p>昨天，网上买来的毛笔+縇纸到了，门口买了瓶墨汁，写了下，感觉不错。</p><p><img src="/images/2014/06/IMG_20140610_212754-e1402407408925-225x300.jpg" alt=""></p><p>如今的我，现在的生活，是周围强加于我的。或许，，</p>]]></content>
+    <content type="html"><![CDATA[<p>虽然现在在外面住了，每天上班的生活，感觉依然有些累。尤其这几天。</p><p>两个项目穿插进行（或许不是因为这个原因吧）。得想想什么办法！！</p><p>每天的日报、每周的周报，正如自己的初衷：本应是在团队共享的，不应该仅仅是报告给主管、领导的。每天，的生活交流也是工作的一部分。===》应该有这样的生活吧，以后我的生活方式，应该会是这样吧。</p><p>昨天，网上买来的毛笔+縇纸到了，门口买了瓶墨汁，写了下，感觉不错。</p><p><img src="/images/2014/06/IMG_20140610_212754-e1402407408925-225x300.jpg" alt></p><p>如今的我，现在的生活，是周围强加于我的。或许，，</p>]]></content>
     
     <summary type="html">
     
@@ -211,15 +238,15 @@
     
     </summary>
     
-      <category term="滋味生活" scheme="https://o3o3o.github.io/categories/%E6%BB%8B%E5%91%B3%E7%94%9F%E6%B4%BB/"/>
+      <category term="滋味生活" scheme="https://o3o3o.me/categories/%E6%BB%8B%E5%91%B3%E7%94%9F%E6%B4%BB/"/>
     
     
   </entry>
   
   <entry>
     <title>诗+电影+占星</title>
-    <link href="https://o3o3o.github.io/2014/04/27/poem-moive-astrologer/"/>
-    <id>https://o3o3o.github.io/2014/04/27/poem-moive-astrologer/</id>
+    <link href="https://o3o3o.me/2014/04/27/poem-moive-astrologer/"/>
+    <id>https://o3o3o.me/2014/04/27/poem-moive-astrologer/</id>
     <published>2014-04-27T13:00:04.000Z</published>
     <updated>2019-01-10T11:19:29.488Z</updated>
     
@@ -235,22 +262,22 @@
     </summary>
     
     
-      <category term="活动" scheme="https://o3o3o.github.io/tags/%E6%B4%BB%E5%8A%A8/"/>
+      <category term="活动" scheme="https://o3o3o.me/tags/%E6%B4%BB%E5%8A%A8/"/>
     
-      <category term="星座" scheme="https://o3o3o.github.io/tags/%E6%98%9F%E5%BA%A7/"/>
+      <category term="星座" scheme="https://o3o3o.me/tags/%E6%98%9F%E5%BA%A7/"/>
     
-      <category term="诗" scheme="https://o3o3o.github.io/tags/%E8%AF%97/"/>
+      <category term="诗" scheme="https://o3o3o.me/tags/%E8%AF%97/"/>
     
   </entry>
   
   <entry>
     <title>新的生活环境-&gt;往事回忆</title>
-    <link href="https://o3o3o.github.io/2014/04/19/156/"/>
-    <id>https://o3o3o.github.io/2014/04/19/156/</id>
+    <link href="https://o3o3o.me/2014/04/19/156/"/>
+    <id>https://o3o3o.me/2014/04/19/156/</id>
     <published>2014-04-19T14:41:29.000Z</published>
     <updated>2019-01-10T11:19:29.486Z</updated>
     
-    <content type="html"><![CDATA[<p>今天，晚上出去练了会儿双截棍。似乎，是在意别人的眼光。（难道对于陌生的环境，陌生的人，我的感觉都是这样吗？）</p><p>回想起以前，和师傅他们在一起的感觉，放着这个音乐：[云水禅心]<a href="http://pan.baidu.com/s/1b7GHS" target="_blank" rel="noopener">http://pan.baidu.com/s/1b7GHS</a></p><p><img src="/images/2014/04/SAM_0577.jpg" alt=""><br><img src="/images/2014/04/SAM_0575.jpg" alt=""><br><img src="/images/2014/04/SAM_0572.jpg" alt=""><br><img src="/images/2014/04/SAM_1359.jpg" alt=""><br><img src="/images/2014/04/SAM_1191.jpg" alt=""><br><img src="/images/2014/04/SAM_1188.jpg" alt=""><br><img src="/images/2014/04/SAM_1183.jpg" alt=""><br><img src="/images/2014/04/SAM_1175.jpg" alt=""><br><img src="/images/2014/04/SAM_1172.jpg" alt=""><br><img src="/images/2014/04/SAM_1155.jpg" alt=""><br><img src="/images/2014/04/SAM_1145.jpg" alt=""><br><img src="/images/2014/04/IMG_20130525_193341.jpg" alt=""><br><img src="/images/2014/04/IMG_20130525_185323.jpg" alt=""><br><img src="/images/2014/04/IMG_20130525_181613-e1397918640362-1024x768.jpg" alt=""></p><p>p.s:美女，帅哥们！</p>]]></content>
+    <content type="html"><![CDATA[<p>今天，晚上出去练了会儿双截棍。似乎，是在意别人的眼光。（难道对于陌生的环境，陌生的人，我的感觉都是这样吗？）</p><p>回想起以前，和师傅他们在一起的感觉，放着这个音乐：[云水禅心]<a href="http://pan.baidu.com/s/1b7GHS" target="_blank" rel="noopener">http://pan.baidu.com/s/1b7GHS</a></p><p><img src="/images/2014/04/SAM_0577.jpg" alt><br><img src="/images/2014/04/SAM_0575.jpg" alt><br><img src="/images/2014/04/SAM_0572.jpg" alt><br><img src="/images/2014/04/SAM_1359.jpg" alt><br><img src="/images/2014/04/SAM_1191.jpg" alt><br><img src="/images/2014/04/SAM_1188.jpg" alt><br><img src="/images/2014/04/SAM_1183.jpg" alt><br><img src="/images/2014/04/SAM_1175.jpg" alt><br><img src="/images/2014/04/SAM_1172.jpg" alt><br><img src="/images/2014/04/SAM_1155.jpg" alt><br><img src="/images/2014/04/SAM_1145.jpg" alt><br><img src="/images/2014/04/IMG_20130525_193341.jpg" alt><br><img src="/images/2014/04/IMG_20130525_185323.jpg" alt><br><img src="/images/2014/04/IMG_20130525_181613-e1397918640362-1024x768.jpg" alt></p><p>p.s:美女，帅哥们！</p>]]></content>
     
     <summary type="html">
     
@@ -262,42 +289,43 @@
     
     </summary>
     
-      <category term="杂感" scheme="https://o3o3o.github.io/categories/%E6%9D%82%E6%84%9F/"/>
+      <category term="杂感" scheme="https://o3o3o.me/categories/%E6%9D%82%E6%84%9F/"/>
     
     
-      <category term="太极拳" scheme="https://o3o3o.github.io/tags/%E5%A4%AA%E6%9E%81%E6%8B%B3/"/>
+      <category term="太极拳" scheme="https://o3o3o.me/tags/%E5%A4%AA%E6%9E%81%E6%8B%B3/"/>
     
   </entry>
   
   <entry>
     <title>外面租房的生活</title>
-    <link href="https://o3o3o.github.io/2014/04/13/life-rent/"/>
-    <id>https://o3o3o.github.io/2014/04/13/life-rent/</id>
+    <link href="https://o3o3o.me/2014/04/13/life-rent/"/>
+    <id>https://o3o3o.me/2014/04/13/life-rent/</id>
     <published>2014-04-13T00:42:43.000Z</published>
     <updated>2019-01-10T11:19:29.487Z</updated>
     
-    <content type="html"><![CDATA[<p>早上起来，是个周末，空气并不好，但仍然出去，去浑河那边晨练。</p><p><img src="/images/2014/03/IMG_20140413_072940.jpg" alt=""></p><p>终于开始了，我心盼以久的生活；经过了无数次的决心，勇气的较量。</p><p>就在租房，签完合同后，都想着，”算了吧，要不在宿舍住，这儿环境多好“，，</p><p>希望，以后的我多试着去改变，最起码要尝试下。:) 就像现在这样</p><p>P.S:<br>    晚上，看看书，写写blog…</p>]]></content>
+    <content type="html"><![CDATA[<p>早上起来，是个周末，空气并不好，但仍然出去，去浑河那边晨练。</p><p><img src="/images/2014/03/IMG_20140413_072940.jpg" alt></p><p>终于开始了，我心盼以久的生活；经过了无数次的决心，勇气的较量。</p><p>就在租房，签完合同后，都想着，”算了吧，要不在宿舍住，这儿环境多好“，，</p><p>希望，以后的我多试着去改变，最起码要尝试下。:) 就像现在这样</p><p>P.S:<br>    晚上，看看书，写写blog…</p>]]></content>
     
     <summary type="html">
     
       
       
         &lt;p&gt;早上起来，是个周末，空气并不好，但仍然出去，去浑河那边晨练。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;/images/2014/03/IMG_20140413_072940.jpg&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
-&lt;p&gt;终于开始了，我心盼以久的生活；经过了无数次的决心，勇气的较量。&lt;/
+&lt;p&gt;&lt;img src=&quot;/images/2014/03/IMG_20140413_072940.jpg&quot; alt&gt;&lt;/p&gt;
+&lt;p&gt;终于开始了，我心盼以久的生活；经过了无数次的决心，勇气的较量。&lt;/p&gt;
+
       
     
     </summary>
     
-      <category term="滋味生活" scheme="https://o3o3o.github.io/categories/%E6%BB%8B%E5%91%B3%E7%94%9F%E6%B4%BB/"/>
+      <category term="滋味生活" scheme="https://o3o3o.me/categories/%E6%BB%8B%E5%91%B3%E7%94%9F%E6%B4%BB/"/>
     
     
   </entry>
   
   <entry>
     <title>小知 与 大知（智）</title>
-    <link href="https://o3o3o.github.io/2014/04/13/wisdom/"/>
-    <id>https://o3o3o.github.io/2014/04/13/wisdom/</id>
+    <link href="https://o3o3o.me/2014/04/13/wisdom/"/>
+    <id>https://o3o3o.me/2014/04/13/wisdom/</id>
     <published>2014-04-13T00:35:07.000Z</published>
     <updated>2019-01-10T11:19:29.491Z</updated>
     
@@ -313,15 +341,15 @@
     
     </summary>
     
-      <category term="滋味生活" scheme="https://o3o3o.github.io/categories/%E6%BB%8B%E5%91%B3%E7%94%9F%E6%B4%BB/"/>
+      <category term="滋味生活" scheme="https://o3o3o.me/categories/%E6%BB%8B%E5%91%B3%E7%94%9F%E6%B4%BB/"/>
     
     
   </entry>
   
   <entry>
     <title>Jing.fm and lino er’si cafe的灵魂人物</title>
-    <link href="https://o3o3o.github.io/2014/03/16/linoer/"/>
-    <id>https://o3o3o.github.io/2014/03/16/linoer/</id>
+    <link href="https://o3o3o.me/2014/03/16/linoer/"/>
+    <id>https://o3o3o.me/2014/03/16/linoer/</id>
     <published>2014-03-16T09:35:10.000Z</published>
     <updated>2019-01-10T11:19:29.488Z</updated>
     
@@ -338,48 +366,48 @@
     
     </summary>
     
-      <category term="杂感" scheme="https://o3o3o.github.io/categories/%E6%9D%82%E6%84%9F/"/>
+      <category term="杂感" scheme="https://o3o3o.me/categories/%E6%9D%82%E6%84%9F/"/>
     
     
-      <category term="cafe" scheme="https://o3o3o.github.io/tags/cafe/"/>
+      <category term="cafe" scheme="https://o3o3o.me/tags/cafe/"/>
     
   </entry>
   
   <entry>
     <title>咖啡是什么？</title>
-    <link href="https://o3o3o.github.io/2014/03/09/what-is-cafe/"/>
-    <id>https://o3o3o.github.io/2014/03/09/what-is-cafe/</id>
+    <link href="https://o3o3o.me/2014/03/09/what-is-cafe/"/>
+    <id>https://o3o3o.me/2014/03/09/what-is-cafe/</id>
     <published>2014-03-09T11:13:10.000Z</published>
     <updated>2019-01-10T11:19:29.491Z</updated>
     
-    <content type="html"><![CDATA[<p>今天，去参加了一个lino er’si cafe的活动后,</p><p><img src="/images/2014/03/att.jpeg" alt=""><br><img src="/images/2014/03/att_cafe.jpeg" alt=""></p><p>那位灵魂人物， michael ,王乐（驴友），摄影女孩 ，砖哥….聚在一起…</p><p>理想的cafe： 像猫，狗家里的宠物 ，来店里，闻闻熟悉的味道 …</p><p>还有michael那，搞笑的笑声, 哈哈 T.^</p><p>哦，似乎懂了…..</p>]]></content>
+    <content type="html"><![CDATA[<p>今天，去参加了一个lino er’si cafe的活动后,</p><p><img src="/images/2014/03/att.jpeg" alt><br><img src="/images/2014/03/att_cafe.jpeg" alt></p><p>那位灵魂人物， michael ,王乐（驴友），摄影女孩 ，砖哥….聚在一起…</p><p>理想的cafe： 像猫，狗家里的宠物 ，来店里，闻闻熟悉的味道 …</p><p>还有michael那，搞笑的笑声, 哈哈 T.^</p><p>哦，似乎懂了…..</p>]]></content>
     
     <summary type="html">
     
       
       
         &lt;p&gt;今天，去参加了一个lino er’si cafe的活动后,&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;/images/2014/03/att.jpeg&quot; alt=&quot;&quot;&gt;&lt;br&gt;&lt;img src=&quot;/images/2014/03/att_cafe.jpeg&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
-
+&lt;p&gt;&lt;img src=&quot;/images/2014/03/att.jpeg&quot; alt&gt;&lt;br&gt;&lt;img src=&quot;/images/2014/03/att_cafe.jpeg&quot; alt&gt;&lt;/p&gt;
+&lt;p&gt;那位灵
       
     
     </summary>
     
-      <category term="滋味生活" scheme="https://o3o3o.github.io/categories/%E6%BB%8B%E5%91%B3%E7%94%9F%E6%B4%BB/"/>
+      <category term="滋味生活" scheme="https://o3o3o.me/categories/%E6%BB%8B%E5%91%B3%E7%94%9F%E6%B4%BB/"/>
     
     
-      <category term="cafe" scheme="https://o3o3o.github.io/tags/cafe/"/>
+      <category term="cafe" scheme="https://o3o3o.me/tags/cafe/"/>
     
   </entry>
   
   <entry>
     <title>又一个第一次 ;)</title>
-    <link href="https://o3o3o.github.io/2014/03/04/paint/"/>
-    <id>https://o3o3o.github.io/2014/03/04/paint/</id>
+    <link href="https://o3o3o.me/2014/03/04/paint/"/>
+    <id>https://o3o3o.me/2014/03/04/paint/</id>
     <published>2014-03-04T03:17:17.000Z</published>
     <updated>2019-01-10T11:19:29.488Z</updated>
     
-    <content type="html"><![CDATA[<p>豆瓣的活动，一位和我一样刚毕业的学美术的女生（大文）；</p><p>自己的还未完成 的作品；《crane on the banks of the seine》<br>;)<br><img src="/images/2014/03/IMG_20140301_173422-1024x768.jpg" alt=""><br><img src="/images/2014/03/IMG_20140301_163232-1024x768.jpg" alt=""><br><img src="/images/2014/03/IMG_20140301_163217-e1393902971238-768x1024.jpg" alt=""></p>]]></content>
+    <content type="html"><![CDATA[<p>豆瓣的活动，一位和我一样刚毕业的学美术的女生（大文）；</p><p>自己的还未完成 的作品；《crane on the banks of the seine》<br>;)<br><img src="/images/2014/03/IMG_20140301_173422-1024x768.jpg" alt><br><img src="/images/2014/03/IMG_20140301_163232-1024x768.jpg" alt><br><img src="/images/2014/03/IMG_20140301_163217-e1393902971238-768x1024.jpg" alt></p>]]></content>
     
     <summary type="html">
     
@@ -391,40 +419,41 @@
     
     </summary>
     
-      <category term="滋味生活" scheme="https://o3o3o.github.io/categories/%E6%BB%8B%E5%91%B3%E7%94%9F%E6%B4%BB/"/>
+      <category term="滋味生活" scheme="https://o3o3o.me/categories/%E6%BB%8B%E5%91%B3%E7%94%9F%E6%B4%BB/"/>
     
     
-      <category term="油画" scheme="https://o3o3o.github.io/tags/%E6%B2%B9%E7%94%BB/"/>
+      <category term="油画" scheme="https://o3o3o.me/tags/%E6%B2%B9%E7%94%BB/"/>
     
   </entry>
   
   <entry>
     <title>周末散心</title>
-    <link href="https://o3o3o.github.io/2014/02/16/walk-in-weekend/"/>
-    <id>https://o3o3o.github.io/2014/02/16/walk-in-weekend/</id>
+    <link href="https://o3o3o.me/2014/02/16/walk-in-weekend/"/>
+    <id>https://o3o3o.me/2014/02/16/walk-in-weekend/</id>
     <published>2014-02-16T14:36:37.000Z</published>
     <updated>2019-01-10T11:19:29.490Z</updated>
     
-    <content type="html"><![CDATA[<p><img src="/images/2014/02/IMG_20140216_162948-1024x768.jpg" alt=""><br><img src="/images/2014/02/IMG_20140216_105134-1024x768.jpg" alt=""></p>]]></content>
+    <content type="html"><![CDATA[<p><img src="/images/2014/02/IMG_20140216_162948-1024x768.jpg" alt><br><img src="/images/2014/02/IMG_20140216_105134-1024x768.jpg" alt></p>]]></content>
     
     <summary type="html">
     
       
       
-        &lt;p&gt;&lt;img src=&quot;/images/2014/02/IMG_20140216_162948-1024x768.jpg&quot; alt=&quot;&quot;&gt;&lt;br&gt;&lt;img src=&quot;/images/2014/02/IMG_20140216_105134-1024x768.jpg&quot; alt=&quot;&quot;
+        &lt;p&gt;&lt;img src=&quot;/images/2014/02/IMG_20140216_162948-1024x768.jpg&quot; alt&gt;&lt;br&gt;&lt;img src=&quot;/images/2014/02/IMG_20140216_105134-1024x768.jpg&quot; alt&gt;&lt;/p&gt;
+
       
     
     </summary>
     
-      <category term="滋味生活" scheme="https://o3o3o.github.io/categories/%E6%BB%8B%E5%91%B3%E7%94%9F%E6%B4%BB/"/>
+      <category term="滋味生活" scheme="https://o3o3o.me/categories/%E6%BB%8B%E5%91%B3%E7%94%9F%E6%B4%BB/"/>
     
     
   </entry>
   
   <entry>
     <title>痛与无奈 </title>
-    <link href="https://o3o3o.github.io/2014/02/11/98/"/>
-    <id>https://o3o3o.github.io/2014/02/11/98/</id>
+    <link href="https://o3o3o.me/2014/02/11/98/"/>
+    <id>https://o3o3o.me/2014/02/11/98/</id>
     <published>2014-02-11T13:08:50.000Z</published>
     <updated>2019-01-10T11:19:29.486Z</updated>
     
@@ -440,15 +469,15 @@
     
     </summary>
     
-      <category term="Uncategorized" scheme="https://o3o3o.github.io/categories/Uncategorized/"/>
+      <category term="Uncategorized" scheme="https://o3o3o.me/categories/Uncategorized/"/>
     
     
   </entry>
   
   <entry>
     <title>忆</title>
-    <link href="https://o3o3o.github.io/2014/01/20/recall/"/>
-    <id>https://o3o3o.github.io/2014/01/20/recall/</id>
+    <link href="https://o3o3o.me/2014/01/20/recall/"/>
+    <id>https://o3o3o.me/2014/01/20/recall/</id>
     <published>2014-01-20T15:00:04.000Z</published>
     <updated>2019-01-10T11:19:29.489Z</updated>
     
@@ -464,15 +493,15 @@
     
     </summary>
     
-      <category term="杂感" scheme="https://o3o3o.github.io/categories/%E6%9D%82%E6%84%9F/"/>
+      <category term="杂感" scheme="https://o3o3o.me/categories/%E6%9D%82%E6%84%9F/"/>
     
     
   </entry>
   
   <entry>
     <title>杂记 </title>
-    <link href="https://o3o3o.github.io/2014/01/18/79/"/>
-    <id>https://o3o3o.github.io/2014/01/18/79/</id>
+    <link href="https://o3o3o.me/2014/01/18/79/"/>
+    <id>https://o3o3o.me/2014/01/18/79/</id>
     <published>2014-01-18T15:01:00.000Z</published>
     <updated>2019-01-10T11:19:29.486Z</updated>
     
@@ -489,34 +518,10 @@
     
     </summary>
     
-      <category term="杂感" scheme="https://o3o3o.github.io/categories/%E6%9D%82%E6%84%9F/"/>
+      <category term="杂感" scheme="https://o3o3o.me/categories/%E6%9D%82%E6%84%9F/"/>
     
     
-      <category term="小记" scheme="https://o3o3o.github.io/tags/%E5%B0%8F%E8%AE%B0/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>^o^</title>
-    <link href="https://o3o3o.github.io/2014/01/05/smell/"/>
-    <id>https://o3o3o.github.io/2014/01/05/smell/</id>
-    <published>2014-01-04T16:35:42.000Z</published>
-    <updated>2019-01-10T11:19:29.489Z</updated>
-    
-    <content type="html"><![CDATA[<p><img src="/images/2014/01/IMG_20131229_223403-e1388853315952-225x300.jpg" alt="IMG_20131229_223403"></p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;&lt;img src=&quot;/images/2014/01/IMG_20131229_223403-e1388853315952-225x300.jpg&quot; alt=&quot;IMG_20131229_223403&quot;&gt;&lt;/p&gt;
-
-      
-    
-    </summary>
-    
-      <category term="Uncategorized" scheme="https://o3o3o.github.io/categories/Uncategorized/"/>
-    
+      <category term="小记" scheme="https://o3o3o.me/tags/%E5%B0%8F%E8%AE%B0/"/>
     
   </entry>
   
