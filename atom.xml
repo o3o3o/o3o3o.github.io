@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://o3o3o.me/"/>
-  <updated>2019-07-13T07:14:23.241Z</updated>
+  <updated>2019-12-14T04:09:44.714Z</updated>
   <id>https://o3o3o.me/</id>
   
   <author>
@@ -15,6 +15,39 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>讯飞来电助手-从骚扰电话中解脱出来</title>
+    <link href="https://o3o3o.me/2019/12/14/nuisance-call/"/>
+    <id>https://o3o3o.me/2019/12/14/nuisance-call/</id>
+    <published>2019-12-14T03:28:24.000Z</published>
+    <updated>2019-12-14T04:09:44.714Z</updated>
+    
+    <content type="html"><![CDATA[<p>电话本身是一种实时通信工具。<br>但在中国，当你买了房子，几乎每天，都会收到一大堆 装修公司的电话。</p><p>虽然这些推销方式，效率很低，但仍有些人仍”持之以恒”。 对于这些电话骚扰，现有的共享标记骚扰电话功能，其效果还是有限, 并不能完全屏蔽掉。</p><p>目前对于我来说最好的方法就是，设置陌生人拒接 + 讯飞来电助手处理。</p><h1 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h1><ol><li>手机飞行模式、关机、无信号时，可以通过助手，询问具体情况，保证不漏接。</li><li>让不紧急的事情，回归 邮件 异步通信模式。 </li></ol><h4 id="免费版"><a href="#免费版" class="headerlink" title="免费版:"></a>免费版:</h4><pre><code>* 主动挂断、长时间未接听、关机或者不在服务区时，自动转接到助手，助手之后发送谈话内容* 可选择助手声音* 对于熟人，可以自定义一个，回复内容</code></pre><h4 id="收费版"><a href="#收费版" class="headerlink" title="收费版"></a>收费版</h4><p>可以录制自己的声音，让助理使用自己的声音</p><h1 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h1><p>通过设置呼叫转移，对于未接电话，自动转移到设置的 “号码”, 由程序接听并与其语音聊天，将其通话的记录的结果，并以微信发到你手机上面。</p><h1 id="期望"><a href="#期望" class="headerlink" title="期望"></a>期望</h1><p>以后的未来场景可能是，直接在通信运营商 新增加一种: 未接来电智能助手业务，  如果用户没有接听，则自动与其交谈，将其内容 以 <code>文字+语音</code> 的 方式发到用户手机上。 </p><h1 id="如何使用？"><a href="#如何使用？" class="headerlink" title="如何使用？"></a>如何使用？</h1><p>没有其它App, 只有微信小程序，在微信里面搜索“ 讯飞助手“， 关注其公众账号（可以收到未接、来电提醒通知)。<br>另需要注意，需要按照程序里面的引导，设置呼叫转移, 可能会引起收费。</p><p><img src="/images/xf.png" alt="here"></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;电话本身是一种实时通信工具。&lt;br&gt;但在中国，当你买了房子，几乎每天，都会收到一大堆 装修公司的电话。&lt;/p&gt;
+&lt;p&gt;虽然这些推销方式，效率很低，但仍有些人仍”持之以恒”。 对于这些电话骚扰，现有的共享标记骚扰电话功能，其效果还是有限, 并不能完全屏蔽掉。&lt;/p&gt;
+&lt;p&gt;目
+      
+    
+    </summary>
+    
+      <category term="杂感" scheme="https://o3o3o.me/categories/%E6%9D%82%E6%84%9F/"/>
+    
+      <category term="滋味生活" scheme="https://o3o3o.me/categories/%E6%9D%82%E6%84%9F/%E6%BB%8B%E5%91%B3%E7%94%9F%E6%B4%BB/"/>
+    
+      <category term="Tech" scheme="https://o3o3o.me/categories/%E6%9D%82%E6%84%9F/%E6%BB%8B%E5%91%B3%E7%94%9F%E6%B4%BB/Tech/"/>
+    
+    
+      <category term="骚扰电话" scheme="https://o3o3o.me/tags/%E9%AA%9A%E6%89%B0%E7%94%B5%E8%AF%9D/"/>
+    
+      <category term="讯飞来电助手" scheme="https://o3o3o.me/tags/%E8%AE%AF%E9%A3%9E%E6%9D%A5%E7%94%B5%E5%8A%A9%E6%89%8B/"/>
+    
+  </entry>
   
   <entry>
     <title>Django ratelimit for Graphql</title>
@@ -37,9 +70,9 @@
       <category term="Tech" scheme="https://o3o3o.me/categories/Tech/"/>
     
     
-      <category term="graphql" scheme="https://o3o3o.me/tags/graphql/"/>
-    
       <category term="django" scheme="https://o3o3o.me/tags/django/"/>
+    
+      <category term="graphql" scheme="https://o3o3o.me/tags/graphql/"/>
     
   </entry>
   
@@ -122,7 +155,7 @@
     <link href="https://o3o3o.me/2016/02/24/gitlabci/"/>
     <id>https://o3o3o.me/2016/02/24/gitlabci/</id>
     <published>2016-02-24T13:09:30.000Z</published>
-    <updated>2019-01-10T11:19:29.487Z</updated>
+    <updated>2019-12-14T03:30:12.309Z</updated>
     
     <content type="html"><![CDATA[<h1 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h1><p>提交代码后，根据以有的配置，自动触发，进行代码测试程序或者程序的部署。</p><h1 id="需求："><a href="#需求：" class="headerlink" title="需求："></a>需求：</h1><p>目前项目中，需要管理多个版本（32位，64位）的补丁包。每次修改完代码，提交后，都需要人手动在安装或者测试机器上，编译，安装，运行。<br>为将这个流程自动化，可采用gitlab 与gitlab CI (continous intergration)来实现其自动化。<br>针对于目前客户端侧不同企业，需要生成特定的客户端版本，也可以让其自动化。</p><h1 id="结构："><a href="#结构：" class="headerlink" title="结构："></a>结构：</h1><p><img src="/images/gitlabci/gitlab.png" alt="struct">   </p><h3 id="主要结构分为4部分："><a href="#主要结构分为4部分：" class="headerlink" title="主要结构分为4部分："></a>主要结构分为4部分：</h3><ul><li>目标机器<br>  包含：1.测试机器；2.部署机器；</li><li>git与gitlab-ci(可持续集成服务）<br>   用于保存代码，与解析<code>.gitlab-ciyml</code>文件，触发 持续集成动作</li><li>git 客户端<br>  使用git 客户端提交代码的最终用户<h1 id="工作流程"><a href="#工作流程" class="headerlink" title="工作流程"></a>工作流程</h1></li></ul><ol><li>用户U1，使用git 客户端，建立一个项目 repo1；</li><li>repos1项目中包含文件:</li></ol><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;(repos1)$ ls -a</span><br><span class="line">.  ..  .git  .gitlab-ci.yml  readme</span><br></pre></td></tr></table></figure><ol start="3"><li>修改readme文件</li></ol><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git add readme</span><br><span class="line">git commit readme -m <span class="string">"add readme"</span>;</span><br><span class="line">git push</span><br></pre></td></tr></table></figure><ol start="4"><li>git push 执行后，提交到gitlab服务器后，gitlab服务，解析.gitlab-ci.yml,, 触发gitlab-ci-runner去处理， .gitlab-ci.yml中定义的流程；<br>（前提是： gitlabci-runner要配置，并注册成功，<a href="https://gitlab.com/gitlab-org/gitlab-ci-multi-runner/blob/master/docs/configuration/advanced-configuration.md" target="_blank" rel="noopener">具体配置操作说明见</a></li></ol><h1 id="工程文件内容："><a href="#工程文件内容：" class="headerlink" title="工程文件内容："></a>工程文件内容：</h1><ul><li>git 工程</li><li>.gitlab-ci.yml 文件：<br>每个工程下面使用<code>.gitlab-ci.yml</code>文件，来控制提交代码后，gitlab ci 解析yml文件，来获取如何去部署程序。<br>如<code>gitlab-ci.yml</code>：</li></ul><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">162deploy: <span class="comment"># 162</span></span><br><span class="line">    stage: deploy</span><br><span class="line">    tags:</span><br><span class="line">        - deploy162</span><br><span class="line">    script:</span><br><span class="line">        - <span class="string">"make &amp;&amp; make install"</span></span><br><span class="line">    only:</span><br><span class="line">         - master</span><br><span class="line">250deploy: <span class="comment"># 250</span></span><br><span class="line">    stage: deploy</span><br><span class="line">    tags:</span><br><span class="line">        - deploy250</span><br><span class="line">    script:</span><br><span class="line">        - <span class="string">"make &amp;&amp; make install"</span></span><br><span class="line">    only:</span><br><span class="line">         - master</span><br></pre></td></tr></table></figure><p>注: yml文件格式必须有tab或空格</p><ul><li>tags<br>  <code>deploy162</code>, <code>deploy250</code> 分别指在192.168.1.162、192.168.1.250上运行的gitlab-ci-runner的名称，gitlab-ci是根据<code>.gitlab-ci.yml</code>中的tags来匹配具体任务由哪个runner来处理。<br>上面的script是指编译安装程序。</li><li>script<br>  <code>make &amp;&amp; make install</code>是指要部署到相应的服务器上时，需要执行的脚本命令.对于需要编译的程序而言，就是编译安装，而对于php等web程序而言，就是把代码复制到相应的安装目录。</li></ul><h2 id="流程举例："><a href="#流程举例：" class="headerlink" title="流程举例："></a>流程举例：</h2><p>流程如下：<br><img src="/images/gitlabci/demo.gif" alt="demo"></p><h2 id="gitlab-runner-配置举例-目前192-168-1-184地址配置了gitlab-runner"><a href="#gitlab-runner-配置举例-目前192-168-1-184地址配置了gitlab-runner" class="headerlink" title="gitlab-runner: 配置举例 (目前192.168.1.184地址配置了gitlab-runner)"></a>gitlab-runner: 配置举例 (目前192.168.1.184地址配置了gitlab-runner)</h2><p>可登录gitlab网页版，查看当前注册的git-runner</p><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">michael@Sict ~ $ cat /etc/gitlab-runner/config.toml</span><br><span class="line">concurrent = 1</span><br><span class="line">[[runners]]</span><br><span class="line">  url = <span class="string">"http://192.168.1.240/ci"</span></span><br><span class="line">  token = <span class="string">"fb8b064e53e21159e268853af6f8ea"</span></span><br><span class="line">  name = <span class="string">"Sict162"</span></span><br><span class="line">  <span class="built_in">limit</span> = 1</span><br><span class="line">  executor = <span class="string">"ssh"</span></span><br><span class="line">  builds_dir = <span class="string">"/Data/git_build"</span></span><br><span class="line">  [runners.ssh]</span><br><span class="line">    user = <span class="string">"root"</span></span><br><span class="line">    host = <span class="string">"192.168.1.162"</span></span><br><span class="line">    port = <span class="string">"2222"</span></span><br><span class="line">    identity_file = <span class="string">"/home/michael/.ssh/id_rsa"</span></span><br><span class="line">[[runners]]</span><br><span class="line">  url = <span class="string">"http://192.168.1.240/ci"</span></span><br><span class="line">  token = <span class="string">"18795ba96cfe74478ee63ff7decedd"</span></span><br><span class="line">  name = <span class="string">"Sict250"</span></span><br><span class="line">  <span class="built_in">limit</span> = 1</span><br><span class="line">  executor = <span class="string">"ssh"</span></span><br><span class="line">  builds_dir = <span class="string">"/Data/git_build"</span></span><br><span class="line">  [runners.ssh]</span><br><span class="line">    user = <span class="string">"root"</span></span><br><span class="line">    host = <span class="string">"192.168.1.250"</span></span><br><span class="line">    port = <span class="string">"2222"</span></span><br><span class="line">    identity_file = <span class="string">"/home/michael/.ssh/id_rsa"</span></span><br><span class="line">[[runners]]</span><br><span class="line">  url = <span class="string">"http://192.168.1.240/ci"</span></span><br><span class="line">  token = <span class="string">"87aa2b2c0f5779d5e01f9d731fb6e4"</span></span><br><span class="line">  name = <span class="string">"Sict236"</span></span><br><span class="line">  executor = <span class="string">"ssh"</span></span><br><span class="line">  builds_dir = <span class="string">"/Data/git_build"</span></span><br><span class="line">  [runners.ssh]</span><br><span class="line">    user = <span class="string">"root"</span></span><br><span class="line">    host = <span class="string">"192.168.1.236"</span></span><br><span class="line">    port = <span class="string">"2222"</span></span><br><span class="line">    identity_file = <span class="string">"/home/michael/.ssh/id_rsa"</span></span><br></pre></td></tr></table></figure><h1 id="相关链接："><a href="#相关链接：" class="headerlink" title="相关链接："></a>相关链接：</h1><ul><li><a href="https://about.gitlab.com/gitlab-ci/" target="_blank" rel="noopener">gitlabci介绍</a></li><li><a href="https://gitlab.com/gitlab-org/gitlab-ci-multi-runner/blob/master/docs/configuration/advanced-configuration.md" target="_blank" rel="noopener">gitlabci runner</a></li><li><a href="http://doc.gitlab.com/ce/ci/yaml/README.html" target="_blank" rel="noopener">yaml 文件配置</a></li><li><a href="http://www.greysonparrelli.com/setting-up-android-builds-in-gitlab-ci/" target="_blank" rel="noopener">android自动化部署</a></li><li><a href="http://git-scm.com/book/zh/" target="_blank" rel="noopener">git 使用说明</a></li><li><a href="https://github.com/o3o3o/cmd#linux下面录制动画gif" target="_blank" rel="noopener">linux动画录制</a></li></ul><h1 id="TIPS"><a href="#TIPS" class="headerlink" title="TIPS:"></a>TIPS:</h1><pre><code>在提交时添加[ci skip]可以，跳过gitlab-ci检测。</code></pre>]]></content>
     
@@ -135,6 +168,8 @@
       
     
     </summary>
+    
+      <category term="Tech" scheme="https://o3o3o.me/categories/Tech/"/>
     
     
       <category term="gitlab" scheme="https://o3o3o.me/tags/gitlab/"/>
@@ -495,33 +530,6 @@
     
       <category term="杂感" scheme="https://o3o3o.me/categories/%E6%9D%82%E6%84%9F/"/>
     
-    
-  </entry>
-  
-  <entry>
-    <title>杂记 </title>
-    <link href="https://o3o3o.me/2014/01/18/79/"/>
-    <id>https://o3o3o.me/2014/01/18/79/</id>
-    <published>2014-01-18T15:01:00.000Z</published>
-    <updated>2019-01-10T11:19:29.486Z</updated>
-    
-    <content type="html"><![CDATA[<pre><code>1.18，又是个周六，又是个加班的日子。最近在查找，项目中的bug，分析sip消息。有些被动，，，好久没有停下了想想啦......在看了，《你是一名努力工作的程序员，还是懒惰的程序员？》后，终于，又一次唤醒了那个心中的想法。那种生活是我想要的，</code></pre><p>自己也知道，对我来说这只是时间问题。现在，希望自己不要被现在的生活弄麻木了，尽可能的把真实的自己…<br>    还有，宿舍好不容易的安静。渴望自己大多时候能独自生活在一个安静的家里，过着随性的生活，偶尔和朋友在一起能知道些他们<br>的想法、生活。</p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;pre&gt;&lt;code&gt;1.18，又是个周六，又是个加班的日子。最近在查找，项目中的bug，分析sip消息。有些被动，，，好久没有停下了想想啦......
-在看了，《你是一名努力工作的程序员，还是懒惰的程序员？》后，终于，又一次唤醒了那个心中的想法。那种生活是我想要的，
-&lt;/cod
-      
-    
-    </summary>
-    
-      <category term="杂感" scheme="https://o3o3o.me/categories/%E6%9D%82%E6%84%9F/"/>
-    
-    
-      <category term="小记" scheme="https://o3o3o.me/tags/%E5%B0%8F%E8%AE%B0/"/>
     
   </entry>
   

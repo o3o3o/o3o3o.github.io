@@ -2,6 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://o3o3o.me/2019/12/14/nuisance-call/</loc>
+    
+    <lastmod>2019-12-14T04:09:44.714Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://o3o3o.me/2016/02/24/gitlabci/</loc>
+    
+    <lastmod>2019-12-14T03:30:12.309Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://o3o3o.me/2019/07/13/django-ratelimit-for-graphql/</loc>
     
     <lastmod>2019-07-13T07:14:23.241Z</lastmod>
@@ -16,7 +30,7 @@
   </url>
   
   <url>
-    <loc>https://o3o3o.me/2014/03/09/what-is-cafe/</loc>
+    <loc>https://o3o3o.me/2014/04/13/wisdom/</loc>
     
     <lastmod>2019-01-10T11:19:29.491Z</lastmod>
     
@@ -30,7 +44,7 @@
   </url>
   
   <url>
-    <loc>https://o3o3o.me/2014/04/13/wisdom/</loc>
+    <loc>https://o3o3o.me/2014/03/09/what-is-cafe/</loc>
     
     <lastmod>2019-01-10T11:19:29.491Z</lastmod>
     
@@ -121,13 +135,6 @@
   </url>
   
   <url>
-    <loc>https://o3o3o.me/2016/02/24/gitlabci/</loc>
-    
-    <lastmod>2019-01-10T11:19:29.487Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://o3o3o.me/2018/12/29/graphql_notes/</loc>
     
     <lastmod>2019-01-10T11:19:29.487Z</lastmod>
@@ -163,14 +170,21 @@
   </url>
   
   <url>
-    <loc>https://o3o3o.me/2014/01/05/60/</loc>
+    <loc>https://o3o3o.me/2014/06/23/busy/</loc>
     
     <lastmod>2019-01-10T11:19:29.486Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://o3o3o.me/2014/01/18/79/</loc>
+    <loc>https://o3o3o.me/2014/01/04/comic/</loc>
+    
+    <lastmod>2019-01-10T11:19:29.486Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://o3o3o.me/2014/01/05/60/</loc>
     
     <lastmod>2019-01-10T11:19:29.486Z</lastmod>
     
@@ -184,14 +198,7 @@
   </url>
   
   <url>
-    <loc>https://o3o3o.me/2014/06/23/busy/</loc>
-    
-    <lastmod>2019-01-10T11:19:29.486Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://o3o3o.me/2014/01/04/comic/</loc>
+    <loc>https://o3o3o.me/2014/01/18/79/</loc>
     
     <lastmod>2019-01-10T11:19:29.486Z</lastmod>
     
