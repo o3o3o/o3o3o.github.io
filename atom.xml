@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://o3o3o.me/"/>
-  <updated>2019-12-14T04:09:44.714Z</updated>
+  <updated>2019-12-14T05:32:35.864Z</updated>
   <id>https://o3o3o.me/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="https://o3o3o.me/2019/12/14/nuisance-call/"/>
     <id>https://o3o3o.me/2019/12/14/nuisance-call/</id>
     <published>2019-12-14T03:28:24.000Z</published>
-    <updated>2019-12-14T04:09:44.714Z</updated>
+    <updated>2019-12-14T05:32:35.864Z</updated>
     
     <content type="html"><![CDATA[<p>电话本身是一种实时通信工具。<br>但在中国，当你买了房子，几乎每天，都会收到一大堆 装修公司的电话。</p><p>虽然这些推销方式，效率很低，但仍有些人仍”持之以恒”。 对于这些电话骚扰，现有的共享标记骚扰电话功能，其效果还是有限, 并不能完全屏蔽掉。</p><p>目前对于我来说最好的方法就是，设置陌生人拒接 + 讯飞来电助手处理。</p><h1 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h1><ol><li>手机飞行模式、关机、无信号时，可以通过助手，询问具体情况，保证不漏接。</li><li>让不紧急的事情，回归 邮件 异步通信模式。 </li></ol><h4 id="免费版"><a href="#免费版" class="headerlink" title="免费版:"></a>免费版:</h4><pre><code>* 主动挂断、长时间未接听、关机或者不在服务区时，自动转接到助手，助手之后发送谈话内容* 可选择助手声音* 对于熟人，可以自定义一个，回复内容</code></pre><h4 id="收费版"><a href="#收费版" class="headerlink" title="收费版"></a>收费版</h4><p>可以录制自己的声音，让助理使用自己的声音</p><h1 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h1><p>通过设置呼叫转移，对于未接电话，自动转移到设置的 “号码”, 由程序接听并与其语音聊天，将其通话的记录的结果，并以微信发到你手机上面。</p><h1 id="期望"><a href="#期望" class="headerlink" title="期望"></a>期望</h1><p>以后的未来场景可能是，直接在通信运营商 新增加一种: 未接来电智能助手业务，  如果用户没有接听，则自动与其交谈，将其内容 以 <code>文字+语音</code> 的 方式发到用户手机上。 </p><h1 id="如何使用？"><a href="#如何使用？" class="headerlink" title="如何使用？"></a>如何使用？</h1><p>没有其它App, 只有微信小程序，在微信里面搜索“ 讯飞助手“， 关注其公众账号（可以收到未接、来电提醒通知)。<br>另需要注意，需要按照程序里面的引导，设置呼叫转移, 可能会引起收费。</p><p><img src="/images/xf.png" alt="here"></p>]]></content>
     
@@ -36,11 +36,7 @@
     
     </summary>
     
-      <category term="杂感" scheme="https://o3o3o.me/categories/%E6%9D%82%E6%84%9F/"/>
-    
-      <category term="滋味生活" scheme="https://o3o3o.me/categories/%E6%9D%82%E6%84%9F/%E6%BB%8B%E5%91%B3%E7%94%9F%E6%B4%BB/"/>
-    
-      <category term="Tech" scheme="https://o3o3o.me/categories/%E6%9D%82%E6%84%9F/%E6%BB%8B%E5%91%B3%E7%94%9F%E6%B4%BB/Tech/"/>
+      <category term="Tech" scheme="https://o3o3o.me/categories/Tech/"/>
     
     
       <category term="骚扰电话" scheme="https://o3o3o.me/tags/%E9%AA%9A%E6%89%B0%E7%94%B5%E8%AF%9D/"/>
@@ -70,9 +66,9 @@
       <category term="Tech" scheme="https://o3o3o.me/categories/Tech/"/>
     
     
-      <category term="django" scheme="https://o3o3o.me/tags/django/"/>
-    
       <category term="graphql" scheme="https://o3o3o.me/tags/graphql/"/>
+    
+      <category term="django" scheme="https://o3o3o.me/tags/django/"/>
     
   </entry>
   
