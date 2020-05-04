@@ -11,19 +11,19 @@
     
 
     
-    <meta name="description" content="简述简单粗暴的来说:  GraphQL是API界的SQL查询语言。(好吧，真的是简述…:p) Restful API的痛点在工作中后端与前端同学协作中必不可少要打交道的东西。 在API的设计时，无论后端还是前端人员主导API设计，由于其本身受到思维定式(仅限于非全栈同学), 很难设计出一个双方都比较满意的API。 这是个常见的现象:在一个页面的操作，包含多个功能, 而且UI界面与功能在频繁的修改。">
+    <meta name="description" content="简述简单的说, GraphQL是API界的SQL查询语言。 Restful API的痛点API 是后端与前端同学 必定要打交道的东西。 而对于API的设计，由于后端与前端人员的思维限制(非全栈)，导致无论前端还是后端设计API, 很难让另一端满意, 需要多次交涉。 以下是一个常见的现象:在一个页面的操作，包含多个功能, 而且UI界面与功能在频繁的修改。12后端UB:  API应该是根据模块划分的，">
 <meta name="keywords" content="graphql">
 <meta property="og:type" content="article">
 <meta property="og:title" content="GraphQL 使用笔记">
 <meta property="og:url" content="https://o3o3o.me/2018/12/29/graphql_notes/index.html">
 <meta property="og:site_name" content="o3o3o">
-<meta property="og:description" content="简述简单粗暴的来说:  GraphQL是API界的SQL查询语言。(好吧，真的是简述…:p) Restful API的痛点在工作中后端与前端同学协作中必不可少要打交道的东西。 在API的设计时，无论后端还是前端人员主导API设计，由于其本身受到思维定式(仅限于非全栈同学), 很难设计出一个双方都比较满意的API。 这是个常见的现象:在一个页面的操作，包含多个功能, 而且UI界面与功能在频繁的修改。">
+<meta property="og:description" content="简述简单的说, GraphQL是API界的SQL查询语言。 Restful API的痛点API 是后端与前端同学 必定要打交道的东西。 而对于API的设计，由于后端与前端人员的思维限制(非全栈)，导致无论前端还是后端设计API, 很难让另一端满意, 需要多次交涉。 以下是一个常见的现象:在一个页面的操作，包含多个功能, 而且UI界面与功能在频繁的修改。12后端UB:  API应该是根据模块划分的，">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://o3o3o.me/images/graphql/graphql_demo.png">
-<meta property="og:updated_time" content="2019-01-10T11:19:29.487Z">
+<meta property="og:updated_time" content="2020-05-04T01:16:22.836Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="GraphQL 使用笔记">
-<meta name="twitter:description" content="简述简单粗暴的来说:  GraphQL是API界的SQL查询语言。(好吧，真的是简述…:p) Restful API的痛点在工作中后端与前端同学协作中必不可少要打交道的东西。 在API的设计时，无论后端还是前端人员主导API设计，由于其本身受到思维定式(仅限于非全栈同学), 很难设计出一个双方都比较满意的API。 这是个常见的现象:在一个页面的操作，包含多个功能, 而且UI界面与功能在频繁的修改。">
+<meta name="twitter:description" content="简述简单的说, GraphQL是API界的SQL查询语言。 Restful API的痛点API 是后端与前端同学 必定要打交道的东西。 而对于API的设计，由于后端与前端人员的思维限制(非全栈)，导致无论前端还是后端设计API, 很难让另一端满意, 需要多次交涉。 以下是一个常见的现象:在一个页面的操作，包含多个功能, 而且UI界面与功能在频繁的修改。12后端UB:  API应该是根据模块划分的，">
 <meta name="twitter:image" content="https://o3o3o.me/images/graphql/graphql_demo.png">
 <meta name="twitter:creator" content="@Wo3o3o">
 
@@ -100,15 +100,15 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目录</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#简述"><span class="toc-number">1.</span> <span class="toc-text">简述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Restful-API的痛点"><span class="toc-number">2.</span> <span class="toc-text">Restful API的痛点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#基础知识"><span class="toc-number">3.</span> <span class="toc-text">基础知识:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#GraphQL-Proxy"><span class="toc-number">4.</span> <span class="toc-text">GraphQL Proxy</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#安全、性能"><span class="toc-number">5.</span> <span class="toc-text">安全、性能:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Tips"><span class="toc-number">6.</span> <span class="toc-text">Tips:</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#IDE工具"><span class="toc-number">6.1.</span> <span class="toc-text">IDE工具:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#用scheme生成图的工具"><span class="toc-number">6.2.</span> <span class="toc-text">用scheme生成图的工具:</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Other-Links"><span class="toc-number">7.</span> <span class="toc-text">Other Links:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#TODO"><span class="toc-number">8.</span> <span class="toc-text">TODO:</span></a></li></ol>
+			<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#简述"><span class="toc-number">1.</span> <span class="toc-text">简述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Restful-API的痛点"><span class="toc-number">2.</span> <span class="toc-text">Restful API的痛点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#基础知识"><span class="toc-number">3.</span> <span class="toc-text">基础知识:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#IDE工具"><span class="toc-number">4.</span> <span class="toc-text">IDE工具:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#GraphQL-Proxy"><span class="toc-number">5.</span> <span class="toc-text">GraphQL Proxy</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#用scheme生成图的工具"><span class="toc-number">6.</span> <span class="toc-text">用scheme生成图的工具:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#安全"><span class="toc-number">7.</span> <span class="toc-text">安全:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#性能"><span class="toc-number">8.</span> <span class="toc-text">性能</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Other-Links"><span class="toc-number">9.</span> <span class="toc-text">Other Links:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#TODO"><span class="toc-number">10.</span> <span class="toc-text">TODO:</span></a></li></ol>
 		
 		</div>
 		
-		<h3 id="简述"><a href="#简述" class="headerlink" title="简述"></a>简述</h3><p>简单粗暴的来说:  GraphQL是API界的SQL查询语言。(好吧，真的是简述…:p)</p>
-<h3 id="Restful-API的痛点"><a href="#Restful-API的痛点" class="headerlink" title="Restful API的痛点"></a>Restful API的痛点</h3><p>在工作中后端与前端同学协作中必不可少要打交道的东西。 在API的设计时，无论后端还是前端人员主导API设计，由于其本身受到思维定式(仅限于非全栈同学), 很难设计出一个双方都比较满意的API。</p>
-<p>这是个常见的现象:<br>在一个页面的操作，包含多个功能, 而且UI界面与功能在频繁的修改。<br><figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">后端<span class="string">UB:</span>  API应该是根据模块划分的，一个功能一个API</span><br><span class="line">前端<span class="string">UC:</span>  一个页面应该一个请求, 不然请求效率太低...</span><br></pre></td></tr></table></figure></p>
+		<h3 id="简述"><a href="#简述" class="headerlink" title="简述"></a>简述</h3><p>简单的说, GraphQL是API界的SQL查询语言。</p>
+<h3 id="Restful-API的痛点"><a href="#Restful-API的痛点" class="headerlink" title="Restful API的痛点"></a>Restful API的痛点</h3><p>API 是后端与前端同学 必定要打交道的东西。 而对于API的设计，由于后端与前端人员的思维限制(非全栈)，导致无论前端还是后端设计API, 很难让另一端满意, 需要多次交涉。</p>
+<p>以下是一个常见的现象:<br>在一个页面的操作，包含多个功能, 而且UI界面与功能在频繁的修改。<br><figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">后端<span class="string">UB:</span>  API应该是根据模块划分的，一个功能一个API</span><br><span class="line">前端<span class="string">UC:</span>  一个页面应该一个请求, 不然请求效率太低...</span><br></pre></td></tr></table></figure></p>
 <p>这时，有的人要说了，可以弄一个API gateway, 聚合的所有的API，可做这些可是苦力活。</p>
-<p>在经历了这个过程后，后期我们引入了GrapqhQL, 终于解决沟通API而出现的问题。</p>
+<p>这样的情况，我们也经历了一段时间，后期我们引入了GrapqhQL, 降低了不少当功能成本。</p>
 <p><strong>GraphQL的特点</strong>:</p>
 <ul>
 <li>UI 变化频繁，server API 改动变少, Client根据自己的需求，组织语句去查询</li>
@@ -126,27 +126,25 @@
 <li><a href="http://docs.graphene-python.org/projects/django/en/latest/tutorial-plain/" target="_blank" rel="noopener">django graphql</a></li>
 </ul>
 <p>e.g:<br><img src="/images/graphql/graphql_demo.png" alt="demo"><br>用GraphiQL访问: <a href="https://api.graph.cool/simple/v1/cixos23120m0n0173veiiwrjr" target="_blank" rel="noopener">https://api.graph.cool/simple/v1/cixos23120m0n0173veiiwrjr</a><br><figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">query queryTest&#123;</span><br><span class="line">  allUsers(orderBy:id_DESC, <span class="keyword">first</span>:<span class="number">2</span> )&#123;</span><br><span class="line">    <span class="comment">## Fragment example</span></span><br><span class="line">    ...UserField</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment"># alias example</span></span><br><span class="line">  Movies: allMovies(<span class="keyword">first</span>:<span class="number">1</span>)&#123;</span><br><span class="line">    actors(<span class="keyword">first</span>:<span class="number">2</span>)&#123;</span><br><span class="line">      <span class="built_in">name</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"><span class="comment"># node usage</span></span><br><span class="line">  node(<span class="built_in">id</span>:<span class="string">"cj21vcky017ot0112ohc1bid8"</span>)&#123;</span><br><span class="line">    <span class="built_in">id</span></span><br><span class="line">    ... <span class="keyword">on</span> User&#123;</span><br><span class="line">      <span class="built_in">name</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">#Fragment: UserField with spefied field</span></span><br><span class="line">fragment UserField <span class="keyword">on</span> User&#123;</span><br><span class="line"> 	<span class="built_in">id</span></span><br><span class="line">  <span class="built_in">name</span></span><br><span class="line">  createdAt</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">mutation createUser&#123;</span><br><span class="line">  createUser(<span class="built_in">name</span>:<span class="string">"testUser"</span>) &#123;</span><br><span class="line">    <span class="built_in">id</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="IDE工具"><a href="#IDE工具" class="headerlink" title="IDE工具:"></a>IDE工具:</h3><p>目前几个工具用的最多的还是GraphiQL</p>
+<ul>
+<li><a href="https://insomnia.rest/blog/introducing-graphql/" target="_blank" rel="noopener">insomnia</a> 没有postman好用, 可惜postman目前<a href="https://github.com/postmanlabs/postman-app-support/issues/1669" target="_blank" rel="noopener">还支持不了..</a></li>
+<li><a href="https://electronjs.org/apps/graphiql" target="_blank" rel="noopener">GraphiQL</a></li>
+<li><a href="https://github.com/graphcool/graphql-playground" target="_blank" rel="noopener">graphql-playground</a><br>mac可以直接执行安装: <code>brew cask install graphql-playground</code></li>
+</ul>
 <h3 id="GraphQL-Proxy"><a href="#GraphQL-Proxy" class="headerlink" title="GraphQL Proxy"></a>GraphQL Proxy</h3><p>GraphQL代理， 对于client端，只暴露一个接口, 后端多个结点，结点间可以互相访问。<a href="https://labs.getninjas.com.br/sharing-data-in-a-microservices-architecture-using-graphql-97db59357602" target="_blank" rel="noopener">例子</a></p>
 <ul>
 <li>把remote endpoints merge在一起<a href="https://www.apollographql.com/docs/graphql-tools/schema-stitching.html#mergeSchemas" target="_blank" rel="noopener">Graphql merge the subschema</a></li>
 <li><a href="https://www.apollographql.com/docs/graphql-tools/schema-delegation.html" target="_blank" rel="noopener">多个subschema之间嵌套查询</a></li>
 <li><a href="https://blog.graph.cool/how-do-graphql-remote-schemas-work-7118237c89d7" target="_blank" rel="noopener">How do grapnel remote schemes work</a></li>
 </ul>
-<h3 id="安全、性能"><a href="#安全、性能" class="headerlink" title="安全、性能:"></a>安全、性能:</h3><p> 数据的安全问题:  使用GraphQL需要注意, 上线系统，关闭 <code>__schema</code>的查询,避免被脱库</p>
-<p><strong>性能</strong>: </p>
-<ul>
-<li>一次请求里面，调用多次同一对象的情况(N+1问题)，可以使用<a href="https://docs.graphene-python.org/en/latest/execution/dataloader/" target="_blank" rel="noopener">DataLoader</a>来缓存</li>
-<li>因为python中使用graphQL, 运行时需要处理性能问题。python构造字典时所性能会拖慢，可以在类里面考虑添加<code>__slots__</code></li>
-</ul>
-<h3 id="Tips"><a href="#Tips" class="headerlink" title="Tips:"></a>Tips:</h3><h4 id="IDE工具"><a href="#IDE工具" class="headerlink" title="IDE工具:"></a>IDE工具:</h4><p>目前几个工具用的最多的还是GraphiQL</p>
-<ul>
-<li><a href="https://insomnia.rest/blog/introducing-graphql/" target="_blank" rel="noopener">insomnia</a> 没有postman好用, 可惜postman目前<a href="https://github.com/postmanlabs/postman-app-support/issues/1669" target="_blank" rel="noopener">还支持不了..</a></li>
-<li><a href="https://electronjs.org/apps/graphiql" target="_blank" rel="noopener">GraphiQL</a></li>
-<li><a href="https://github.com/graphcool/graphql-playground" target="_blank" rel="noopener">graphql-playground</a><br>mac可以直接执行安装: <code>brew cask install graphql-playground</code></li>
-</ul>
-<h4 id="用scheme生成图的工具"><a href="#用scheme生成图的工具" class="headerlink" title="用scheme生成图的工具:"></a>用scheme生成图的工具:</h4><ul>
+<h3 id="用scheme生成图的工具"><a href="#用scheme生成图的工具" class="headerlink" title="用scheme生成图的工具:"></a>用scheme生成图的工具:</h3><ul>
 <li><a href="https://github.com/APIs-guru/graphql-voyager" target="_blank" rel="noopener">graphql-voyage</a></li>
 <li><a href="http://nathanrandal.com/graphql-visualizer/" target="_blank" rel="noopener">graphql-visualizer</a></li>
+</ul>
+<h3 id="安全"><a href="#安全" class="headerlink" title="安全:"></a>安全:</h3><p> 数据的安全问题:  使用GraphQL需要注意, 上线系统，关闭 <code>__schema</code>的查询,避免 pentester 轻易拿到结构数据<br><a href="https://github.com/graphql-python/graphene/issues/907" target="_blank" rel="noopener">issue</a></p>
+<h3 id="性能"><a href="#性能" class="headerlink" title="性能"></a>性能</h3><ul>
+<li>性能问题: 因为python中使用graphQL, 运行时需要处理性能问题。python构造字典时所性能会拖慢，可以在类里面考虑添加<code>__slots__</code></li>
 </ul>
 <h3 id="Other-Links"><a href="#Other-Links" class="headerlink" title="Other Links:"></a>Other Links:</h3><ul>
 <li><a href="https://github.com/chentsulin/awesome-graphql" target="_blank" rel="noopener">awesome graphql</a></li>
@@ -225,7 +223,7 @@
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目录</strong>
  
- <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#简述"><span class="toc-number">1.</span> <span class="toc-text">简述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Restful-API的痛点"><span class="toc-number">2.</span> <span class="toc-text">Restful API的痛点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#基础知识"><span class="toc-number">3.</span> <span class="toc-text">基础知识:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#GraphQL-Proxy"><span class="toc-number">4.</span> <span class="toc-text">GraphQL Proxy</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#安全、性能"><span class="toc-number">5.</span> <span class="toc-text">安全、性能:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Tips"><span class="toc-number">6.</span> <span class="toc-text">Tips:</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#IDE工具"><span class="toc-number">6.1.</span> <span class="toc-text">IDE工具:</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#用scheme生成图的工具"><span class="toc-number">6.2.</span> <span class="toc-text">用scheme生成图的工具:</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Other-Links"><span class="toc-number">7.</span> <span class="toc-text">Other Links:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#TODO"><span class="toc-number">8.</span> <span class="toc-text">TODO:</span></a></li></ol>
+ <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#简述"><span class="toc-number">1.</span> <span class="toc-text">简述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Restful-API的痛点"><span class="toc-number">2.</span> <span class="toc-text">Restful API的痛点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#基础知识"><span class="toc-number">3.</span> <span class="toc-text">基础知识:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#IDE工具"><span class="toc-number">4.</span> <span class="toc-text">IDE工具:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#GraphQL-Proxy"><span class="toc-number">5.</span> <span class="toc-text">GraphQL Proxy</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#用scheme生成图的工具"><span class="toc-number">6.</span> <span class="toc-text">用scheme生成图的工具:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#安全"><span class="toc-number">7.</span> <span class="toc-text">安全:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#性能"><span class="toc-number">8.</span> <span class="toc-text">性能</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Other-Links"><span class="toc-number">9.</span> <span class="toc-text">Other Links:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#TODO"><span class="toc-number">10.</span> <span class="toc-text">TODO:</span></a></li></ol>
  
   </div>
 
@@ -349,8 +347,6 @@
 		
 			
 				<li><a href="/tags/tmux/" title="tmux">tmux<sup>1</sup></a></li>
-			
-		
 			
 		
 		</ul>
