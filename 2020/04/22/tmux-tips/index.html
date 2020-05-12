@@ -12,14 +12,14 @@
 
     
     <meta name="description" content="tmux 入门入门教程请参考:  RuanYiFeng写的文档 Danielmiessler’s tutorial  进阶以前折腾tmux了很多特性，经过最近这几年的使用，留下了使用频率最高、最有用的功能配置。 主要包括:  alias 简化 敲入命令 在tmux中，使用vim快捷键 使用tmux的会话保存、恢复功能, 恢复工作环境  简化命令安装oh-my-zsh, .zshrc中配置plugi">
-<meta name="keywords" content="tmux,tool">
+<meta name="keywords" content="tmux tool">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Tmux Tips">
 <meta property="og:url" content="https://o3o3o.me/2020/04/22/tmux-tips/index.html">
 <meta property="og:site_name" content="o3o3o">
 <meta property="og:description" content="tmux 入门入门教程请参考:  RuanYiFeng写的文档 Danielmiessler’s tutorial  进阶以前折腾tmux了很多特性，经过最近这几年的使用，留下了使用频率最高、最有用的功能配置。 主要包括:  alias 简化 敲入命令 在tmux中，使用vim快捷键 使用tmux的会话保存、恢复功能, 恢复工作环境  简化命令安装oh-my-zsh, .zshrc中配置plugi">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-04-22T05:07:02.209Z">
+<meta property="og:updated_time" content="2020-05-12T04:05:35.917Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Tmux Tips">
 <meta name="twitter:description" content="tmux 入门入门教程请参考:  RuanYiFeng写的文档 Danielmiessler’s tutorial  进阶以前折腾tmux了很多特性，经过最近这几年的使用，留下了使用频率最高、最有用的功能配置。 主要包括:  alias 简化 敲入命令 在tmux中，使用vim快捷键 使用tmux的会话保存、恢复功能, 恢复工作环境  简化命令安装oh-my-zsh, .zshrc中配置plugi">
@@ -127,20 +127,20 @@
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>配置自动保存，<code>.tmux.conf</code> 中添加:</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># List of plugins</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">set</span> -g @tpm_plugins <span class="string">'            \</span></span><br><span class="line"><span class="string">tmux-plugins/tpm               \</span></span><br><span class="line"><span class="string">tmux-plugins/tmux-continuum    \</span></span><br><span class="line"><span class="string">tmux-plugins/tmux-resurrect    \</span></span><br><span class="line"><span class="string">'</span></span><br><span class="line">run-shell <span class="string">'~/.tmux/plugins/tpm/tpm'</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">set</span> -g @continuum-save-interval <span class="string">'1440'</span></span><br><span class="line"><span class="built_in">set</span> -g @continuum-restore <span class="string">'on'</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># List of plugins</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">set</span> -g @tpm_plugins <span class="string">'            \</span></span><br><span class="line"><span class="string">tmux-plugins/tpm               \</span></span><br><span class="line"><span class="string">tmux-plugins/tmux-continuum    \</span></span><br><span class="line"><span class="string">tmux-plugins/tmux-resurrect    \</span></span><br><span class="line"><span class="string">'</span></span><br><span class="line">run-shell <span class="string">'~/.tmux/plugins/tpm/tpm'</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">set</span> -g @plugin <span class="string">'tmux-plugins/tmux-resurrect'</span></span><br><span class="line"><span class="built_in">set</span> -g @continuum-save-interval <span class="string">'1440'</span></span><br></pre></td></tr></table></figure>
 </li>
 </ol>
 <p>其中，<code>continuum-save-interval</code>为设置自动保存频率为一天一次，根据我以往使用经验，<code>continuum-save-interval</code>设置太小时，频繁的保存动作会导致tmux使用卡顿。</p>
 <ol start="3">
 <li><p>重载配置, 使用其生效</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tmux <span class="built_in">source</span>-file ~/.tmux.conf</span><br></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tmux new -d -s delete-me &amp;&amp; tmux run-shell ~/.tmux/plugins/tpm/scripts/install_plugins.sh &amp;&amp; tmux <span class="built_in">source</span>-file ~/.tmux.conf &amp;&amp; tmux <span class="built_in">kill</span>-session -t delete-me</span><br></pre></td></tr></table></figure>
 </li>
-<li><p><strong>会话快速恢复</strong><br>工作一段时间，相信你会打开很多tmux session，但有时间电脑不得不重启(系统更新之类)</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">alias</span> ,tmuxr=<span class="string">'tmux new -d -s delete-me &amp;&amp; tmux run-shell ~/.tmux/plugins/tmux-resurrect/scripts/restore.sh &amp;&amp; tmux kill-session -t delete-me &amp;&amp; tmux attach || tmux attach'</span></span><br></pre></td></tr></table></figure>
+<li><p><strong>会话快速恢复</strong><br>虽然 <code>continuum-restore</code> 选项支持自动恢复会话，但由于其只支持打开一个session时才创建，也就是为了恢复，你必须要创建一个临时的session，恢复完会话后，才删除。<br>所以以下是一个alias，用起来更方便一点, 请直接添加到 你的<code>.zshrc</code>:</p>
 </li>
 </ol>
-<p>配置了以上命令后，下次你重启电脑后，只需要 执行下,tmuxr 自动恢复会话</p>
-<h4 id="Tips"><a href="#Tips" class="headerlink" title="Tips"></a>Tips</h4><p>如果因为未知原因，之前的会话没有保存下来，可以去<code>~/.tmux/resurrect</code>目前，手动建立软连接到<code>last</code>文件。<br><figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="keyword">ls</span> ~<span class="string">/.tmux/resurrect</span></span><br><span class="line">last            tmux_resurrect_2020-03-28T20<span class="function">:21</span><span class="function">:58.txt</span> <span class="string">....</span></span><br></pre></td></tr></table></figure></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">alias</span> ,tmuxr=<span class="string">'tmux new -d -s delete-me &amp;&amp; tmux run-shell ~/.tmux/plugins/tmux-resurrect/scripts/restore.sh &amp;&amp; tmux kill-session -t delete-me &amp;&amp; tmux attach || tmux attach'</span></span><br></pre></td></tr></table></figure>
+<p>下次你重启电脑后，只需要 执行下<code>,tmuxr</code> 自动恢复会话</p>
+<h4 id="Tips"><a href="#Tips" class="headerlink" title="Tips"></a>Tips</h4><p>如果因为未知原因，之前的会话没有保存下来，可以去<code>~/.tmux/resurrect</code>目前，手动建立软连接到<code>last</code>文件<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ln -s tmux_resurrect_2020-02-26T15:27:02.txt last</span><br></pre></td></tr></table></figure></p>
 <h3 id="Ubuntu环境快速安装"><a href="#Ubuntu环境快速安装" class="headerlink" title="Ubuntu环境快速安装"></a>Ubuntu环境快速安装</h3><p>如果是在ubuntu环境，可以fork <a href="https://github.com/o3o3o/dots" target="_blank" rel="noopener">mydots</a>，快速安装zsh, tmux, docker等基本工具</p>
   
 	</div>
@@ -155,7 +155,7 @@
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/tmux/">tmux</a><a href="/tags/tool/">tool</a>
+  <span></span> <a href="/tags/tmux-tool/">tmux tool</a>
   </div>
 
 </div>
@@ -261,10 +261,6 @@
 			
 		
 			
-				<li><a href="/tags/tool/" title="tool">tool<sup>2</sup></a></li>
-			
-		
-			
 				<li><a href="/tags/太极拳/" title="太极拳">太极拳<sup>1</sup></a></li>
 			
 		
@@ -325,7 +321,13 @@
 			
 		
 			
-				<li><a href="/tags/tmux/" title="tmux">tmux<sup>1</sup></a></li>
+				<li><a href="/tags/tool/" title="tool">tool<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/tmux-tool/" title="tmux tool">tmux tool<sup>1</sup></a></li>
+			
+		
 			
 		
 		</ul>
@@ -347,7 +349,7 @@
   <div class="tagcloudlist">
     <p class="asidetitle">标签云</p>
     <div class="tagcloudlist clearfix">
-       <a href="/tags/cafe/" style="font-size: 20px;">cafe</a> <a href="/tags/ci/" style="font-size: 10px;">ci</a> <a href="/tags/django/" style="font-size: 10px;">django</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/gitlab/" style="font-size: 10px;">gitlab</a> <a href="/tags/graphql/" style="font-size: 20px;">graphql</a> <a href="/tags/job/" style="font-size: 10px;">job</a> <a href="/tags/rss/" style="font-size: 10px;">rss</a> <a href="/tags/tmux/" style="font-size: 10px;">tmux</a> <a href="/tags/tool/" style="font-size: 20px;">tool</a> <a href="/tags/太极拳/" style="font-size: 10px;">太极拳</a> <a href="/tags/小记/" style="font-size: 10px;">小记</a> <a href="/tags/星座/" style="font-size: 10px;">星座</a> <a href="/tags/沈阳小生活/" style="font-size: 10px;">沈阳小生活</a> <a href="/tags/油画/" style="font-size: 10px;">油画</a> <a href="/tags/活动/" style="font-size: 10px;">活动</a> <a href="/tags/讯飞来电助手/" style="font-size: 10px;">讯飞来电助手</a> <a href="/tags/诗/" style="font-size: 10px;">诗</a> <a href="/tags/骚扰电话/" style="font-size: 10px;">骚扰电话</a>
+       <a href="/tags/cafe/" style="font-size: 20px;">cafe</a> <a href="/tags/ci/" style="font-size: 10px;">ci</a> <a href="/tags/django/" style="font-size: 10px;">django</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/gitlab/" style="font-size: 10px;">gitlab</a> <a href="/tags/graphql/" style="font-size: 20px;">graphql</a> <a href="/tags/job/" style="font-size: 10px;">job</a> <a href="/tags/rss/" style="font-size: 10px;">rss</a> <a href="/tags/tmux-tool/" style="font-size: 10px;">tmux tool</a> <a href="/tags/tool/" style="font-size: 10px;">tool</a> <a href="/tags/太极拳/" style="font-size: 10px;">太极拳</a> <a href="/tags/小记/" style="font-size: 10px;">小记</a> <a href="/tags/星座/" style="font-size: 10px;">星座</a> <a href="/tags/沈阳小生活/" style="font-size: 10px;">沈阳小生活</a> <a href="/tags/油画/" style="font-size: 10px;">油画</a> <a href="/tags/活动/" style="font-size: 10px;">活动</a> <a href="/tags/讯飞来电助手/" style="font-size: 10px;">讯飞来电助手</a> <a href="/tags/诗/" style="font-size: 10px;">诗</a> <a href="/tags/骚扰电话/" style="font-size: 10px;">骚扰电话</a>
     </div>
   </div>
 
