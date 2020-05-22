@@ -1,0 +1,631 @@
+
+ <!DOCTYPE HTML>
+<html lang="en,zh-CN,default">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+  
+    <title>Restore Ripple By Secret Key | o3o3o</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="o3o3o">
+    
+
+    
+    <meta name="description" content="BackgroundI have cleaned my old files recently and found a ripple secret file. And the current price much higher than in 2013.I finally found it back through a bit of work. And now I write it here for">
+<meta name="keywords" content="XRP,ripple">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Restore Ripple By Secret Key">
+<meta property="og:url" content="https://o3o3o.me/2020/05/22/restore-ripple-by-secret-key/index.html">
+<meta property="og:site_name" content="o3o3o">
+<meta property="og:description" content="BackgroundI have cleaned my old files recently and found a ripple secret file. And the current price much higher than in 2013.I finally found it back through a bit of work. And now I write it here for">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2020-05-22T11:30:49.055Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Restore Ripple By Secret Key">
+<meta name="twitter:description" content="BackgroundI have cleaned my old files recently and found a ripple secret file. And the current price much higher than in 2013.I finally found it back through a bit of work. And now I write it here for">
+<meta name="twitter:creator" content="@Wo3o3o">
+
+    
+    <link rel="alternative" href="/atom.xml" title="o3o3o" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.svg" alt="o3o3o" title="o3o3o"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="o3o3o">o3o3o</a></h1>
+				<h2 class="blog-motto">点滴记录</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">主页</a></li>
+					
+						<li><a href="/categories/滋味生活">滋味生活</a></li>
+					
+						<li><a href="/archives">归档</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="/search/index.html" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" autocomplete="off" name="q" maxlength="20" placeholder="搜索" />
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2020/05/22/restore-ripple-by-secret-key/" title="Restore Ripple By Secret Key" itemprop="url">Restore Ripple By Secret Key</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="o3o3o" target="_blank" itemprop="author">o3o3o</a>
+		
+  <p class="article-time">
+    <time datetime="2020-05-22T10:02:22.000Z" itemprop="datePublished"> 发表于 2020-05-22</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Background"><span class="toc-number">1.</span> <span class="toc-text">Background</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Generate-Ripple-address-public-amp-private-key"><span class="toc-number">2.</span> <span class="toc-text">Generate Ripple address, public &amp; private key</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Hold-or-sell-your-ripple"><span class="toc-number">3.</span> <span class="toc-text">Hold or sell your ripple</span></a></li></ol>
+		
+		</div>
+		
+		<h2 id="Background"><a href="#Background" class="headerlink" title="Background"></a>Background</h2><p>I have cleaned my old files recently and found a ripple secret file. And the current price much higher than in 2013.<br>I finally found it back through a bit of work. And now I write it here for someone who has a similar experience with me.<br>I remembered that I registered an account at <a href="https://www.worldcommunitygrid.org/" target="_blank" rel="noopener">WCG</a> (World Community Grid), downloaded BOINC client, and joined the Ripple Labs Team. Run BOINC on my PC then Ripple Labs would give you XRP depends on the points you got with the hash rate.<br>However, In April 2014, Ripple Labs discontinued to send XRP with WCG due to the WCG revamp, difficulty getting points and combined with uneven distribution and hacking.<br>Okay, let’s go to the main point. Our goal:</p>
+<ol>
+<li>Check how many XRP you have by your ripple secret key.</li>
+<li><p>How to import to your wallet</p>
+<h2 id="Generate-Ripple-address-public-amp-private-key"><a href="#Generate-Ripple-address-public-amp-private-key" class="headerlink" title="Generate Ripple address, public &amp; private key"></a>Generate Ripple address, public &amp; private key</h2><p>You would have a file which contains content like below when you registered your account at ripple.com:</p>
+<figure class="highlight gauss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Secret Account <span class="built_in">key</span>:</span><br><span class="line">shqa2QYiJ1wcizZdV3WeiLeL7L33d</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Run code locally (<strong>Recommend</strong>)<br>Depends:</p>
+</li>
+</ol>
+<ul>
+<li>node</li>
+<li><code>npm install ripple-keypairs</code><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> r = <span class="built_in">require</span>(<span class="string">"ripple-keypairs"</span>)</span><br><span class="line"><span class="keyword">const</span> keypair = r.deriveKeypair(<span class="string">"shqa2QYiJ1wcizZdV3WeiLeL7L33d"</span>) <span class="comment">// replace shqa2QYiJ1wcizZdV3WeiLeL7L33d with YOUR SECRET KEY</span></span><br><span class="line"><span class="keyword">const</span> publicAddress = r.deriveAddress(keypair.publicKey)</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'publicAddress: '</span>, publicAddress)</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'keyPair: '</span>, keypair)</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<ol start="2">
+<li>If you know you hadn’t too much XRP and just want to save time and can tolerate some risk (<strong>NOTE</strong>: Your secret key might be leaked). Go <a href="(https://repl.it/@michaelwang14/PeskyAcrobaticLinuxpc">here</a> replace your secret key in code and click run, and transfer your balance to a new safe wallet as soon as possible.<br>Result like:<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">publicAddress: rBHv7wzKgbWFyRvnFRDGAaiRmuQiZGEr4j</span><br><span class="line">keyPair: &#123;</span><br><span class="line">privateKey: <span class="string">'007D0FD37D0BDFC9FFF22C4B738F8E0B48D7C05A6F8E42651A3B9153F4B18A644E'</span>,</span><br><span class="line">publicKey: <span class="string">'02C6965ECA0D64FD78114B361380D57289BB25EA2E299FE66381B23BDA5899919A'</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="Hold-or-sell-your-ripple"><a href="#Hold-or-sell-your-ripple" class="headerlink" title="Hold or sell your ripple"></a>Hold or sell your ripple</h2><ol>
+<li>First, you need to know how much ripple you have:<br>You can go to <code>https://bithomp.com/{YourPublicAddress}</code> ( replace<code>{YourPublicAddress}</code> with your pubclicAddress you got at last step.) Here my example link is: <a href="https://bithomp.com/rBHv7wzKgbWFyRvnFRDGAaiRmuQiZGEr4j" target="_blank" rel="noopener">https://bithomp.com/rBHv7wzKgbWFyRvnFRDGAaiRmuQiZGEr4j</a><br>Click it and you will get your ripple account infomation which contains balance and transaction history.</li>
+</ol>
+<ol start="2">
+<li>You need to find a wallet to hold it or sell it by transferring it to an exchange to convert to Bitcoin<br>After I read <a href="https://cointelegraph.com/ripple-101/ripple-xrp-wallets-for-beginners" target="_blank" rel="noopener">the article about ripple wallets recommendation</a><br>I just choose <a href="https://exarpy.com/" target="_blank" rel="noopener">exarpy</a> which is a web wallet to hold XRP.</li>
+</ol>
+<p>If you want to transfer your XRP to Bitcoin or other coins just go to Exchange like <a href="https://www.binance.com/cn/register?ref=TPMJHP1G" target="_blank" rel="noopener">Binance</a>, <a href="https://www.bitfinex.com/?refcode=dECCgNzKs" target="_blank" rel="noopener">Bitfnex</a>…</p>
+<p><strong>NOTE</strong>:</p>
+<ul>
+<li>You may need to know there are 20 XRP will be reserved for every XRP account due to security considerations. </li>
+</ul>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/Tech/">Tech</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/XRP/">XRP</a><a href="/tags/ripple/">ripple</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://o3o3o.me/2020/05/22/restore-ripple-by-secret-key/" data-title="Restore Ripple By Secret Key | o3o3o" data-tsina="2717757412" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/2020/04/22/tmux-tips/"  title="Tmux Tips">
+ <strong>下一篇：</strong><br/> 
+ <span>Tmux Tips
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+<section id="comments" class="comment">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Background"><span class="toc-number">1.</span> <span class="toc-text">Background</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Generate-Ripple-address-public-amp-private-key"><span class="toc-number">2.</span> <span class="toc-text">Generate Ripple address, public &amp; private key</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Hold-or-sell-your-ripple"><span class="toc-number">3.</span> <span class="toc-text">Hold or sell your ripple</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/Tech/" title="Tech">Tech<sup>6</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/Uncategorized/" title="Uncategorized">Uncategorized<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/comic/" title="comic">comic<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/job/" title="job">job<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/工具/" title="工具">工具<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/杂感/" title="杂感">杂感<sup>7</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/滋味生活/" title="滋味生活">滋味生活<sup>9</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/graphql/" title="graphql">graphql<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/cafe/" title="cafe">cafe<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/tool/" title="tool">tool<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/太极拳/" title="太极拳">太极拳<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/小记/" title="小记">小记<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/django/" title="django">django<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/gitlab/" title="gitlab">gitlab<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ci/" title="ci">ci<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/git/" title="git">git<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/沈阳小生活/" title="沈阳小生活">沈阳小生活<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/骚扰电话/" title="骚扰电话">骚扰电话<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/讯飞来电助手/" title="讯飞来电助手">讯飞来电助手<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/油画/" title="油画">油画<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/活动/" title="活动">活动<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/星座/" title="星座">星座<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/诗/" title="诗">诗<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/XRP/" title="XRP">XRP<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ripple/" title="ripple">ripple<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/job/" title="job">job<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/rss/" title="rss">rss<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+  
+  <div class="tagcloudlist">
+    <p class="asidetitle">标签云</p>
+    <div class="tagcloudlist clearfix">
+       <a href="/tags/XRP/" style="font-size: 10px;">XRP</a> <a href="/tags/cafe/" style="font-size: 20px;">cafe</a> <a href="/tags/ci/" style="font-size: 10px;">ci</a> <a href="/tags/django/" style="font-size: 10px;">django</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/gitlab/" style="font-size: 10px;">gitlab</a> <a href="/tags/graphql/" style="font-size: 20px;">graphql</a> <a href="/tags/job/" style="font-size: 10px;">job</a> <a href="/tags/ripple/" style="font-size: 10px;">ripple</a> <a href="/tags/rss/" style="font-size: 10px;">rss</a> <a href="/tags/tmux/" style="font-size: 10px;">tmux</a> <a href="/tags/tool/" style="font-size: 20px;">tool</a> <a href="/tags/太极拳/" style="font-size: 10px;">太极拳</a> <a href="/tags/小记/" style="font-size: 10px;">小记</a> <a href="/tags/星座/" style="font-size: 10px;">星座</a> <a href="/tags/沈阳小生活/" style="font-size: 10px;">沈阳小生活</a> <a href="/tags/油画/" style="font-size: 10px;">油画</a> <a href="/tags/活动/" style="font-size: 10px;">活动</a> <a href="/tags/讯飞来电助手/" style="font-size: 10px;">讯飞来电助手</a> <a href="/tags/诗/" style="font-size: 10px;">诗</a> <a href="/tags/骚扰电话/" style="font-size: 10px;">骚扰电话</a>
+    </div>
+  </div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p>  <br/>
+			我的足迹~</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/2717757412" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		<a href="https://github.com/o3o3o" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		<a href="http://stackoverflow.com/users/3055831" target="_blank" class="icon-stack-overflow" title="stackoverflow"></a>
+		
+		
+		<a href="https://twitter.com/Wo3o3o" target="_blank" class="icon-twitter" title="twitter"></a>
+		
+		
+		
+		
+		<a href="https://www.douban.com/people/53872589" target="_blank" class="icon-douban" title="豆瓣"></a>
+		
+		
+		
+		
+	</div>
+			
+		
+				<div class="cc-license">
+          <a href="http://creativecommons.org/licenses/by/4.0" class="cc-opacity" target="_blank">
+            <img src="/img/cc-by.svg" alt="Creative Commons" />
+          </a>
+        </div>
+    
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2020 
+		
+		<a href="/about" target="_blank" title="o3o3o">o3o3o</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+<script type="text/javascript">
+
+var disqus_shortname = 'o3o3o';
+
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());
+</script>
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-74257228-1', 'o3o3o.github.io');  
+ga('send', 'pageview');
+</script>
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?f2a722fffb25471f54f785a805762963";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

@@ -1,6 +1,6 @@
 
  <!DOCTYPE HTML>
-<html lang="zh-CN,default,default">
+<html lang="en,zh-CN,default">
 <head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="UTF-8">
   
@@ -18,8 +18,8 @@
 <meta property="og:url" content="https://o3o3o.me/2019/07/13/django-ratelimit-for-graphql/index.html">
 <meta property="og:site_name" content="o3o3o">
 <meta property="og:description" content="We cannot use django-ratelimit directly for graphql resolve method.So I modified rateilmit decorator based on the original code, to support the key format like: gql:xxxx ratelimit_exampleview raw12345">
-<meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-07-13T07:14:23.241Z">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2020-05-22T10:21:38.854Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Django ratelimit for Graphql">
 <meta name="twitter:description" content="We cannot use django-ratelimit directly for graphql resolve method.So I modified rateilmit decorator based on the original code, to support the key format like: gql:xxxx ratelimit_exampleview raw12345">
@@ -51,7 +51,7 @@
 				<h1 class="site-name"><a href="/" title="o3o3o">o3o3o</a></h1>
 				<h2 class="blog-motto">点滴记录</h2>
 			</div>
-			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
 			</a></div>
 			<nav class="animated">
 				<ul>
@@ -67,7 +67,7 @@
  					
 					<form class="search" action="/search/index.html" method="get" accept-charset="utf-8">
 						<label>Search</label>
-						<input type="search" id="search" autocomplete="off" name="q" maxlength="20" placeholder="Search" />
+						<input type="search" id="search" autocomplete="off" name="q" maxlength="20" placeholder="搜索" />
 					</form>
 					
 					</li>
@@ -89,14 +89,14 @@
 		<a href="/about" title="o3o3o" target="_blank" itemprop="author">o3o3o</a>
 		
   <p class="article-time">
-    <time datetime="2019-07-13T01:27:45.000Z" itemprop="datePublished"> Published 2019-07-13</time>
+    <time datetime="2019-07-13T01:27:45.000Z" itemprop="datePublished"> 发表于 2019-07-13</time>
     
   </p>
 </header>
 	<div class="article-content">
 		
 		<div id="toc" class="toc-article">
-			<strong class="toc-title">Contents</strong>
+			<strong class="toc-title">文章目录</strong>
 		
 			
 		
@@ -167,26 +167,26 @@
 </section>
 
 </div>  
-      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
 
   <div id="toc" class="toc-aside">
-  <strong class="toc-title">Contents</strong>
+  <strong class="toc-title">文章目录</strong>
  
  
  
   </div>
 
 <div id="asidepart">
-<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
 <aside class="clearfix">
 
   
 <div class="categorieslist">
-	<p class="asidetitle">Categories</p>
+	<p class="asidetitle">分类</p>
 		<ul>
 		
 		  
-			<li><a href="/categories/Tech/" title="Tech">Tech<sup>5</sup></a></li>
+			<li><a href="/categories/Tech/" title="Tech">Tech<sup>6</sup></a></li>
 		  
 		
 		  
@@ -219,7 +219,7 @@
 
   
 <div class="tagslist">
-	<p class="asidetitle">Tags</p>
+	<p class="asidetitle">标签</p>
 		<ul class="clearfix">
 		
 			
@@ -287,6 +287,14 @@
 			
 		
 			
+				<li><a href="/tags/XRP/" title="XRP">XRP<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ripple/" title="ripple">ripple<sup>1</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/job/" title="job">job<sup>1</sup></a></li>
 			
 		
@@ -294,30 +302,26 @@
 				<li><a href="/tags/rss/" title="rss">rss<sup>1</sup></a></li>
 			
 		
-			
-				<li><a href="/tags/tmux/" title="tmux">tmux<sup>1</sup></a></li>
-			
-		
 		</ul>
 </div>
 
 
   <div class="linkslist">
-  <p class="asidetitle">Links</p>
+  <p class="asidetitle">友情链接</p>
     <ul>
         
     </ul>
 </div>
 
   <div class="rsspart">
-	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
 </div>
 
   
   <div class="tagcloudlist">
-    <p class="asidetitle">Tag Cloud</p>
+    <p class="asidetitle">标签云</p>
     <div class="tagcloudlist clearfix">
-       <a href="/tags/cafe/" style="font-size: 20px;">cafe</a> <a href="/tags/ci/" style="font-size: 10px;">ci</a> <a href="/tags/django/" style="font-size: 10px;">django</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/gitlab/" style="font-size: 10px;">gitlab</a> <a href="/tags/graphql/" style="font-size: 20px;">graphql</a> <a href="/tags/job/" style="font-size: 10px;">job</a> <a href="/tags/rss/" style="font-size: 10px;">rss</a> <a href="/tags/tmux/" style="font-size: 10px;">tmux</a> <a href="/tags/tool/" style="font-size: 20px;">tool</a> <a href="/tags/太极拳/" style="font-size: 10px;">太极拳</a> <a href="/tags/小记/" style="font-size: 10px;">小记</a> <a href="/tags/星座/" style="font-size: 10px;">星座</a> <a href="/tags/沈阳小生活/" style="font-size: 10px;">沈阳小生活</a> <a href="/tags/油画/" style="font-size: 10px;">油画</a> <a href="/tags/活动/" style="font-size: 10px;">活动</a> <a href="/tags/讯飞来电助手/" style="font-size: 10px;">讯飞来电助手</a> <a href="/tags/诗/" style="font-size: 10px;">诗</a> <a href="/tags/骚扰电话/" style="font-size: 10px;">骚扰电话</a>
+       <a href="/tags/XRP/" style="font-size: 10px;">XRP</a> <a href="/tags/cafe/" style="font-size: 20px;">cafe</a> <a href="/tags/ci/" style="font-size: 10px;">ci</a> <a href="/tags/django/" style="font-size: 10px;">django</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/gitlab/" style="font-size: 10px;">gitlab</a> <a href="/tags/graphql/" style="font-size: 20px;">graphql</a> <a href="/tags/job/" style="font-size: 10px;">job</a> <a href="/tags/ripple/" style="font-size: 10px;">ripple</a> <a href="/tags/rss/" style="font-size: 10px;">rss</a> <a href="/tags/tmux/" style="font-size: 10px;">tmux</a> <a href="/tags/tool/" style="font-size: 20px;">tool</a> <a href="/tags/太极拳/" style="font-size: 10px;">太极拳</a> <a href="/tags/小记/" style="font-size: 10px;">小记</a> <a href="/tags/星座/" style="font-size: 10px;">星座</a> <a href="/tags/沈阳小生活/" style="font-size: 10px;">沈阳小生活</a> <a href="/tags/油画/" style="font-size: 10px;">油画</a> <a href="/tags/活动/" style="font-size: 10px;">活动</a> <a href="/tags/讯飞来电助手/" style="font-size: 10px;">讯飞来电助手</a> <a href="/tags/诗/" style="font-size: 10px;">诗</a> <a href="/tags/骚扰电话/" style="font-size: 10px;">骚扰电话</a>
     </div>
   </div>
 
@@ -587,7 +591,7 @@ var _hmt = _hmt || [];
 <!-- Totop Begin -->
 
 	<div id="totop">
-	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
 	</div>
 	<script src="/js/totop.js"></script>
 
