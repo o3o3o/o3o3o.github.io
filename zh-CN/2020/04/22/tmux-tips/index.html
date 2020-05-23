@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en,zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"o3o3o.me","root":"/","scheme":"Gemini","version":"8.0.0-rc.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="tmux 入门入门教程请参考:  RuanYiFeng写的文档 Danielmiessler’s tutorial  进阶以前折腾tmux了很多特性，经过最近这几年的使用，留下了使用频率最高、最有用的功能配置。 主要包括:  alias 简化 敲入命令 在tmux中，使用vim快捷键 使用tmux的会话保存、恢复功能, 恢复工作环境">
+<meta name="keywords" content="tmux,tool">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Tmux Tips">
+<meta property="og:url" content="https://o3o3o.me/zh-CN/2020/04/22/tmux-tips/index.html">
+<meta property="og:site_name" content="o3o3o">
+<meta property="og:description" content="tmux 入门入门教程请参考:  RuanYiFeng写的文档 Danielmiessler’s tutorial  进阶以前折腾tmux了很多特性，经过最近这几年的使用，留下了使用频率最高、最有用的功能配置。 主要包括:  alias 简化 敲入命令 在tmux中，使用vim快捷键 使用tmux的会话保存、恢复功能, 恢复工作环境">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-05-23T02:34:17.931Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Tmux Tips">
+<meta name="twitter:description" content="tmux 入门入门教程请参考:  RuanYiFeng写的文档 Danielmiessler’s tutorial  进阶以前折腾tmux了很多特性，经过最近这几年的使用，留下了使用频率最高、最有用的功能配置。 主要包括:  alias 简化 敲入命令 在tmux中，使用vim快捷键 使用tmux的会话保存、恢复功能, 恢复工作环境">
+
+<link rel="canonical" href="https://o3o3o.me/zh-CN/2020/04/22/tmux-tips/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Tmux Tips | o3o3o</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-74257228-1"></script>
+    <script data-pjax>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-74257228-1');
+      }
+    </script>
+
+
+  <script data-pjax>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?f2a722fffb25471f54f785a805762963";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+        <span class="toggle-line toggle-line-first"></span>
+        <span class="toggle-line toggle-line-middle"></span>
+        <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">o3o3o</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">点滴记录</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-sitemap">
+
+    <a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://o3o3o.me/2020/04/22/tmux-tips/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/logo.svg">
+      <meta itemprop="name" content="o3o3o">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="o3o3o">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Tmux Tips
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-04-22 12:53:08" itemprop="dateCreated datePublished" datetime="2020-04-22T12:53:08+08:00">2020-04-22</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Tech/" itemprop="url" rel="index"><span itemprop="name">Tech</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/zh-CN/2020/04/22/tmux-tips/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="zh-CN/2020/04/22/tmux-tips/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="tmux-入门"><a href="#tmux-入门" class="headerlink" title="tmux 入门"></a>tmux 入门</h1><p>入门教程请参考:</p>
+<ul>
+<li><a href="http://www.ruanyifeng.com/blog/2019/10/tmux.html" target="_blank" rel="noopener">RuanYiFeng写的文档</a></li>
+<li><a href="https://danielmiessler.com/study/tmux/" target="_blank" rel="noopener">Danielmiessler’s tutorial</a></li>
+</ul>
+<h1 id="进阶"><a href="#进阶" class="headerlink" title="进阶"></a>进阶</h1><p>以前折腾tmux了很多特性，经过最近这几年的使用，留下了使用频率最高、最有用的功能配置。</p>
+<p>主要包括:</p>
+<ul>
+<li>alias 简化 敲入命令</li>
+<li>在tmux中，使用vim快捷键</li>
+<li>使用tmux的会话保存、恢复功能, 恢复工作环境<a id="more"></a>
+</li>
+</ul>
+<h3 id="简化命令"><a href="#简化命令" class="headerlink" title="简化命令"></a>简化命令</h3><p>安装<a href="https://ohmyz.sh/" target="_blank" rel="noopener">oh-my-zsh</a>, <code>.zshrc</code>中配置plugins 中追加 tmux,<br>等同于:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">ta=&apos;tmux attach -t&apos;</span><br><span class="line">tad=&apos;tmux attach -d -t&apos;</span><br><span class="line">tkss=&apos;tmux kill-session -t&apos;</span><br><span class="line">tksv=&apos;tmux kill-server&apos;</span><br><span class="line">tl=&apos;tmux list-sessions&apos;</span><br><span class="line">tmux=_zsh_tmux_plugin_run</span><br><span class="line">ts=&apos;tmux new-session -s</span><br></pre></td></tr></table></figure></p>
+<h3 id="tmux中使用vim快捷键"><a href="#tmux中使用vim快捷键" class="headerlink" title="tmux中使用vim快捷键"></a>tmux中使用vim快捷键</h3><p>修改<code>.tmux.conf</code>:<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">set</span>-window-option -g mode-keys vi</span><br><span class="line"></span><br><span class="line"><span class="built_in">bind</span> h select-pane -L</span><br><span class="line"><span class="built_in">bind</span> j select-pane -D</span><br><span class="line"><span class="built_in">bind</span> k select-pane -U</span><br><span class="line"><span class="built_in">bind</span> l select-pane -R</span><br><span class="line"></span><br><span class="line">split-window -c <span class="string">"#&#123;pane_current_path&#125;"</span></span><br><span class="line"><span class="built_in">bind</span> <span class="string">'"'</span> split-window -c <span class="string">"#&#123;pane_current_path&#125;"</span></span><br><span class="line"><span class="built_in">bind</span> % split-window -h -c <span class="string">"#&#123;pane_current_path&#125;"</span></span><br><span class="line"><span class="built_in">bind</span> c new-window -c <span class="string">"#&#123;pane_current_path&#125;"</span></span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>配置vim的方向键<code>hjkl</code></li>
+<li>来切换panel <code>C + b + [h/j/k/l]</code></li>
+<li>分屏与新建窗口:<br><code>C + b + “</code>: 上下分屏<br><code>C + b + %</code>: 左右分屏<br><code>C + b + c</code>: 新建窗口</li>
+</ul>
+<h3 id="会话保存与恢复"><a href="#会话保存与恢复" class="headerlink" title="会话保存与恢复"></a>会话保存与恢复</h3><p>如果你会使用tmux打开多个session，但又不想恩电脑重启，会话没有保存时，这个功能就很有用。</p>
+<ol>
+<li><p>安装tmux 包管理软件:</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>配置自动保存，<code>.tmux.conf</code> 中添加:</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># List of plugins</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">set</span> -g @tpm_plugins <span class="string">'            \</span></span><br><span class="line"><span class="string">tmux-plugins/tpm               \</span></span><br><span class="line"><span class="string">tmux-plugins/tmux-continuum    \</span></span><br><span class="line"><span class="string">tmux-plugins/tmux-resurrect    \</span></span><br><span class="line"><span class="string">'</span></span><br><span class="line">run-shell <span class="string">'~/.tmux/plugins/tpm/tpm'</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">set</span> -g @plugin <span class="string">'tmux-plugins/tmux-resurrect'</span></span><br><span class="line"><span class="built_in">set</span> -g @continuum-save-interval <span class="string">'1440'</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>其中，<code>continuum-save-interval</code>为设置自动保存频率为一天一次，根据我以往使用经验，<code>continuum-save-interval</code>设置太小时，频繁的保存动作会导致tmux使用卡顿。</p>
+<ol start="3">
+<li><p>重载配置, 使用其生效</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tmux new -d -s delete-me &amp;&amp; tmux run-shell ~/.tmux/plugins/tpm/scripts/install_plugins.sh &amp;&amp; tmux <span class="built_in">source</span>-file ~/.tmux.conf &amp;&amp; tmux <span class="built_in">kill</span>-session -t delete-me</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>会话快速恢复</strong><br>虽然 <code>continuum-restore</code> 选项支持自动恢复会话，但由于其只支持打开一个session时才创建，也就是为了恢复，你必须要创建一个临时的session，恢复完会话后，才删除。<br>所以以下是一个alias，用起来更方便一点, 请直接添加到 你的<code>.zshrc</code>:</p>
+</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">alias</span> ,tmuxr=<span class="string">'tmux new -d -s delete-me &amp;&amp; tmux run-shell ~/.tmux/plugins/tmux-resurrect/scripts/restore.sh &amp;&amp; tmux kill-session -t delete-me &amp;&amp; tmux attach || tmux attach'</span></span><br></pre></td></tr></table></figure>
+<p>下次你重启电脑后，只需要 执行下<code>,tmuxr</code> 自动恢复会话</p>
+<h4 id="Tips"><a href="#Tips" class="headerlink" title="Tips"></a>Tips</h4><p>如果因为未知原因，之前的会话没有保存下来，可以去<code>~/.tmux/resurrect</code>目前，手动建立软连接到<code>last</code>文件<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ln -s tmux_resurrect_2020-02-26T15:27:02.txt last</span><br></pre></td></tr></table></figure></p>
+<h3 id="Ubuntu环境快速安装"><a href="#Ubuntu环境快速安装" class="headerlink" title="Ubuntu环境快速安装"></a>Ubuntu环境快速安装</h3><p>如果是在ubuntu环境，可以fork <a href="https://github.com/o3o3o/dots" target="_blank" rel="noopener">mydots</a>，快速安装zsh, tmux, docker等基本工具</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/tmux/" rel="tag"># tmux</a>
+              <a href="/tags/tool/" rel="tag"># tool</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/12/14/nuisance-call/" rel="prev" title="讯飞来电助手-从骚扰电话中解脱出来">
+      <i class="fa fa-chevron-left"></i> 讯飞来电助手-从骚扰电话中解脱出来
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/05/22/restore-ripple-by-secret-key/" rel="next" title="Restore Ripple By Secret Key">
+      Restore Ripple By Secret Key <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#tmux-入门"><span class="nav-number">1.</span> <span class="nav-text">tmux 入门</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#进阶"><span class="nav-number">2.</span> <span class="nav-text">进阶</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#简化命令"><span class="nav-number">2.0.1.</span> <span class="nav-text">简化命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#tmux中使用vim快捷键"><span class="nav-number">2.0.2.</span> <span class="nav-text">tmux中使用vim快捷键</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#会话保存与恢复"><span class="nav-number">2.0.3.</span> <span class="nav-text">会话保存与恢复</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Tips"><span class="nav-number">2.0.3.1.</span> <span class="nav-text">Tips</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Ubuntu环境快速安装"><span class="nav-number">2.0.4.</span> <span class="nav-text">Ubuntu环境快速安装</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="o3o3o"
+      src="/images/logo.svg">
+  <p class="site-author-name" itemprop="name">o3o3o</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">29</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/o3o3o" title="GitHub → https://github.com/o3o3o" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/2717757412" title="Weibo → https://weibo.com/2717757412" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/Wo3o3o" title="Twitter → https://twitter.com/Wo3o3o" rel="noopener" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://stackoverflow.com/3055831" title="StackOverflow → https://stackoverflow.com/3055831" rel="noopener" target="_blank"><i class="fab fa-stack-overflow fa-fw"></i>StackOverflow</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="languages">
+    <label class="lang-select-label">
+      <i class="fa fa-language"></i>
+      <span>简体中文</span>
+      <i class="fa fa-angle-up" aria-hidden="true"></i>
+    </label>
+    <select class="lang-select" data-canonical="">
+      
+        <option value="en" data-href="/2020/04/22/tmux-tips/" selected="">
+          English
+        </option>
+      
+        <option value="zh-CN" data-href="/zh-CN/2020/04/22/tmux-tips/" selected="">
+          简体中文
+        </option>
+      
+    </select>
+  </div>
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">o3o3o</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/pjax/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script>
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '.languages',
+    '#pjax'
+  ],
+  switches: {
+    '.post-toc-wrap': Pjax.switches.innerHTML
+  },
+  analytics: false,
+  cacheBust: false,
+  scrollTo : !CONFIG.bookmark.enable
+});
+
+document.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[data-pjax], script#page-configurations, #pjax script').forEach(element => {
+    var code = element.text || element.textContent || element.innerHTML || '';
+    var parent = element.parentNode;
+    parent.removeChild(element);
+    var script = document.createElement('script');
+    if (element.id) {
+      script.id = element.id;
+    }
+    if (element.className) {
+      script.className = element.className;
+    }
+    if (element.type) {
+      script.type = element.type;
+    }
+    if (element.src) {
+      script.src = element.src;
+      // Force synchronous loading of peripheral JS.
+      script.async = false;
+    }
+    if (element.dataset.pjax !== undefined) {
+      script.dataset.pjax = '';
+    }
+    if (code !== '') {
+      script.appendChild(document.createTextNode(code));
+    }
+    parent.appendChild(script);
+  });
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div id="pjax">
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://o3o3o.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "https://o3o3o.me/2020/04/22/tmux-tips/";
+    this.page.identifier = "zh-CN/2020/04/22/tmux-tips/";
+    this.page.title = "Tmux Tips";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://o3o3o.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+    </div>
+</body>
+</html>

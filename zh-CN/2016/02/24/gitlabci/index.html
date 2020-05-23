@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en,zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"o3o3o.me","root":"/","scheme":"Gemini","version":"8.0.0-rc.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="目标提交代码后，根据以有的配置，自动触发，进行代码测试程序或者程序的部署。 需求：目前项目中，需要管理多个版本（32位，64位）的补丁包。每次修改完代码，提交后，都需要人手动在安装或者测试机器上，编译，安装，运行。为将这个流程自动化，可采用gitlab 与gitlab CI (continous intergration)来实现其自动化。针对于目前客户端侧不同企业，需要生成特定的客户端版本，也可以">
+<meta name="keywords" content="gitlab,ci,git">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用gitlab实现可持续集成">
+<meta property="og:url" content="https://o3o3o.me/zh-CN/2016/02/24/gitlabci/index.html">
+<meta property="og:site_name" content="o3o3o">
+<meta property="og:description" content="目标提交代码后，根据以有的配置，自动触发，进行代码测试程序或者程序的部署。 需求：目前项目中，需要管理多个版本（32位，64位）的补丁包。每次修改完代码，提交后，都需要人手动在安装或者测试机器上，编译，安装，运行。为将这个流程自动化，可采用gitlab 与gitlab CI (continous intergration)来实现其自动化。针对于目前客户端侧不同企业，需要生成特定的客户端版本，也可以">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-05-23T02:34:17.907Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="使用gitlab实现可持续集成">
+<meta name="twitter:description" content="目标提交代码后，根据以有的配置，自动触发，进行代码测试程序或者程序的部署。 需求：目前项目中，需要管理多个版本（32位，64位）的补丁包。每次修改完代码，提交后，都需要人手动在安装或者测试机器上，编译，安装，运行。为将这个流程自动化，可采用gitlab 与gitlab CI (continous intergration)来实现其自动化。针对于目前客户端侧不同企业，需要生成特定的客户端版本，也可以">
+
+<link rel="canonical" href="https://o3o3o.me/zh-CN/2016/02/24/gitlabci/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>使用gitlab实现可持续集成 | o3o3o</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-74257228-1"></script>
+    <script data-pjax>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-74257228-1');
+      }
+    </script>
+
+
+  <script data-pjax>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?f2a722fffb25471f54f785a805762963";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+        <span class="toggle-line toggle-line-first"></span>
+        <span class="toggle-line toggle-line-middle"></span>
+        <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">o3o3o</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">点滴记录</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-sitemap">
+
+    <a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://o3o3o.me/2016/02/24/gitlabci/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/logo.svg">
+      <meta itemprop="name" content="o3o3o">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="o3o3o">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          使用gitlab实现可持续集成
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2016-02-24 21:09:30" itemprop="dateCreated datePublished" datetime="2016-02-24T21:09:30+08:00">2016-02-24</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Tech/" itemprop="url" rel="index"><span itemprop="name">Tech</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/zh-CN/2016/02/24/gitlabci/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="zh-CN/2016/02/24/gitlabci/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h1><p>提交代码后，根据以有的配置，自动触发，进行代码测试程序或者程序的部署。</p>
+<h1 id="需求："><a href="#需求：" class="headerlink" title="需求："></a>需求：</h1><p>目前项目中，需要管理多个版本（32位，64位）的补丁包。每次修改完代码，提交后，都需要人手动在安装或者测试机器上，编译，安装，运行。<br>为将这个流程自动化，可采用gitlab 与gitlab CI (continous intergration)来实现其自动化。<br>针对于目前客户端侧不同企业，需要生成特定的客户端版本，也可以让其自动化。</p>
+<a id="more"></a>
+<h1 id="结构："><a href="#结构：" class="headerlink" title="结构："></a>结构：</h1><p><img data-src="/images/gitlabci/gitlab.png" alt="struct">   </p>
+<p>主要结构分为4部分：</p>
+<ul>
+<li>目标机器<br>  包含：1.测试机器；2.部署机器；</li>
+<li>git与gitlab-ci(可持续集成服务）<br>   用于保存代码，与解析<code>.gitlab-ciyml</code>文件，触发 持续集成动作</li>
+<li>git 客户端<br>  使用git 客户端提交代码的最终用户</li>
+</ul>
+<h1 id="工作流"><a href="#工作流" class="headerlink" title="工作流"></a>工作流</h1><ol>
+<li>用户U1，使用git 客户端，建立一个项目 repo1；</li>
+<li>repos1项目中包含文件:</li>
+</ol>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;(repos1)$ ls -a</span><br><span class="line">.  ..  .git  .gitlab-ci.yml  readme</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>修改readme文件</li>
+</ol>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git add readme</span><br><span class="line">git commit readme -m <span class="string">"add readme"</span>;</span><br><span class="line">git push</span><br></pre></td></tr></table></figure>
+<ol start="4">
+<li>git push 执行后，提交到gitlab服务器后，gitlab服务，解析.gitlab-ci.yml,, 触发gitlab-ci-runner去处理， .gitlab-ci.yml中定义的流程；<br>（前提是： gitlabci-runner要配置，并注册成功，<a href="https://gitlab.com/gitlab-org/gitlab-ci-multi-runner/blob/master/docs/configuration/advanced-configuration.md" target="_blank" rel="noopener">具体配置操作说明见</a></li>
+</ol>
+<h1 id="工程文件内容："><a href="#工程文件内容：" class="headerlink" title="工程文件内容："></a>工程文件内容：</h1><ul>
+<li>git 工程</li>
+<li>.gitlab-ci.yml 文件：<br>每个工程下面使用<code>.gitlab-ci.yml</code>文件，来控制提交代码后，gitlab ci 解析yml文件，来获取如何去部署程序。<br>如<code>gitlab-ci.yml</code>：</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">162deploy: <span class="comment"># 162</span></span><br><span class="line">    stage: deploy</span><br><span class="line">    tags:</span><br><span class="line">        - deploy162</span><br><span class="line">    script:</span><br><span class="line">        - <span class="string">"make &amp;&amp; make install"</span></span><br><span class="line">    only:</span><br><span class="line">         - master</span><br><span class="line">250deploy: <span class="comment"># 250</span></span><br><span class="line">    stage: deploy</span><br><span class="line">    tags:</span><br><span class="line">        - deploy250</span><br><span class="line">    script:</span><br><span class="line">        - <span class="string">"make &amp;&amp; make install"</span></span><br><span class="line">    only:</span><br><span class="line">         - master</span><br></pre></td></tr></table></figure>
+<p>注: yml文件格式必须有tab或空格</p>
+<ul>
+<li>tags<br>  <code>deploy162</code>, <code>deploy250</code> 分别指在192.168.1.162、192.168.1.250上运行的gitlab-ci-runner的名称，gitlab-ci是根据<code>.gitlab-ci.yml</code>中的tags来匹配具体任务由哪个runner来处理。<br>上面的script是指编译安装程序。</li>
+<li>script<br>  <code>make &amp;&amp; make install</code>是指要部署到相应的服务器上时，需要执行的脚本命令.对于需要编译的程序而言，就是编译安装，而对于php等web程序而言，就是把代码复制到相应的安装目录。</li>
+</ul>
+<h2 id="流程举例："><a href="#流程举例：" class="headerlink" title="流程举例："></a>流程举例：</h2><p>流程如下：<br><img data-src="/images/gitlabci/demo.gif" alt="demo"></p>
+<h2 id="gitlab-runner-配置举例-目前192-168-1-184地址配置了gitlab-runner"><a href="#gitlab-runner-配置举例-目前192-168-1-184地址配置了gitlab-runner" class="headerlink" title="gitlab-runner: 配置举例 (目前192.168.1.184地址配置了gitlab-runner)"></a>gitlab-runner: 配置举例 (目前192.168.1.184地址配置了gitlab-runner)</h2><p>可登录gitlab网页版，查看当前注册的git-runner</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">michael@Sict ~ $ cat /etc/gitlab-runner/config.toml</span><br><span class="line">concurrent = 1</span><br><span class="line">[[runners]]</span><br><span class="line">  url = <span class="string">"http://192.168.1.240/ci"</span></span><br><span class="line">  token = <span class="string">"fb8b064e53e21159e268853af6f8ea"</span></span><br><span class="line">  name = <span class="string">"Sict162"</span></span><br><span class="line">  <span class="built_in">limit</span> = 1</span><br><span class="line">  executor = <span class="string">"ssh"</span></span><br><span class="line">  builds_dir = <span class="string">"/Data/git_build"</span></span><br><span class="line">  [runners.ssh]</span><br><span class="line">    user = <span class="string">"root"</span></span><br><span class="line">    host = <span class="string">"192.168.1.162"</span></span><br><span class="line">    port = <span class="string">"2222"</span></span><br><span class="line">    identity_file = <span class="string">"/home/michael/.ssh/id_rsa"</span></span><br><span class="line">[[runners]]</span><br><span class="line">  url = <span class="string">"http://192.168.1.240/ci"</span></span><br><span class="line">  token = <span class="string">"18795ba96cfe74478ee63ff7decedd"</span></span><br><span class="line">  name = <span class="string">"Sict250"</span></span><br><span class="line">  <span class="built_in">limit</span> = 1</span><br><span class="line">  executor = <span class="string">"ssh"</span></span><br><span class="line">  builds_dir = <span class="string">"/Data/git_build"</span></span><br><span class="line">  [runners.ssh]</span><br><span class="line">    user = <span class="string">"root"</span></span><br><span class="line">    host = <span class="string">"192.168.1.250"</span></span><br><span class="line">    port = <span class="string">"2222"</span></span><br><span class="line">    identity_file = <span class="string">"/home/michael/.ssh/id_rsa"</span></span><br><span class="line">[[runners]]</span><br><span class="line">  url = <span class="string">"http://192.168.1.240/ci"</span></span><br><span class="line">  token = <span class="string">"87aa2b2c0f5779d5e01f9d731fb6e4"</span></span><br><span class="line">  name = <span class="string">"Sict236"</span></span><br><span class="line">  executor = <span class="string">"ssh"</span></span><br><span class="line">  builds_dir = <span class="string">"/Data/git_build"</span></span><br><span class="line">  [runners.ssh]</span><br><span class="line">    user = <span class="string">"root"</span></span><br><span class="line">    host = <span class="string">"192.168.1.236"</span></span><br><span class="line">    port = <span class="string">"2222"</span></span><br><span class="line">    identity_file = <span class="string">"/home/michael/.ssh/id_rsa"</span></span><br></pre></td></tr></table></figure>
+<h1 id="相关链接"><a href="#相关链接" class="headerlink" title="相关链接"></a>相关链接</h1><ul>
+<li><a href="https://about.gitlab.com/gitlab-ci/" target="_blank" rel="noopener">gitlabci介绍</a></li>
+<li><a href="https://gitlab.com/gitlab-org/gitlab-ci-multi-runner/blob/master/docs/configuration/advanced-configuration.md" target="_blank" rel="noopener">gitlabci runner</a></li>
+<li><a href="http://doc.gitlab.com/ce/ci/yaml/README.html" target="_blank" rel="noopener">yaml 文件配置</a></li>
+<li><a href="http://www.greysonparrelli.com/setting-up-android-builds-in-gitlab-ci/" target="_blank" rel="noopener">android自动化部署</a></li>
+<li><a href="http://git-scm.com/book/zh/" target="_blank" rel="noopener">git 使用说明</a></li>
+<li><a href="https://github.com/o3o3o/cmd#linux下面录制动画gif" target="_blank" rel="noopener">linux动画录制</a></li>
+</ul>
+<h1 id="TIPS"><a href="#TIPS" class="headerlink" title="TIPS:"></a>TIPS:</h1><p>在git提交时添加<code>[ci skip]</code>, 可以跳过gitlab-ci检测。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/gitlab/" rel="tag"># gitlab</a>
+              <a href="/tags/ci/" rel="tag"># ci</a>
+              <a href="/tags/git/" rel="tag"># git</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2016/02/22/toollist/" rel="prev" title="我的工具箱">
+      <i class="fa fa-chevron-left"></i> 我的工具箱
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2016/02/29/rss/" rel="next" title="我的rss订阅源">
+      我的rss订阅源 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#目标"><span class="nav-number">1.</span> <span class="nav-text">目标</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#需求："><span class="nav-number">2.</span> <span class="nav-text">需求：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#结构："><span class="nav-number">3.</span> <span class="nav-text">结构：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#工作流"><span class="nav-number">4.</span> <span class="nav-text">工作流</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#工程文件内容："><span class="nav-number">5.</span> <span class="nav-text">工程文件内容：</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#流程举例："><span class="nav-number">5.1.</span> <span class="nav-text">流程举例：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#gitlab-runner-配置举例-目前192-168-1-184地址配置了gitlab-runner"><span class="nav-number">5.2.</span> <span class="nav-text">gitlab-runner: 配置举例 (目前192.168.1.184地址配置了gitlab-runner)</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#相关链接"><span class="nav-number">6.</span> <span class="nav-text">相关链接</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#TIPS"><span class="nav-number">7.</span> <span class="nav-text">TIPS:</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="o3o3o"
+      src="/images/logo.svg">
+  <p class="site-author-name" itemprop="name">o3o3o</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">29</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/o3o3o" title="GitHub → https://github.com/o3o3o" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/2717757412" title="Weibo → https://weibo.com/2717757412" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/Wo3o3o" title="Twitter → https://twitter.com/Wo3o3o" rel="noopener" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://stackoverflow.com/3055831" title="StackOverflow → https://stackoverflow.com/3055831" rel="noopener" target="_blank"><i class="fab fa-stack-overflow fa-fw"></i>StackOverflow</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="languages">
+    <label class="lang-select-label">
+      <i class="fa fa-language"></i>
+      <span>简体中文</span>
+      <i class="fa fa-angle-up" aria-hidden="true"></i>
+    </label>
+    <select class="lang-select" data-canonical="">
+      
+        <option value="en" data-href="/2016/02/24/gitlabci/" selected="">
+          English
+        </option>
+      
+        <option value="zh-CN" data-href="/zh-CN/2016/02/24/gitlabci/" selected="">
+          简体中文
+        </option>
+      
+    </select>
+  </div>
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">o3o3o</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/pjax/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script>
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '.languages',
+    '#pjax'
+  ],
+  switches: {
+    '.post-toc-wrap': Pjax.switches.innerHTML
+  },
+  analytics: false,
+  cacheBust: false,
+  scrollTo : !CONFIG.bookmark.enable
+});
+
+document.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[data-pjax], script#page-configurations, #pjax script').forEach(element => {
+    var code = element.text || element.textContent || element.innerHTML || '';
+    var parent = element.parentNode;
+    parent.removeChild(element);
+    var script = document.createElement('script');
+    if (element.id) {
+      script.id = element.id;
+    }
+    if (element.className) {
+      script.className = element.className;
+    }
+    if (element.type) {
+      script.type = element.type;
+    }
+    if (element.src) {
+      script.src = element.src;
+      // Force synchronous loading of peripheral JS.
+      script.async = false;
+    }
+    if (element.dataset.pjax !== undefined) {
+      script.dataset.pjax = '';
+    }
+    if (code !== '') {
+      script.appendChild(document.createTextNode(code));
+    }
+    parent.appendChild(script);
+  });
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div id="pjax">
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://o3o3o.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "https://o3o3o.me/2016/02/24/gitlabci/";
+    this.page.identifier = "zh-CN/2016/02/24/gitlabci/";
+    this.page.title = "使用gitlab实现可持续集成";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://o3o3o.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+    </div>
+</body>
+</html>
