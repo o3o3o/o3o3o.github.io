@@ -22,18 +22,18 @@
     var CONFIG = {"hostname":"o3o3o.me","root":"/","scheme":"Gemini","version":"8.0.0-rc.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="tmux 入门入门教程请参考:  RuanYiFeng写的文档 Danielmiessler’s tutorial  进阶以前折腾tmux了很多特性，经过最近这几年的使用，留下了使用频率最高、最有用的功能配置。 主要包括:  alias 简化 敲入命令 在tmux中，使用vim快捷键 使用tmux的会话保存、恢复功能, 恢复工作环境">
-<meta name="keywords" content="tmux,tool">
+  <meta name="description" content="Tmux introductionHere are some basic introduction links:  RuanYiFeng’s tutorial Danielmiessler’s tutorial  Advanced configurationI have used tmux for several years and had tried to many features. Only">
+<meta name="keywords" content="tmux">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Tmux Tips">
 <meta property="og:url" content="https://o3o3o.me/zh-CN/2020/04/22/tmux-tips/index.html">
 <meta property="og:site_name" content="o3o3o">
-<meta property="og:description" content="tmux 入门入门教程请参考:  RuanYiFeng写的文档 Danielmiessler’s tutorial  进阶以前折腾tmux了很多特性，经过最近这几年的使用，留下了使用频率最高、最有用的功能配置。 主要包括:  alias 简化 敲入命令 在tmux中，使用vim快捷键 使用tmux的会话保存、恢复功能, 恢复工作环境">
+<meta property="og:description" content="Tmux introductionHere are some basic introduction links:  RuanYiFeng’s tutorial Danielmiessler’s tutorial  Advanced configurationI have used tmux for several years and had tried to many features. Only">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-05-23T02:34:17.931Z">
+<meta property="og:updated_time" content="2020-05-23T03:34:41.517Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Tmux Tips">
-<meta name="twitter:description" content="tmux 入门入门教程请参考:  RuanYiFeng写的文档 Danielmiessler’s tutorial  进阶以前折腾tmux了很多特性，经过最近这几年的使用，留下了使用频率最高、最有用的功能配置。 主要包括:  alias 简化 敲入命令 在tmux中，使用vim快捷键 使用tmux的会话保存、恢复功能, 恢复工作环境">
+<meta name="twitter:description" content="Tmux introductionHere are some basic introduction links:  RuanYiFeng’s tutorial Danielmiessler’s tutorial  Advanced configurationI have used tmux for several years and had tried to many features. Only">
 
 <link rel="canonical" href="https://o3o3o.me/zh-CN/2020/04/22/tmux-tips/">
 
@@ -237,58 +237,96 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="tmux-入门"><a href="#tmux-入门" class="headerlink" title="tmux 入门"></a>tmux 入门</h1><p>入门教程请参考:</p>
+        <h1 id="Tmux-introduction"><a href="#Tmux-introduction" class="headerlink" title="Tmux introduction"></a>Tmux introduction</h1><p>Here are some basic introduction links:</p>
 <ul>
-<li><a href="http://www.ruanyifeng.com/blog/2019/10/tmux.html" target="_blank" rel="noopener">RuanYiFeng写的文档</a></li>
+<li><a href="http://www.ruanyifeng.com/blog/2019/10/tmux.html" target="_blank" rel="noopener">RuanYiFeng’s tutorial</a></li>
 <li><a href="https://danielmiessler.com/study/tmux/" target="_blank" rel="noopener">Danielmiessler’s tutorial</a></li>
 </ul>
-<h1 id="进阶"><a href="#进阶" class="headerlink" title="进阶"></a>进阶</h1><p>以前折腾tmux了很多特性，经过最近这几年的使用，留下了使用频率最高、最有用的功能配置。</p>
-<p>主要包括:</p>
+<h1 id="Advanced-configuration"><a href="#Advanced-configuration" class="headerlink" title="Advanced configuration"></a>Advanced configuration</h1><p>I have used tmux for several years and had tried to many features. Only some useful and frequently configurations I used have been retained.</p>
+<p>Include:</p>
 <ul>
-<li>alias 简化 敲入命令</li>
-<li>在tmux中，使用vim快捷键</li>
-<li>使用tmux的会话保存、恢复功能, 恢复工作环境<a id="more"></a>
+<li>alias: to simplify command</li>
+<li>Use vim shortcut in tmux</li>
+<li>Workspace session save/restore with tmux<a id="more"></a>
 </li>
 </ul>
-<h3 id="简化命令"><a href="#简化命令" class="headerlink" title="简化命令"></a>简化命令</h3><p>安装<a href="https://ohmyz.sh/" target="_blank" rel="noopener">oh-my-zsh</a>, <code>.zshrc</code>中配置plugins 中追加 tmux,<br>等同于:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">ta=&apos;tmux attach -t&apos;</span><br><span class="line">tad=&apos;tmux attach -d -t&apos;</span><br><span class="line">tkss=&apos;tmux kill-session -t&apos;</span><br><span class="line">tksv=&apos;tmux kill-server&apos;</span><br><span class="line">tl=&apos;tmux list-sessions&apos;</span><br><span class="line">tmux=_zsh_tmux_plugin_run</span><br><span class="line">ts=&apos;tmux new-session -s</span><br></pre></td></tr></table></figure></p>
-<h3 id="tmux中使用vim快捷键"><a href="#tmux中使用vim快捷键" class="headerlink" title="tmux中使用vim快捷键"></a>tmux中使用vim快捷键</h3><p>修改<code>.tmux.conf</code>:<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">set</span>-window-option -g mode-keys vi</span><br><span class="line"></span><br><span class="line"><span class="built_in">bind</span> h select-pane -L</span><br><span class="line"><span class="built_in">bind</span> j select-pane -D</span><br><span class="line"><span class="built_in">bind</span> k select-pane -U</span><br><span class="line"><span class="built_in">bind</span> l select-pane -R</span><br><span class="line"></span><br><span class="line">split-window -c <span class="string">"#&#123;pane_current_path&#125;"</span></span><br><span class="line"><span class="built_in">bind</span> <span class="string">'"'</span> split-window -c <span class="string">"#&#123;pane_current_path&#125;"</span></span><br><span class="line"><span class="built_in">bind</span> % split-window -h -c <span class="string">"#&#123;pane_current_path&#125;"</span></span><br><span class="line"><span class="built_in">bind</span> c new-window -c <span class="string">"#&#123;pane_current_path&#125;"</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="Alias"><a href="#Alias" class="headerlink" title="Alias"></a>Alias</h3><p>If you use <a href="https://ohmyz.sh/" target="_blank" rel="noopener">oh-my-zsh</a>, you can directly add tmux for the key <code>plugins</code> in the <code>.zhsrc</code> file. It enables some aliases like:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">ta=&apos;tmux attach -t&apos;</span><br><span class="line">tad=&apos;tmux attach -d -t&apos;</span><br><span class="line">tkss=&apos;tmux kill-session -t&apos;</span><br><span class="line">tksv=&apos;tmux kill-server&apos;</span><br><span class="line">tl=&apos;tmux list-sessions&apos;</span><br><span class="line">tmux=_zsh_tmux_plugin_run</span><br><span class="line">ts=&apos;tmux new-session -s</span><br></pre></td></tr></table></figure></p>
+<h3 id="Enable-vim-shortcuts-in-tmux"><a href="#Enable-vim-shortcuts-in-tmux" class="headerlink" title="Enable vim shortcuts in tmux"></a>Enable vim shortcuts in tmux</h3><p>Edit your <code>.tmux.conf</code> file:<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">set</span>-window-option -g mode-keys vi</span><br><span class="line"></span><br><span class="line"><span class="built_in">bind</span> h select-pane -L</span><br><span class="line"><span class="built_in">bind</span> j select-pane -D</span><br><span class="line"><span class="built_in">bind</span> k select-pane -U</span><br><span class="line"><span class="built_in">bind</span> l select-pane -R</span><br><span class="line"></span><br><span class="line">split-window -c <span class="string">"#&#123;pane_current_path&#125;"</span></span><br><span class="line"><span class="built_in">bind</span> <span class="string">'"'</span> split-window -c <span class="string">"#&#123;pane_current_path&#125;"</span></span><br><span class="line"><span class="built_in">bind</span> % split-window -h -c <span class="string">"#&#123;pane_current_path&#125;"</span></span><br><span class="line"><span class="built_in">bind</span> c new-window -c <span class="string">"#&#123;pane_current_path&#125;"</span></span><br></pre></td></tr></table></figure></p>
 <ul>
-<li>配置vim的方向键<code>hjkl</code></li>
-<li>来切换panel <code>C + b + [h/j/k/l]</code></li>
-<li>分屏与新建窗口:<br><code>C + b + “</code>: 上下分屏<br><code>C + b + %</code>: 左右分屏<br><code>C + b + c</code>: 新建窗口</li>
+<li>vim’s direction keys: <code>hjkl</code></li>
+<li>switch panel <code>C + b + [h/j/k/l]</code></li>
+<li>split panel and new window:<br><code>C + b + &quot;</code>: split panel verticaly<br><code>C + b + %</code>: split horizonaly<br><code>C + b + c</code>: new window</li>
 </ul>
-<h3 id="会话保存与恢复"><a href="#会话保存与恢复" class="headerlink" title="会话保存与恢复"></a>会话保存与恢复</h3><p>如果你会使用tmux打开多个session，但又不想恩电脑重启，会话没有保存时，这个功能就很有用。</p>
+<h3 id="Session-saving-and-restoration"><a href="#Session-saving-and-restoration" class="headerlink" title="Session saving and restoration"></a>Session saving and restoration</h3><p>In general, you have to open several tmux sessions when you are working and don’t want to reboot computer for updating system just because your tmux session will disapear so that you have to recreate your work tmux session by hand.</p>
+<p>So where there is a need, there is a <a href="https://github.com/tmux-plugins/tmux-resurrect" target="_blank" rel="noopener">plugin</a>.<br>It is practial.  Now let’s start to install it.</p>
 <ol>
-<li><p>安装tmux 包管理软件:</p>
+<li><p>You’d better use the <a href="https://github.com/tmux-plugins/tpm" target="_blank" rel="noopener">tmux plugin manger</a> to install tmux plugin easily just like <code>Bundle</code> in vim.</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm</span><br></pre></td></tr></table></figure>
 </li>
-<li><p>配置自动保存，<code>.tmux.conf</code> 中添加:</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># List of plugins</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">set</span> -g @tpm_plugins <span class="string">'            \</span></span><br><span class="line"><span class="string">tmux-plugins/tpm               \</span></span><br><span class="line"><span class="string">tmux-plugins/tmux-continuum    \</span></span><br><span class="line"><span class="string">tmux-plugins/tmux-resurrect    \</span></span><br><span class="line"><span class="string">'</span></span><br><span class="line">run-shell <span class="string">'~/.tmux/plugins/tpm/tpm'</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">set</span> -g @plugin <span class="string">'tmux-plugins/tmux-resurrect'</span></span><br><span class="line"><span class="built_in">set</span> -g @continuum-save-interval <span class="string">'1440'</span></span><br></pre></td></tr></table></figure>
+<li><p>Now we can configure about session saving plugin in <code>.tmux.conf</code> </p>
 </li>
 </ol>
-<p>其中，<code>continuum-save-interval</code>为设置自动保存频率为一天一次，根据我以往使用经验，<code>continuum-save-interval</code>设置太小时，频繁的保存动作会导致tmux使用卡顿。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">set</span> -g @tpm_plugins <span class="string">'            \</span></span><br><span class="line"><span class="string">tmux-plugins/tpm               \</span></span><br><span class="line"><span class="string">tmux-plugins/tmux-continuum    \</span></span><br><span class="line"><span class="string">tmux-plugins/tmux-resurrect    \</span></span><br><span class="line"><span class="string">'</span></span><br><span class="line">run-shell <span class="string">'~/.tmux/plugins/tpm/tpm'</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">set</span> -g @plugin <span class="string">'tmux-plugins/tmux-resurrect'</span></span><br><span class="line"><span class="built_in">set</span> -g @continuum-save-interval <span class="string">'1440'</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><p><a href="https://github.com/tmux-plugins/tmux-resurrect" target="_blank" rel="noopener">tmux-resurrent plugin</a> is the dependence for continuum and to help you auto save your work session with executing <code>c + b + s</code> to save session manually.</p>
+</li>
+<li><p><code>continuum-save-interval</code> is set to 1440  stands for <a href="https://github.com/tmux-plugins/tmux-continuum" target="_blank" rel="noopener">tmux-continuum plugin</a> will save you current session with 1440 seconds (half a day). 1440 is set depends on my using experience, because setting too low value eats more cpu and effect your workflow when you have many tmux sesison, setting too high value means that you have to take high risk to lose your last work session.</p>
+</li>
+</ul>
 <ol start="3">
-<li><p>重载配置, 使用其生效</p>
+<li><p>Reload configuration to enable it </p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tmux new -d -s delete-me &amp;&amp; tmux run-shell ~/.tmux/plugins/tpm/scripts/install_plugins.sh &amp;&amp; tmux <span class="built_in">source</span>-file ~/.tmux.conf &amp;&amp; tmux <span class="built_in">kill</span>-session -t delete-me</span><br></pre></td></tr></table></figure>
 </li>
-<li><p><strong>会话快速恢复</strong><br>虽然 <code>continuum-restore</code> 选项支持自动恢复会话，但由于其只支持打开一个session时才创建，也就是为了恢复，你必须要创建一个临时的session，恢复完会话后，才删除。<br>所以以下是一个alias，用起来更方便一点, 请直接添加到 你的<code>.zshrc</code>:</p>
+<li><p>Restoring your session quickly with alias</p>
 </li>
 </ol>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">alias</span> ,tmuxr=<span class="string">'tmux new -d -s delete-me &amp;&amp; tmux run-shell ~/.tmux/plugins/tmux-resurrect/scripts/restore.sh &amp;&amp; tmux kill-session -t delete-me &amp;&amp; tmux attach || tmux attach'</span></span><br></pre></td></tr></table></figure>
-<p>下次你重启电脑后，只需要 执行下<code>,tmuxr</code> 自动恢复会话</p>
-<h4 id="Tips"><a href="#Tips" class="headerlink" title="Tips"></a>Tips</h4><p>如果因为未知原因，之前的会话没有保存下来，可以去<code>~/.tmux/resurrect</code>目前，手动建立软连接到<code>last</code>文件<br><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ln -s tmux_resurrect_2020-02-26T15:27:02.txt last</span><br></pre></td></tr></table></figure></p>
-<h3 id="Ubuntu环境快速安装"><a href="#Ubuntu环境快速安装" class="headerlink" title="Ubuntu环境快速安装"></a>Ubuntu环境快速安装</h3><p>如果是在ubuntu环境，可以fork <a href="https://github.com/o3o3o/dots" target="_blank" rel="noopener">mydots</a>，快速安装zsh, tmux, docker等基本工具</p>
+<p>The <code>continuum-restore</code> option works only when the tmux server starts so there will be a useless temporary session to close later.<br>So here is an alias to restore session without other things. Just add it into your <code>.zshrc</code> or <code>.bashrc</code>.<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">alias</span> ,tmuxr=<span class="string">'tmux new -d -s delete-me &amp;&amp; tmux run-shell ~/.tmux/plugins/tmux-resurrect/scripts/restore.sh &amp;&amp; tmux kill-session -t delete-me &amp;&amp; tmux attach || tmux attach'</span></span><br></pre></td></tr></table></figure></p>
+<p>You just execute <code>,tmuxr</code> to recover your last work session.</p>
+<h4 id="Tips"><a href="#Tips" class="headerlink" title="Tips"></a>Tips</h4><p>If there a some unknown reasons that your session wasn’t saved last time, you can go to the directory <code>~/.tmux/resurrect</code> and make a soft link to <code>last</code> file.</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ln -s tmux_resurrect_2020-02-26T15:27:02.txt last</span><br></pre></td></tr></table></figure>
+<h3 id="Install-quickly-in-Ubuntu"><a href="#Install-quickly-in-Ubuntu" class="headerlink" title="Install quickly in Ubuntu"></a>Install quickly in Ubuntu</h3><p>Here is <a href="https://github.com/o3o3o/dots" target="_blank" rel="noopener">my dots</a> to install some essential tools (zsh,tmux,docker etc..). Welcome to fork it :).</p>
 
     </div>
 
     
     
     
+        <div class="reward-container">
+  <div></div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/bitcoin.png" alt="o3o3o 比特币">
+        <p>比特币</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>o3o3o
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://o3o3o.me/2020/04/22/tmux-tips/" title="Tmux Tips">https://o3o3o.me/2020/04/22/tmux-tips/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
 
       <footer class="post-footer">
           <div class="post-tags">
               <a href="/tags/tmux/" rel="tag"># tmux</a>
-              <a href="/tags/tool/" rel="tag"># tool</a>
           </div>
 
         
@@ -297,12 +335,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2019/12/14/nuisance-call/" rel="prev" title="讯飞来电助手-从骚扰电话中解脱出来">
+    <a href="/2019/12/14/zh-CN/nuisance-call/" rel="prev" title="讯飞来电助手-从骚扰电话中解脱出来">
       <i class="fa fa-chevron-left"></i> 讯飞来电助手-从骚扰电话中解脱出来
     </a></div>
       <div class="post-nav-item">
-    <a href="/2020/05/22/restore-ripple-by-secret-key/" rel="next" title="Restore Ripple By Secret Key">
-      Restore Ripple By Secret Key <i class="fa fa-chevron-right"></i>
+    <a href="/2020/04/22/zh-CN/tmux-tips/" rel="next" title="Tmux 使用建议">
+      Tmux 使用建议 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -369,7 +407,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#tmux-入门"><span class="nav-number">1.</span> <span class="nav-text">tmux 入门</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#进阶"><span class="nav-number">2.</span> <span class="nav-text">进阶</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#简化命令"><span class="nav-number">2.0.1.</span> <span class="nav-text">简化命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#tmux中使用vim快捷键"><span class="nav-number">2.0.2.</span> <span class="nav-text">tmux中使用vim快捷键</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#会话保存与恢复"><span class="nav-number">2.0.3.</span> <span class="nav-text">会话保存与恢复</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Tips"><span class="nav-number">2.0.3.1.</span> <span class="nav-text">Tips</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Ubuntu环境快速安装"><span class="nav-number">2.0.4.</span> <span class="nav-text">Ubuntu环境快速安装</span></a></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Tmux-introduction"><span class="nav-number">1.</span> <span class="nav-text">Tmux introduction</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Advanced-configuration"><span class="nav-number">2.</span> <span class="nav-text">Advanced configuration</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Alias"><span class="nav-number">2.0.1.</span> <span class="nav-text">Alias</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Enable-vim-shortcuts-in-tmux"><span class="nav-number">2.0.2.</span> <span class="nav-text">Enable vim shortcuts in tmux</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Session-saving-and-restoration"><span class="nav-number">2.0.3.</span> <span class="nav-text">Session saving and restoration</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Tips"><span class="nav-number">2.0.3.1.</span> <span class="nav-text">Tips</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Install-quickly-in-Ubuntu"><span class="nav-number">2.0.4.</span> <span class="nav-text">Install quickly in Ubuntu</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -385,16 +423,16 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">29</span>
+          <span class="site-state-item-count">31</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
-        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-count">9</span>
         <span class="site-state-item-name">categories</span>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-count">23</span>
         <span class="site-state-item-name">tags</span>
       </div>
   </nav>

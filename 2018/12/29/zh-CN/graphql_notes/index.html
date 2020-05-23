@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en,zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"o3o3o.me","root":"/","scheme":"Gemini","version":"8.0.0-rc.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="简述简单的说, GraphQL是API界的SQL查询语言。 Restful API的痛点API 是后端与前端同学 必定要打交道的东西。 而对于API的设计，由于后端与前端人员的思维限制(非全栈)，导致无论前端还是后端设计API, 很难让另一端满意, 需要多次交涉。 以下是一个常见的现象:在一个页面的操作，包含多个功能, 而且UI界面与功能在频繁的修改。12后端UB:  API应该是根据模块划分的，">
+<meta name="keywords" content="graphql">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GraphQL 使用笔记">
+<meta property="og:url" content="https://o3o3o.me/2018/12/29/zh-CN/graphql_notes/index.html">
+<meta property="og:site_name" content="o3o3o">
+<meta property="og:description" content="简述简单的说, GraphQL是API界的SQL查询语言。 Restful API的痛点API 是后端与前端同学 必定要打交道的东西。 而对于API的设计，由于后端与前端人员的思维限制(非全栈)，导致无论前端还是后端设计API, 很难让另一端满意, 需要多次交涉。 以下是一个常见的现象:在一个页面的操作，包含多个功能, 而且UI界面与功能在频繁的修改。12后端UB:  API应该是根据模块划分的，">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-05-23T02:34:17.909Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="GraphQL 使用笔记">
+<meta name="twitter:description" content="简述简单的说, GraphQL是API界的SQL查询语言。 Restful API的痛点API 是后端与前端同学 必定要打交道的东西。 而对于API的设计，由于后端与前端人员的思维限制(非全栈)，导致无论前端还是后端设计API, 很难让另一端满意, 需要多次交涉。 以下是一个常见的现象:在一个页面的操作，包含多个功能, 而且UI界面与功能在频繁的修改。12后端UB:  API应该是根据模块划分的，">
+
+<link rel="canonical" href="https://o3o3o.me/2018/12/29/zh-CN/graphql_notes/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>GraphQL 使用笔记 | o3o3o</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-74257228-1"></script>
+    <script data-pjax>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-74257228-1');
+      }
+    </script>
+
+
+  <script data-pjax>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?f2a722fffb25471f54f785a805762963";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+        <span class="toggle-line toggle-line-first"></span>
+        <span class="toggle-line toggle-line-middle"></span>
+        <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">o3o3o</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">点滴记录</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-sitemap">
+
+    <a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://o3o3o.me/2018/12/29/zh-CN/graphql_notes/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/logo.svg">
+      <meta itemprop="name" content="o3o3o">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="o3o3o">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          GraphQL 使用笔记
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-12-29 13:25:04" itemprop="dateCreated datePublished" datetime="2018-12-29T13:25:04+08:00">2018-12-29</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Tech/" itemprop="url" rel="index"><span itemprop="name">Tech</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2018/12/29/zh-CN/graphql_notes/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/12/29/zh-CN/graphql_notes/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="简述"><a href="#简述" class="headerlink" title="简述"></a>简述</h3><p>简单的说, GraphQL是API界的SQL查询语言。</p>
+<h3 id="Restful-API的痛点"><a href="#Restful-API的痛点" class="headerlink" title="Restful API的痛点"></a>Restful API的痛点</h3><p>API 是后端与前端同学 必定要打交道的东西。 而对于API的设计，由于后端与前端人员的思维限制(非全栈)，导致无论前端还是后端设计API, 很难让另一端满意, 需要多次交涉。</p>
+<p>以下是一个常见的现象:<br>在一个页面的操作，包含多个功能, 而且UI界面与功能在频繁的修改。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">后端UB:  API应该是根据模块划分的，一个功能一个API</span><br><span class="line">前端UC:  一个页面应该一个请求, 不然请求效率太低...</span><br></pre></td></tr></table></figure></p>
+<p>这时，有的人要说了，可以弄一个API gateway, 聚合的所有的API，可做这些可是苦力活。</p>
+<p>这样的情况，我们也经历了一段时间，后期我们引入了GrapqhQL, 降低了不少成本。<br><a id="more"></a></p>
+<p><strong>GraphQL的特点</strong>:</p>
+<ul>
+<li>UI 变化频繁，server API 改动变少, Client根据自己的需求，组织语句去查询</li>
+<li>自带文档，代码就是文档</li>
+<li>强类型，不再需要或者 需要更少的 参数检查逻辑代码</li>
+<li>Server 与 Client 解藕 <ul>
+<li>server端开发，面向object数据，而不是页面。</li>
+<li>Client 一个页面的请求，取回所有需要的数据，减少网络开销</li>
+</ul>
+</li>
+</ul>
+<!-- more -->
+<h3 id="基础知识"><a href="#基础知识" class="headerlink" title="基础知识:"></a>基础知识:</h3><ul>
+<li>推荐先看 <a href="https://www.howtographql.com" target="_blank" rel="noopener">how to graphql</a></li>
+<li><a href="https://graphql.org/learn/" target="_blank" rel="noopener">英文资料</a> or <a href="http://graphql.cn/learn/" target="_blank" rel="noopener">graphql入门中文</a></li>
+<li><a href="http://docs.graphene-python.org/projects/django/en/latest/tutorial-plain/" target="_blank" rel="noopener">django graphql</a></li>
+</ul>
+<p>e.g:<br><img data-src="/images/graphql/graphql_demo.png" alt="demo"><br>用GraphiQL访问: <a href="https://api.graph.cool/simple/v1/cixos23120m0n0173veiiwrjr" target="_blank" rel="noopener">https://api.graph.cool/simple/v1/cixos23120m0n0173veiiwrjr</a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">query queryTest&#123;</span><br><span class="line">  allUsers(orderBy:id_DESC, first:2 )&#123;</span><br><span class="line">    ## Fragment example</span><br><span class="line">    ...UserField</span><br><span class="line">  &#125;</span><br><span class="line">  # alias example</span><br><span class="line">  Movies: allMovies(first:1)&#123;</span><br><span class="line">    actors(first:2)&#123;</span><br><span class="line">      name</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"># node usage</span><br><span class="line">  node(id:&quot;cj21vcky017ot0112ohc1bid8&quot;)&#123;</span><br><span class="line">    id</span><br><span class="line">    ... on User&#123;</span><br><span class="line">      name</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#Fragment: UserField with spefied field</span><br><span class="line">fragment UserField on User&#123;</span><br><span class="line"> 	id</span><br><span class="line">  name</span><br><span class="line">  createdAt</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">mutation createUser&#123;</span><br><span class="line">  createUser(name:&quot;testUser&quot;) &#123;</span><br><span class="line">    id</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="IDE工具"><a href="#IDE工具" class="headerlink" title="IDE工具:"></a>IDE工具:</h3><p>目前几个工具用的最多的还是GraphiQL</p>
+<ul>
+<li><a href="https://insomnia.rest/blog/introducing-graphql/" target="_blank" rel="noopener">insomnia</a> 没有postman好用, 可惜postman目前<a href="https://github.com/postmanlabs/postman-app-support/issues/1669" target="_blank" rel="noopener">还支持不了..</a></li>
+<li><a href="https://electronjs.org/apps/graphiql" target="_blank" rel="noopener">GraphiQL</a></li>
+<li><a href="https://github.com/graphcool/graphql-playground" target="_blank" rel="noopener">graphql-playground</a><br>mac可以直接执行安装: <code>brew cask install graphql-playground</code></li>
+</ul>
+<h3 id="GraphQL-Proxy"><a href="#GraphQL-Proxy" class="headerlink" title="GraphQL Proxy"></a>GraphQL Proxy</h3><p>GraphQL代理， 对于client端，只暴露一个接口, 后端多个结点，结点间可以互相访问。<a href="https://labs.getninjas.com.br/sharing-data-in-a-microservices-architecture-using-graphql-97db59357602" target="_blank" rel="noopener">例子</a></p>
+<ul>
+<li>把remote endpoints merge在一起<a href="https://www.apollographql.com/docs/graphql-tools/schema-stitching.html#mergeSchemas" target="_blank" rel="noopener">Graphql merge the subschema</a></li>
+<li><a href="https://www.apollographql.com/docs/graphql-tools/schema-delegation.html" target="_blank" rel="noopener">多个subschema之间嵌套查询</a></li>
+<li><a href="https://blog.graph.cool/how-do-graphql-remote-schemas-work-7118237c89d7" target="_blank" rel="noopener">How do grapnel remote schemes work</a></li>
+</ul>
+<h3 id="用scheme生成图的工具"><a href="#用scheme生成图的工具" class="headerlink" title="用scheme生成图的工具:"></a>用scheme生成图的工具:</h3><ul>
+<li><a href="https://github.com/APIs-guru/graphql-voyager" target="_blank" rel="noopener">graphql-voyage</a></li>
+<li><a href="http://nathanrandal.com/graphql-visualizer/" target="_blank" rel="noopener">graphql-visualizer</a></li>
+</ul>
+<h3 id="安全"><a href="#安全" class="headerlink" title="安全:"></a>安全:</h3><p> 数据的安全问题:  使用GraphQL需要注意, 上线系统，关闭 <code>__schema</code>的查询,避免 pentester 轻易拿到结构数据<br><a href="https://github.com/graphql-python/graphene/issues/907" target="_blank" rel="noopener">issue</a></p>
+<h3 id="性能"><a href="#性能" class="headerlink" title="性能"></a>性能</h3><ul>
+<li>性能问题: 因为python中使用graphQL, 运行时需要处理性能问题。python构造字典时所性能会拖慢，可以在类里面考虑添加<code>__slots__</code></li>
+</ul>
+<h3 id="Other-Links"><a href="#Other-Links" class="headerlink" title="Other Links:"></a>Other Links:</h3><ul>
+<li><a href="https://github.com/chentsulin/awesome-graphql" target="_blank" rel="noopener">awesome graphql</a></li>
+<li><a href="http://graphql.cn/" target="_blank" rel="noopener">graphql.cn</a></li>
+<li><a href="https://www.graphqlhub.com/" target="_blank" rel="noopener">graphqhub</a></li>
+</ul>
+<h3 id="TODO"><a href="#TODO" class="headerlink" title="TODO:"></a>TODO:</h3><ul>
+<li>GraphQL relationships node  connection</li>
+<li>django-graphql中如何在多层resolve 缓存?</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div></div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/bitcoin.png" alt="o3o3o 比特币">
+        <p>比特币</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>o3o3o
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://o3o3o.me/2018/12/29/zh-CN/graphql_notes/" title="GraphQL 使用笔记">https://o3o3o.me/2018/12/29/zh-CN/graphql_notes/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/graphql/" rel="tag"># graphql</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2016/03/01/zh-CN/travel/" rel="prev" title="旅行记">
+      <i class="fa fa-chevron-left"></i> 旅行记
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/07/13/django-ratelimit-for-graphql/" rel="next" title="Django ratelimit for Graphql">
+      Django ratelimit for Graphql <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#简述"><span class="nav-number">1.</span> <span class="nav-text">简述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Restful-API的痛点"><span class="nav-number">2.</span> <span class="nav-text">Restful API的痛点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基础知识"><span class="nav-number">3.</span> <span class="nav-text">基础知识:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#IDE工具"><span class="nav-number">4.</span> <span class="nav-text">IDE工具:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GraphQL-Proxy"><span class="nav-number">5.</span> <span class="nav-text">GraphQL Proxy</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#用scheme生成图的工具"><span class="nav-number">6.</span> <span class="nav-text">用scheme生成图的工具:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安全"><span class="nav-number">7.</span> <span class="nav-text">安全:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#性能"><span class="nav-number">8.</span> <span class="nav-text">性能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Other-Links"><span class="nav-number">9.</span> <span class="nav-text">Other Links:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TODO"><span class="nav-number">10.</span> <span class="nav-text">TODO:</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="o3o3o"
+      src="/images/logo.svg">
+  <p class="site-author-name" itemprop="name">o3o3o</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">31</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/o3o3o" title="GitHub → https://github.com/o3o3o" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/2717757412" title="Weibo → https://weibo.com/2717757412" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/Wo3o3o" title="Twitter → https://twitter.com/Wo3o3o" rel="noopener" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://stackoverflow.com/3055831" title="StackOverflow → https://stackoverflow.com/3055831" rel="noopener" target="_blank"><i class="fab fa-stack-overflow fa-fw"></i>StackOverflow</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="languages">
+    <label class="lang-select-label">
+      <i class="fa fa-language"></i>
+      <span>简体中文</span>
+      <i class="fa fa-angle-up" aria-hidden="true"></i>
+    </label>
+    <select class="lang-select" data-canonical="">
+      
+        <option value="en" data-href="/2018/12/29/zh-CN/graphql_notes/" selected="">
+          English
+        </option>
+      
+        <option value="zh-CN" data-href="/zh-CN/2018/12/29/zh-CN/graphql_notes/" selected="">
+          简体中文
+        </option>
+      
+    </select>
+  </div>
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">o3o3o</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/pjax/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script>
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '.languages',
+    '#pjax'
+  ],
+  switches: {
+    '.post-toc-wrap': Pjax.switches.innerHTML
+  },
+  analytics: false,
+  cacheBust: false,
+  scrollTo : !CONFIG.bookmark.enable
+});
+
+document.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[data-pjax], script#page-configurations, #pjax script').forEach(element => {
+    var code = element.text || element.textContent || element.innerHTML || '';
+    var parent = element.parentNode;
+    parent.removeChild(element);
+    var script = document.createElement('script');
+    if (element.id) {
+      script.id = element.id;
+    }
+    if (element.className) {
+      script.className = element.className;
+    }
+    if (element.type) {
+      script.type = element.type;
+    }
+    if (element.src) {
+      script.src = element.src;
+      // Force synchronous loading of peripheral JS.
+      script.async = false;
+    }
+    if (element.dataset.pjax !== undefined) {
+      script.dataset.pjax = '';
+    }
+    if (code !== '') {
+      script.appendChild(document.createTextNode(code));
+    }
+    parent.appendChild(script);
+  });
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div id="pjax">
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://o3o3o.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "https://o3o3o.me/2018/12/29/zh-CN/graphql_notes/";
+    this.page.identifier = "2018/12/29/zh-CN/graphql_notes/";
+    this.page.title = "GraphQL 使用笔记";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://o3o3o.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+    </div>
+</body>
+</html>

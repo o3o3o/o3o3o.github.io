@@ -172,7 +172,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://o3o3o.me/2020/04/22/tmux-tips/">
+    <link itemprop="mainEntityOfPage" href="https://o3o3o.me/2020/05/22/zh-CN/restore-ripple-by-secret-key/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/logo.svg">
@@ -186,7 +186,101 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/04/22/tmux-tips/" class="post-title-link" itemprop="url">Tmux Tips</a>
+            <a href="/2020/05/22/zh-CN/restore-ripple-by-secret-key/" class="post-title-link" itemprop="url">通过私钥恢复ripple</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-05-22 16:09:00" itemprop="dateCreated datePublished" datetime="2020-05-22T16:09:00+08:00">2020-05-22</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Tech/" itemprop="url" rel="index"><span itemprop="name">Tech</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/2020/05/22/zh-CN/restore-ripple-by-secret-key/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/05/22/zh-CN/restore-ripple-by-secret-key/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="前情提要"><a href="#前情提要" class="headerlink" title="前情提要"></a>前情提要</h2><p>最近在整理文件的时候，发现了个2013年的ripple密钥, 当时并不值钱，但最近还算比较值钱（现价1.42 CNY)</p>
+<p>通过一番努力，终于找回了。在这儿把这个过程记录下来, 以备有类似情况的人朋友使用。</p>
+<p>记得当时是在<a href="https://www.worldcommunitygrid.org/" target="_blank" rel="noopener">WCG</a> (World Community Grid)注册了个账号, 下载了BOINC, 并加入了 Ripple Labs Team，在自己的PC上跑了起来, Ripple Labs根据算力大小获得的点数来分配每天获得的XRP。 但是，2014年4月，由于WCG改版，Ripple Labs获取积分困难，再加上分配不均以及黑客攻击等原因，Ripple Labs停止了WCG赠送活动。</p>
+<p>好了，进入正题。咱们的目的是:</p>
+<ol>
+<li>通过密钥，看看自己有多少ripple, </li>
+<li>如果有的话，如何持有，并交易。
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/05/22/zh-CN/restore-ripple-by-secret-key/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://o3o3o.me/2020/04/22/zh-CN/tmux-tips/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/logo.svg">
+      <meta itemprop="name" content="o3o3o">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="o3o3o">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/04/22/zh-CN/tmux-tips/" class="post-title-link" itemprop="url">Tmux 使用建议</a>
         </h2>
 
         <div class="post-meta">
@@ -217,8 +311,8 @@
       </span>
       <span class="post-meta-item-text">Disqus：</span>
     
-    <a title="disqus" href="/2020/04/22/tmux-tips/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/04/22/tmux-tips/" itemprop="commentCount"></span>
+    <a title="disqus" href="/2020/04/22/zh-CN/tmux-tips/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2020/04/22/zh-CN/tmux-tips/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -246,7 +340,7 @@
 <li>使用tmux的会话保存、恢复功能, 恢复工作环境
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/04/22/tmux-tips/#more" rel="contents">
+              <a class="btn" href="/2020/04/22/zh-CN/tmux-tips/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -270,7 +364,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://o3o3o.me/2019/12/14/nuisance-call/">
+    <link itemprop="mainEntityOfPage" href="https://o3o3o.me/2019/12/14/zh-CN/nuisance-call/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/logo.svg">
@@ -284,7 +378,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2019/12/14/nuisance-call/" class="post-title-link" itemprop="url">讯飞来电助手-从骚扰电话中解脱出来</a>
+            <a href="/2019/12/14/zh-CN/nuisance-call/" class="post-title-link" itemprop="url">讯飞来电助手-从骚扰电话中解脱出来</a>
         </h2>
 
         <div class="post-meta">
@@ -315,8 +409,8 @@
       </span>
       <span class="post-meta-item-text">Disqus：</span>
     
-    <a title="disqus" href="/2019/12/14/nuisance-call/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/12/14/nuisance-call/" itemprop="commentCount"></span>
+    <a title="disqus" href="/2019/12/14/zh-CN/nuisance-call/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/12/14/zh-CN/nuisance-call/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -340,7 +434,7 @@
 </ol>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2019/12/14/nuisance-call/#more" rel="contents">
+              <a class="btn" href="/2019/12/14/zh-CN/nuisance-call/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -364,7 +458,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://o3o3o.me/2018/12/29/graphql_notes/">
+    <link itemprop="mainEntityOfPage" href="https://o3o3o.me/2018/12/29/zh-CN/graphql_notes/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/logo.svg">
@@ -378,7 +472,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2018/12/29/graphql_notes/" class="post-title-link" itemprop="url">GraphQL 使用笔记</a>
+            <a href="/2018/12/29/zh-CN/graphql_notes/" class="post-title-link" itemprop="url">GraphQL 使用笔记</a>
         </h2>
 
         <div class="post-meta">
@@ -409,8 +503,8 @@
       </span>
       <span class="post-meta-item-text">Disqus：</span>
     
-    <a title="disqus" href="/2018/12/29/graphql_notes/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/12/29/graphql_notes/" itemprop="commentCount"></span>
+    <a title="disqus" href="/2018/12/29/zh-CN/graphql_notes/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/12/29/zh-CN/graphql_notes/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -432,7 +526,7 @@
 <p>这样的情况，我们也经历了一段时间，后期我们引入了GrapqhQL, 降低了不少成本。<br>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2018/12/29/graphql_notes/#more" rel="contents">
+              <a class="btn" href="/2018/12/29/zh-CN/graphql_notes/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -456,7 +550,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://o3o3o.me/2016/03/01/travel/">
+    <link itemprop="mainEntityOfPage" href="https://o3o3o.me/2016/03/01/zh-CN/travel/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/logo.svg">
@@ -470,7 +564,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2016/03/01/travel/" class="post-title-link" itemprop="url">旅行记</a>
+            <a href="/2016/03/01/zh-CN/travel/" class="post-title-link" itemprop="url">旅行记</a>
         </h2>
 
         <div class="post-meta">
@@ -501,8 +595,8 @@
       </span>
       <span class="post-meta-item-text">Disqus：</span>
     
-    <a title="disqus" href="/2016/03/01/travel/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/03/01/travel/" itemprop="commentCount"></span>
+    <a title="disqus" href="/2016/03/01/zh-CN/travel/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/03/01/zh-CN/travel/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -520,7 +614,7 @@
           <p>这是一次旅行之前的心理路程，当时的原版记录是在我的纸制日记上面，最近在做一些决定时，让我再次想起这件事，因此储存在电子版，便于搜索。<br>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2016/03/01/travel/#more" rel="contents">
+              <a class="btn" href="/2016/03/01/zh-CN/travel/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -544,7 +638,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://o3o3o.me/2016/02/29/rss/">
+    <link itemprop="mainEntityOfPage" href="https://o3o3o.me/2016/02/29/zh-CN/rss/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/logo.svg">
@@ -558,7 +652,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2016/02/29/rss/" class="post-title-link" itemprop="url">我的rss订阅源</a>
+            <a href="/2016/02/29/zh-CN/rss/" class="post-title-link" itemprop="url">我的rss订阅源</a>
         </h2>
 
         <div class="post-meta">
@@ -580,8 +674,8 @@
       </span>
       <span class="post-meta-item-text">Disqus：</span>
     
-    <a title="disqus" href="/2016/02/29/rss/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/02/29/rss/" itemprop="commentCount"></span>
+    <a title="disqus" href="/2016/02/29/zh-CN/rss/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/02/29/zh-CN/rss/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -714,7 +808,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://o3o3o.me/2016/02/22/toollist/">
+    <link itemprop="mainEntityOfPage" href="https://o3o3o.me/2016/02/22/zh-CN/toollist/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/logo.svg">
@@ -728,7 +822,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2016/02/22/toollist/" class="post-title-link" itemprop="url">我的工具箱</a>
+            <a href="/2016/02/22/zh-CN/toollist/" class="post-title-link" itemprop="url">我的工具箱</a>
         </h2>
 
         <div class="post-meta">
@@ -759,8 +853,8 @@
       </span>
       <span class="post-meta-item-text">Disqus：</span>
     
-    <a title="disqus" href="/2016/02/22/toollist/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/02/22/toollist/" itemprop="commentCount"></span>
+    <a title="disqus" href="/2016/02/22/zh-CN/toollist/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/02/22/zh-CN/toollist/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -778,7 +872,7 @@
           <p>自认为是个工具控, 还记得小的时候，看动画片<a href="http://v.youku.com/v_show/id_XNTg3MTI1MTI4.html" target="_blank" rel="noopener">水果城</a>中的香蕉总是能在非常时刻从他的背包中找到需要的工具，从此心灵深处埋了颗种子, 上大学时总喜欢把自己所需要的东西背在书包里面，现在工作了， 今天终于可以把这2年使用的应用做个汇总啦.</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2016/02/22/toollist/#more" rel="contents">
+              <a class="btn" href="/2016/02/22/zh-CN/toollist/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -802,7 +896,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://o3o3o.me/2014/06/23/busy/">
+    <link itemprop="mainEntityOfPage" href="https://o3o3o.me/2014/06/23/zh-CN/busy/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/logo.svg">
@@ -816,7 +910,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2014/06/23/busy/" class="post-title-link" itemprop="url">“忙碌”?</a>
+            <a href="/2014/06/23/zh-CN/busy/" class="post-title-link" itemprop="url">“忙碌”?</a>
         </h2>
 
         <div class="post-meta">
@@ -847,8 +941,8 @@
       </span>
       <span class="post-meta-item-text">Disqus：</span>
     
-    <a title="disqus" href="/2014/06/23/busy/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2014/06/23/busy/" itemprop="commentCount"></span>
+    <a title="disqus" href="/2014/06/23/zh-CN/busy/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2014/06/23/zh-CN/busy/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -866,7 +960,7 @@
           <p>话说，昨天，也就是周末，看了下couresa 中的machine learing公开课，对于线性规划，superviser learning式，好棒的说！！！<br>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2014/06/23/busy/#more" rel="contents">
+              <a class="btn" href="/2014/06/23/zh-CN/busy/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -890,7 +984,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://o3o3o.me/2014/06/12/rained/">
+    <link itemprop="mainEntityOfPage" href="https://o3o3o.me/2014/06/12/zh-CN/rained/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/logo.svg">
@@ -904,7 +998,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2014/06/12/rained/" class="post-title-link" itemprop="url">雨后</a>
+            <a href="/2014/06/12/zh-CN/rained/" class="post-title-link" itemprop="url">雨后</a>
         </h2>
 
         <div class="post-meta">
@@ -935,8 +1029,8 @@
       </span>
       <span class="post-meta-item-text">Disqus：</span>
     
-    <a title="disqus" href="/2014/06/12/rained/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2014/06/12/rained/" itemprop="commentCount"></span>
+    <a title="disqus" href="/2014/06/12/zh-CN/rained/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2014/06/12/zh-CN/rained/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -954,95 +1048,7 @@
           <p>[图片]<br>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2014/06/12/rained/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://o3o3o.me/2014/06/10/current-life/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/logo.svg">
-      <meta itemprop="name" content="o3o3o">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="o3o3o">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2014/06/10/current-life/" class="post-title-link" itemprop="url">眼下的生活</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2014-06-10 21:24:37" itemprop="dateCreated datePublished" datetime="2014-06-10T21:24:37+08:00">2014-06-10</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/滋味生活/" itemprop="url" rel="index"><span itemprop="name">滋味生活</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Disqus：</span>
-    
-    <a title="disqus" href="/2014/06/10/current-life/#disqus_thread" itemprop="discussionUrl">
-      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2014/06/10/current-life/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>虽然现在在外面住了，每天上班的生活，感觉依然有些累。尤其这几天。<br>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2014/06/10/current-life/#more" rel="contents">
+              <a class="btn" href="/2014/06/12/zh-CN/rained/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -1133,16 +1139,16 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">29</span>
+          <span class="site-state-item-count">31</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
-        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-count">9</span>
         <span class="site-state-item-name">categories</span>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-count">23</span>
         <span class="site-state-item-name">tags</span>
       </div>
   </nav>

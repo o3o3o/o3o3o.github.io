@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en,zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"o3o3o.me","root":"/","scheme":"Gemini","version":"8.0.0-rc.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":true,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="前情提要最近在整理文件的时候，发现了个2013年的ripple密钥, 当时并不值钱，但最近还算比较值钱（现价1.42 CNY) 通过一番努力，终于找回了。在这儿把这个过程记录下来, 以备有类似情况的人朋友使用。 记得当时是在WCG (World Community Grid)注册了个账号, 下载了BOINC, 并加入了 Ripple Labs Team，在自己的PC上跑了起来, Ripple La">
+<meta name="keywords" content="ripple,xrp">
+<meta property="og:type" content="article">
+<meta property="og:title" content="通过私钥恢复ripple">
+<meta property="og:url" content="https://o3o3o.me/zh-CN/2020/05/22/zh-CN/restore-ripple-by-secret-key/index.html">
+<meta property="og:site_name" content="o3o3o">
+<meta property="og:description" content="前情提要最近在整理文件的时候，发现了个2013年的ripple密钥, 当时并不值钱，但最近还算比较值钱（现价1.42 CNY) 通过一番努力，终于找回了。在这儿把这个过程记录下来, 以备有类似情况的人朋友使用。 记得当时是在WCG (World Community Grid)注册了个账号, 下载了BOINC, 并加入了 Ripple Labs Team，在自己的PC上跑了起来, Ripple La">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-05-23T04:40:39.427Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="通过私钥恢复ripple">
+<meta name="twitter:description" content="前情提要最近在整理文件的时候，发现了个2013年的ripple密钥, 当时并不值钱，但最近还算比较值钱（现价1.42 CNY) 通过一番努力，终于找回了。在这儿把这个过程记录下来, 以备有类似情况的人朋友使用。 记得当时是在WCG (World Community Grid)注册了个账号, 下载了BOINC, 并加入了 Ripple Labs Team，在自己的PC上跑了起来, Ripple La">
+
+<link rel="canonical" href="https://o3o3o.me/zh-CN/2020/05/22/zh-CN/restore-ripple-by-secret-key/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>通过私钥恢复ripple | o3o3o</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-74257228-1"></script>
+    <script data-pjax>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-74257228-1');
+      }
+    </script>
+
+
+  <script data-pjax>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?f2a722fffb25471f54f785a805762963";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+        <span class="toggle-line toggle-line-first"></span>
+        <span class="toggle-line toggle-line-middle"></span>
+        <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">o3o3o</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">点滴记录</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-sitemap">
+
+    <a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://o3o3o.me/2020/05/22/zh-CN/restore-ripple-by-secret-key/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/logo.svg">
+      <meta itemprop="name" content="o3o3o">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="o3o3o">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          通过私钥恢复ripple
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-05-22 16:09:00" itemprop="dateCreated datePublished" datetime="2020-05-22T16:09:00+08:00">2020-05-22</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Tech/" itemprop="url" rel="index"><span itemprop="name">Tech</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Disqus：</span>
+    
+    <a title="disqus" href="/zh-CN/2020/05/22/zh-CN/restore-ripple-by-secret-key/#disqus_thread" itemprop="discussionUrl">
+      <span class="post-comments-count disqus-comment-count" data-disqus-identifier="zh-CN/2020/05/22/zh-CN/restore-ripple-by-secret-key/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="前情提要"><a href="#前情提要" class="headerlink" title="前情提要"></a>前情提要</h2><p>最近在整理文件的时候，发现了个2013年的ripple密钥, 当时并不值钱，但最近还算比较值钱（现价1.42 CNY)</p>
+<p>通过一番努力，终于找回了。在这儿把这个过程记录下来, 以备有类似情况的人朋友使用。</p>
+<p>记得当时是在<a href="https://www.worldcommunitygrid.org/" target="_blank" rel="noopener">WCG</a> (World Community Grid)注册了个账号, 下载了BOINC, 并加入了 Ripple Labs Team，在自己的PC上跑了起来, Ripple Labs根据算力大小获得的点数来分配每天获得的XRP。 但是，2014年4月，由于WCG改版，Ripple Labs获取积分困难，再加上分配不均以及黑客攻击等原因，Ripple Labs停止了WCG赠送活动。</p>
+<p>好了，进入正题。咱们的目的是:</p>
+<ol>
+<li>通过密钥，看看自己有多少ripple, </li>
+<li>如果有的话，如何持有，并交易。<a id="more"></a>
+</li>
+</ol>
+<h2 id="如何找回-Ripple"><a href="#如何找回-Ripple" class="headerlink" title="如何找回 Ripple"></a>如何找回 Ripple</h2><h4 id="通过密钥，生成地址、公私钥"><a href="#通过密钥，生成地址、公私钥" class="headerlink" title="通过密钥，生成地址、公私钥"></a>通过密钥，生成地址、公私钥</h4><p>当时在ripple.com 注册的时候，你应该保存着一个文件, 内容大概是:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Secret Account key:</span><br><span class="line"></span><br><span class="line">shqa2QYiJ1wcizZdV3WeiLeL7L33d</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>本地安装node 环境，可以通过以下代码，把<code>shqa2QYiJ1wcizZdV3WeiLeL7L33d</code> 替换成你的密钥。</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> r = <span class="built_in">require</span>(<span class="string">"ripple-keypairs"</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> keypair = r.deriveKeypair(<span class="string">"shqa2QYiJ1wcizZdV3WeiLeL7L33d"</span>) <span class="comment">// replace shqa2QYiJ1wcizZdV3WeiLeL7L33d with yourkey</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> publicAddress = r.deriveAddress(keypair.publicKey)</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'publicAddress: '</span>, publicAddress)</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'keyPair: '</span>, keypair)</span><br></pre></td></tr></table></figure>
+<p>若你想快速找回，   可以<a href="https://repl.it/@michaelwang14/PeskyAcrobaticLinuxpc" target="_blank" rel="noopener">这儿</a>  (<strong>注意</strong>: 可能会有安全风险，毕竟是联网状态, 还是推荐在本地运行) 点击run就可以.</p>
+<p>最终的执行结果，如:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">publicAddress:  rBHv7wzKgbWFyRvnFRDGAaiRmuQiZGEr4j</span><br><span class="line">keyPair:  &#123;</span><br><span class="line">  privateKey: <span class="string">'007D0FD37D0BDFC9FFF22C4B738F8E0B48D7C05A6F8E42651A3B9153F4B18A644E'</span>,</span><br><span class="line">  publicKey: <span class="string">'02C6965ECA0D64FD78114B361380D57289BB25EA2E299FE66381B23BDA5899919A'</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="管理你的-Ripple"><a href="#管理你的-Ripple" class="headerlink" title="管理你的 Ripple"></a>管理你的 Ripple</h2><p>首先你需要知道你的余额：<br><a href="https://bithomp.com/{YourPublicAddress}" target="_blank" rel="noopener">https://bithomp.com/{YourPublicAddress}</a>, 替换 <code>{YourPublicAddress}</code>  为你的地址，就可以看到你的余额。本文的例子是<br><a href="https://bithomp.com/rBHv7wzKgbWFyRvnFRDGAaiRmuQiZGEr4j" target="_blank" rel="noopener">https://bithomp.com/rBHv7wzKgbWFyRvnFRDGAaiRmuQiZGEr4j</a></p>
+<p>然后，你可能需要决定使用哪个钱包。<br>在参考了 <a href="https://cointelegraph.com/ripple-101/ripple-xrp-wallets-for-beginners" target="_blank" rel="noopener">这片文章后</a></p>
+<p>我最终使用的是 web 版本的<a href="https://exarpy.com/" target="_blank" rel="noopener">exarpy</a> （觉得体验简单极致, 对于关键操作，提示断网操作）但从理论上来说，还是不够安全，如何你需要安全性更高，还是建议使用其它本地钱包）</p>
+<p>如果想把这些币兑换比特币，可以去支持的交易所兑换，比如: <a href="https://www.binance.com/cn/register?ref=TPMJHP1G" target="_blank" rel="noopener">Binance</a>、 <a href="https://www.bitfinex.com/?refcode=dECCgNzKs" target="_blank" rel="noopener">Bitfnex</a>…</p>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div></div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/bitcoin.png" alt="o3o3o 比特币">
+        <p>比特币</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>o3o3o
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://o3o3o.me/2020/05/22/zh-CN/restore-ripple-by-secret-key/" title="通过私钥恢复ripple">https://o3o3o.me/2020/05/22/zh-CN/restore-ripple-by-secret-key/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/ripple/" rel="tag"># ripple</a>
+              <a href="/tags/xrp/" rel="tag"># xrp</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/04/22/zh-CN/tmux-tips/" rel="prev" title="Tmux 使用建议">
+      <i class="fa fa-chevron-left"></i> Tmux 使用建议
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/05/22/restore-ripple-by-secret-key/" rel="next" title="Restore Ripple By Secret Key">
+      Restore Ripple By Secret Key <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    
+  <div class="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前情提要"><span class="nav-number">1.</span> <span class="nav-text">前情提要</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何找回-Ripple"><span class="nav-number">2.</span> <span class="nav-text">如何找回 Ripple</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#通过密钥，生成地址、公私钥"><span class="nav-number">2.0.1.</span> <span class="nav-text">通过密钥，生成地址、公私钥</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#管理你的-Ripple"><span class="nav-number">3.</span> <span class="nav-text">管理你的 Ripple</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="o3o3o"
+      src="/images/logo.svg">
+  <p class="site-author-name" itemprop="name">o3o3o</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">31</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/o3o3o" title="GitHub → https://github.com/o3o3o" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/2717757412" title="Weibo → https://weibo.com/2717757412" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/Wo3o3o" title="Twitter → https://twitter.com/Wo3o3o" rel="noopener" target="_blank"><i class="fab fa-twitter fa-fw"></i>Twitter</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://stackoverflow.com/3055831" title="StackOverflow → https://stackoverflow.com/3055831" rel="noopener" target="_blank"><i class="fab fa-stack-overflow fa-fw"></i>StackOverflow</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="languages">
+    <label class="lang-select-label">
+      <i class="fa fa-language"></i>
+      <span>简体中文</span>
+      <i class="fa fa-angle-up" aria-hidden="true"></i>
+    </label>
+    <select class="lang-select" data-canonical="">
+      
+        <option value="en" data-href="/2020/05/22/zh-CN/restore-ripple-by-secret-key/" selected="">
+          English
+        </option>
+      
+        <option value="zh-CN" data-href="/zh-CN/2020/05/22/zh-CN/restore-ripple-by-secret-key/" selected="">
+          简体中文
+        </option>
+      
+    </select>
+  </div>
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">o3o3o</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/pjax/pjax.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script>
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '.languages',
+    '#pjax'
+  ],
+  switches: {
+    '.post-toc-wrap': Pjax.switches.innerHTML
+  },
+  analytics: false,
+  cacheBust: false,
+  scrollTo : !CONFIG.bookmark.enable
+});
+
+document.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[data-pjax], script#page-configurations, #pjax script').forEach(element => {
+    var code = element.text || element.textContent || element.innerHTML || '';
+    var parent = element.parentNode;
+    parent.removeChild(element);
+    var script = document.createElement('script');
+    if (element.id) {
+      script.id = element.id;
+    }
+    if (element.className) {
+      script.className = element.className;
+    }
+    if (element.type) {
+      script.type = element.type;
+    }
+    if (element.src) {
+      script.src = element.src;
+      // Force synchronous loading of peripheral JS.
+      script.async = false;
+    }
+    if (element.dataset.pjax !== undefined) {
+      script.dataset.pjax = '';
+    }
+    if (code !== '') {
+      script.appendChild(document.createTextNode(code));
+    }
+    parent.appendChild(script);
+  });
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div id="pjax">
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://o3o3o.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  var disqus_config = function() {
+    this.page.url = "https://o3o3o.me/2020/05/22/zh-CN/restore-ripple-by-secret-key/";
+    this.page.identifier = "zh-CN/2020/05/22/zh-CN/restore-ripple-by-secret-key/";
+    this.page.title = "通过私钥恢复ripple";
+    };
+  NexT.utils.loadComments(document.querySelector('#disqus_thread'), () => {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://o3o3o.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  });
+</script>
+
+    </div>
+</body>
+</html>

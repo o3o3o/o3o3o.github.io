@@ -30,7 +30,7 @@
 <meta property="og:site_name" content="o3o3o">
 <meta property="og:description" content="We cannot use django-ratelimit directly for graphql resolve method.So I modified rateilmit decorator based on the original code, to support the key format like: gql:xxxx">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-05-23T02:34:17.905Z">
+<meta property="og:updated_time" content="2020-05-23T04:45:55.572Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Django ratelimit for Graphql">
 <meta name="twitter:description" content="We cannot use django-ratelimit directly for graphql resolve method.So I modified rateilmit decorator based on the original code, to support the key format like: gql:xxxx">
@@ -240,12 +240,45 @@
         <p>We cannot use <a href="https://github.com/jsocol/django-ratelimit/" target="_blank" rel="noopener">django-ratelimit</a> directly for graphql resolve method.<br>So I modified <code>rateilmit decorator</code> based on the <a href="https://github.com/jsocol/django-ratelimit/blob/master/ratelimit/decorators.py#L13" target="_blank" rel="noopener">original code</a>, to support the key format like: <code>gql:xxxx</code></p>
 <a id="more"></a>
 <figure class="highlight py"><figcaption><span>ratelimit_example</span><a href="/downloads/code//ratelimit.py">view raw</a></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> functools <span class="keyword">import</span> wraps</span><br><span class="line"><span class="keyword">from</span> ratelimit.exceptions <span class="keyword">import</span> Ratelimited</span><br><span class="line"><span class="keyword">from</span> ratelimit.utils <span class="keyword">import</span> is_ratelimited</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">GQLRatelimitKey</span><span class="params">(group, request)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> request.gql_rl_field</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">ratelimit</span><span class="params">(group=None, key=None, rate=None, method=ALL, block=False)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">decorator</span><span class="params">(fn)</span>:</span></span><br><span class="line"><span class="meta">        @wraps(fn)</span></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">_wrapped</span><span class="params">(root, info, **kw)</span>:</span></span><br><span class="line">            request = info.context</span><br><span class="line">            request.limited = getattr(request, <span class="string">"limited"</span>, <span class="keyword">False</span>)</span><br><span class="line"></span><br><span class="line">            new_key = key</span><br><span class="line">            <span class="keyword">if</span> key <span class="keyword">and</span> key.startswith(<span class="string">"gql:"</span>):</span><br><span class="line">                _key = key.split(<span class="string">"gql:"</span>)[<span class="number">1</span>]</span><br><span class="line">                value = kw.get(_key, <span class="keyword">None</span>)</span><br><span class="line">                <span class="keyword">if</span> <span class="keyword">not</span> value:</span><br><span class="line">                    <span class="keyword">raise</span> ValueError(<span class="string">f"Cannot get key: <span class="subst">{key}</span>"</span>)</span><br><span class="line">                request.gql_rl_field = value</span><br><span class="line"></span><br><span class="line">                new_key = GQLRatelimitKey</span><br><span class="line"></span><br><span class="line">            ratelimited = is_ratelimited(</span><br><span class="line">                request=request,</span><br><span class="line">                group=group,</span><br><span class="line">                fn=fn,</span><br><span class="line">                key=new_key,</span><br><span class="line">                rate=rate,</span><br><span class="line">                method=method,</span><br><span class="line">                increment=<span class="keyword">True</span>,</span><br><span class="line">            )</span><br><span class="line">            <span class="keyword">if</span> ratelimited <span class="keyword">and</span> block:</span><br><span class="line">                <span class="keyword">raise</span> Ratelimited</span><br><span class="line">            <span class="keyword">return</span> fn(root, info, **kw)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> _wrapped</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> decorator</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Test</span><span class="params">(graphene.Mutation)</span>:</span></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Arguments</span>:</span></span><br><span class="line">        phone = graphene.String(required=<span class="keyword">True</span>)</span><br><span class="line"></span><br><span class="line">    ok = graphene.Boolean()</span><br><span class="line"></span><br><span class="line"><span class="meta">    @ratelimit(key="ip", rate="10/m", block=True)</span></span><br><span class="line"><span class="meta">    @ratelimit(key="gql:phone", rate="5/m", block=True)</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">mutate</span><span class="params">(self, info, phone)</span>:</span></span><br><span class="line">        request = info.context</span><br><span class="line">        <span class="comment"># Do sth</span></span><br><span class="line">        <span class="keyword">return</span> Test(ok=<span class="keyword">True</span>)</span><br></pre></td></tr></table></figure>
+<p><strong>Update</strong>:<br>Now you can use this by pip:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install django-graphql-ratelimit</span><br></pre></td></tr></table></figure></p>
 
     </div>
 
     
     
     
+        <div class="reward-container">
+  <div></div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/bitcoin.png" alt="o3o3o 比特币">
+        <p>比特币</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>o3o3o
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://o3o3o.me/2019/07/13/django-ratelimit-for-graphql/" title="Django ratelimit for Graphql">https://o3o3o.me/2019/07/13/django-ratelimit-for-graphql/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
 
       <footer class="post-footer">
           <div class="post-tags">
@@ -259,11 +292,11 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2018/12/29/graphql_notes/" rel="prev" title="GraphQL 使用笔记">
+    <a href="/2018/12/29/zh-CN/graphql_notes/" rel="prev" title="GraphQL 使用笔记">
       <i class="fa fa-chevron-left"></i> GraphQL 使用笔记
     </a></div>
       <div class="post-nav-item">
-    <a href="/2019/12/14/nuisance-call/" rel="next" title="讯飞来电助手-从骚扰电话中解脱出来">
+    <a href="/2019/12/14/zh-CN/nuisance-call/" rel="next" title="讯飞来电助手-从骚扰电话中解脱出来">
       讯飞来电助手-从骚扰电话中解脱出来 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
@@ -346,16 +379,16 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">29</span>
+          <span class="site-state-item-count">31</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
-        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-count">9</span>
         <span class="site-state-item-name">categories</span>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-count">23</span>
         <span class="site-state-item-name">tags</span>
       </div>
   </nav>

@@ -2,91 +2,112 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://o3o3o.me/2014/06/12/rained/</loc>
+    <loc>https://o3o3o.me/2019/07/13/django-ratelimit-for-graphql/</loc>
     
-    <lastmod>2020-05-23T02:59:21.200Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://o3o3o.me/2019/12/14/nuisance-call/</loc>
-    
-    <lastmod>2020-05-23T02:54:06.779Z</lastmod>
+    <lastmod>2020-05-23T04:45:55.572Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://o3o3o.me/2014/06/23/busy/</loc>
+    <loc>https://o3o3o.me/2020/05/22/zh-CN/restore-ripple-by-secret-key/</loc>
     
-    <lastmod>2020-05-23T02:36:05.658Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://o3o3o.me/2014/04/13/wisdom/</loc>
-    
-    <lastmod>2020-05-23T02:34:17.939Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://o3o3o.me/2013/12/05/where-is-way/</loc>
-    
-    <lastmod>2020-05-23T02:34:17.938Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://o3o3o.me/2014/03/09/what-is-cafe/</loc>
-    
-    <lastmod>2020-05-23T02:34:17.937Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://o3o3o.me/2014/02/16/walk-in-weekend/</loc>
-    
-    <lastmod>2020-05-23T02:34:17.935Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://o3o3o.me/2016/03/01/travel/</loc>
-    
-    <lastmod>2020-05-23T02:34:17.934Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://o3o3o.me/2016/02/22/toollist/</loc>
-    
-    <lastmod>2020-05-23T02:34:17.933Z</lastmod>
+    <lastmod>2020-05-23T04:40:39.427Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://o3o3o.me/2020/04/22/tmux-tips/</loc>
     
-    <lastmod>2020-05-23T02:34:17.931Z</lastmod>
+    <lastmod>2020-05-23T03:34:41.517Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://o3o3o.me/2014/01/05/smell/</loc>
+    <loc>https://o3o3o.me/2020/04/22/zh-CN/tmux-tips/</loc>
+    
+    <lastmod>2020-05-23T03:33:41.697Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://o3o3o.me/2014/06/12/zh-CN/rained/</loc>
+    
+    <lastmod>2020-05-23T02:59:21.200Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://o3o3o.me/2019/12/14/zh-CN/nuisance-call/</loc>
+    
+    <lastmod>2020-05-23T02:54:06.779Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://o3o3o.me/2014/06/23/zh-CN/busy/</loc>
+    
+    <lastmod>2020-05-23T02:36:05.658Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://o3o3o.me/2014/04/13/zh-CN/wisdom/</loc>
+    
+    <lastmod>2020-05-23T02:34:17.939Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://o3o3o.me/2013/12/05/zh-CN/where-is-way/</loc>
+    
+    <lastmod>2020-05-23T02:34:17.938Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://o3o3o.me/2014/03/09/zh-CN/what-is-cafe/</loc>
+    
+    <lastmod>2020-05-23T02:34:17.937Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://o3o3o.me/2014/02/16/zh-CN/walk-in-weekend/</loc>
+    
+    <lastmod>2020-05-23T02:34:17.935Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://o3o3o.me/2016/03/01/zh-CN/travel/</loc>
+    
+    <lastmod>2020-05-23T02:34:17.934Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://o3o3o.me/2016/02/22/zh-CN/toollist/</loc>
+    
+    <lastmod>2020-05-23T02:34:17.933Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://o3o3o.me/2014/01/05/zh-CN/smell/</loc>
     
     <lastmod>2020-05-23T02:34:17.928Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://o3o3o.me/2016/02/29/rss/</loc>
+    <loc>https://o3o3o.me/2016/02/29/zh-CN/rss/</loc>
     
     <lastmod>2020-05-23T02:34:17.927Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://o3o3o.me/2013/11/08/road/</loc>
+    <loc>https://o3o3o.me/2013/11/08/zh-CN/road/</loc>
     
     <lastmod>2020-05-23T02:34:17.926Z</lastmod>
     
@@ -100,56 +121,56 @@
   </url>
   
   <url>
-    <loc>https://o3o3o.me/2014/01/20/recall/</loc>
+    <loc>https://o3o3o.me/2014/01/20/zh-CN/recall/</loc>
     
     <lastmod>2020-05-23T02:34:17.921Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://o3o3o.me/2014/04/27/poem-moive-astrologer/</loc>
+    <loc>https://o3o3o.me/2014/04/27/zh-CN/poem-moive-astrologer/</loc>
     
     <lastmod>2020-05-23T02:34:17.919Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://o3o3o.me/2014/03/04/paint/</loc>
+    <loc>https://o3o3o.me/2014/03/04/zh-CN/paint/</loc>
     
     <lastmod>2020-05-23T02:34:17.918Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://o3o3o.me/2014/04/19/memories-of-the-past/</loc>
+    <loc>https://o3o3o.me/2014/04/19/zh-CN/memories-of-the-past/</loc>
     
     <lastmod>2020-05-23T02:34:17.915Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://o3o3o.me/2014/03/16/linoer/</loc>
+    <loc>https://o3o3o.me/2014/03/16/zh-CN/linoer/</loc>
     
     <lastmod>2020-05-23T02:34:17.914Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://o3o3o.me/2014/04/13/life-rent/</loc>
+    <loc>https://o3o3o.me/2014/04/13/zh-CN/life-rent/</loc>
     
     <lastmod>2020-05-23T02:34:17.912Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://o3o3o.me/2014/01/04/hunhe-xiao-dao/</loc>
+    <loc>https://o3o3o.me/2014/01/04/zh-CN/hunhe-xiao-dao/</loc>
     
     <lastmod>2020-05-23T02:34:17.911Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://o3o3o.me/2018/12/29/graphql_notes/</loc>
+    <loc>https://o3o3o.me/2018/12/29/zh-CN/graphql_notes/</loc>
     
     <lastmod>2020-05-23T02:34:17.909Z</lastmod>
     
@@ -163,42 +184,35 @@
   </url>
   
   <url>
-    <loc>https://o3o3o.me/2019/07/13/django-ratelimit-for-graphql/</loc>
-    
-    <lastmod>2020-05-23T02:34:17.905Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://o3o3o.me/2014/01/18/diary-2014/</loc>
+    <loc>https://o3o3o.me/2014/01/18/zh-CN/diary-2014/</loc>
     
     <lastmod>2020-05-23T02:34:17.904Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://o3o3o.me/2014/06/10/current-life/</loc>
+    <loc>https://o3o3o.me/2014/06/10/zh-CN/current-life/</loc>
     
     <lastmod>2020-05-23T02:34:17.902Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://o3o3o.me/2014/01/04/comic/</loc>
+    <loc>https://o3o3o.me/2014/01/04/zh-CN/comic/</loc>
     
     <lastmod>2020-05-23T02:34:17.900Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://o3o3o.me/2014/02/11/98/</loc>
+    <loc>https://o3o3o.me/2014/02/11/zh-CN/98/</loc>
     
     <lastmod>2020-05-23T02:34:17.897Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://o3o3o.me/2014/01/05/60/</loc>
+    <loc>https://o3o3o.me/2014/01/05/zh-CN/60/</loc>
     
     <lastmod>2020-05-23T02:34:17.896Z</lastmod>
     
